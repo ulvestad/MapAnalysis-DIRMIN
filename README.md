@@ -10,7 +10,6 @@ Java (Eclipse)</br>
 Google Maps (aerial photos)</br>
 Kartverket</br>
 .csv dump for training of neural network</br>
-</br>
 
 ## Installation
 TODO: Describe the installation process
