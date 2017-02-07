@@ -8,6 +8,8 @@ import java.net.URL;
 
 public class Map {
 
+	//generates images with increasing and unique filenames (.jpg files) from X and Y cordinates
+	//uses Google Maps API
 	public void aerialPhoto(String x, String y, int count) {
 
 		try {
