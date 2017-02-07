@@ -16,7 +16,7 @@ public class Map {
 		JFrame test = new JFrame("Google Maps");
 
 		try {
-			String imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center=63.36376387246606,10.451985397981778&zoom=16&size=600x600&maptype=satellite&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=AIzaSyD8rXXlTRsfEiHBUlP6D-uIOjQPgHhBWtY";
+			String imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center=66.119075893897,13.584447360715572&zoom=16&size=600x600&maptype=satellite&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=AIzaSyD8rXXlTRsfEiHBUlP6D-uIOjQPgHhBWtY";
 			String destinationFile = "res/map.jpg";
 			URL url = new URL(imageUrl);
 			InputStream is = url.openStream();

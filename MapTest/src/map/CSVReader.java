@@ -9,9 +9,9 @@ public class CSVReader {
 
 	public static void main(String[] args) {
 
-		String csvFile = "C:/NTNU/uttak_konvertert.csv"; //Filepath for csv file
+		String csvFile = "C:/NTNU/uttak_konvertert2.txt"; //Filepath for csv file
 		String line = ""; //Temporary variable for current line
-		String cvsSplitBy = ";";
+		String cvsSplitBy = ",";
 
 		//Array to store all coordinates
 		ArrayList<ArrayList<String>> UTMkordinatListe = new ArrayList<ArrayList<String>>();
@@ -19,22 +19,17 @@ public class CSVReader {
 		ArrayList<String> kordinater;
 
 		//Variable to skip first line of input data (headers)
-		Boolean firstLine = true;
 
 		//Loop trough the file, adding coordinates to the arraylists.
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
 			while ((line = br.readLine()) != null) {
-				if (!firstLine) {
-					// use ; as separator
-					String[] cordinates = line.split(cvsSplitBy);
-					kordinater = new ArrayList<String>();
-					kordinater.add(cordinates[3]);
-					kordinater.add(cordinates[4]);
-					UTMkordinatListe.add(kordinater);
-				} else {
-					firstLine = false;
+				// use , as separator
+				String[] cordinates = line.split(cvsSplitBy);
+				kordinater = new ArrayList<String>();
+				kordinater.add(cordinates[3]);
+				kordinater.add(cordinates[4]);
+				UTMkordinatListe.add(kordinater);
 				}
-			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
