@@ -6,13 +6,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 public class Map {
 
-
+	//generates images with increasing and unique filenames (.jpg files) from X and Y cordinates
+	//uses Google Maps API
 	public void aerialPhoto(String x, String y, int count){
 
 		//double tempx = Double.parseDouble(x);
@@ -25,6 +22,7 @@ public class Map {
 		try {
 			String imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center="+x+","+y+"&zoom=16&size=600x600&maptype=satellite&format=jpg&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=AIzaSyD8rXXlTRsfEiHBUlP6D-uIOjQPgHhBWtY";
 			String destinationFile = "res/ikke/map"+count+".jpg";
+
 			URL url = new URL(imageUrl);
 			InputStream is = url.openStream();
 			OutputStream os = new FileOutputStream(destinationFile);
@@ -45,9 +43,6 @@ public class Map {
 			System.exit(1);
 		}
 
-
-
 	}
-
 
 }
