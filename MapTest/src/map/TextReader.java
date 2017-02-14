@@ -9,9 +9,6 @@ public class TextReader {
 
 	public void gatherImageFromGoogleMaps(){
 
-
-	public static void main(String[] args) {
-
 		String txtFile = "C:/NTNU/uttak_XY.txt"; // Filepath for txt file
 		String line = ""; // Temporary variable for current line
 		String txtSplitBy = ",";
@@ -44,7 +41,7 @@ public class TextReader {
 			map.aerialPhoto(list.get(1), list.get(0), i);
 
 			// simple statement for controlling number of images to gather
-			/* 
+			/*
 			if (i + 1 > 20) {
 				break;
 			} */
