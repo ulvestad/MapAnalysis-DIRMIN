@@ -19,7 +19,7 @@ public class Map {
 		double tempy = Double.parseDouble(y);
 		
 		//System.out.println(tempy+0.01);
-		y = Double.toString(tempy + 0.01);
+		y = Double.toString(tempy + 0.02);
 		
 		
 		try {

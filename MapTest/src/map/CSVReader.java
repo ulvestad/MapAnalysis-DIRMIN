@@ -40,9 +40,9 @@ public class CSVReader {
 		for (ArrayList<String> list : UTMkordinatListe) {
 			System.out.println(list.get(0) + "," + list.get(1));
 			map.aerialPhoto(list.get(1), list.get(0), i);
-			if (i > 300) {
+			/* if (i > 300) {
 				break;
-			}
+			} */
 			i++;
 		}
 
