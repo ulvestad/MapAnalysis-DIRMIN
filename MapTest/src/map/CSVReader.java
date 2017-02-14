@@ -10,7 +10,7 @@ public class CSVReader {
 
 	public static void main(String[] args) {
 
-		String txtFile = "C:/NTNU/uttak_XY.txt"; //Filepath for txt file
+		String txtFile = "/Users/mathiasjornsen/Dropbox/Skole/NTNU/3/Vår/uttak_XY.txt"; //Filepath for txt file
 		String line = ""; //Temporary variable for current line
 		String cvsSplitBy = ",";
 		Map map = new Map();
@@ -40,7 +40,7 @@ public class CSVReader {
 		for (ArrayList<String> list : UTMkordinatListe) {
 			System.out.println(list.get(0) + "," + list.get(1));
 			map.aerialPhoto(list.get(1), list.get(0), i);
-			if(i+1>20){
+			if (i > 300) {
 				break;
 			}
 			i++;
