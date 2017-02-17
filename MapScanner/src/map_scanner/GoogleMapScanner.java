@@ -33,7 +33,7 @@ public class GoogleMapScanner {
 			InputStream is = url.openStream();
 			OutputStream os = new FileOutputStream(destinationFile);
 
-			System.out.println(count+ ": "+x + "," + y);
+			System.out.println("ID "+count+ ": "+x + ", " + y);
 
 			byte[] b = new byte[2048];
 			int length;
@@ -141,11 +141,11 @@ public class GoogleMapScanner {
 		gms.aerialPhoto(x1, y1, 2);
 
 		String y3 = String.valueOf(gms.longRigth);
-		String x3 = String.valueOf(gms.latButtom + 0.0125);
+		String x3 = String.valueOf(gms.latButtom + 0.0058);
 		gms.aerialPhoto(x3, y3, 3);
 
 		String y4 = String.valueOf(gms.longRigth -0.0125);
-		String x4 = String.valueOf(gms.latButtom +0.0125);
+		String x4 = String.valueOf(gms.latButtom +0.0058);
 		gms.aerialPhoto(x4, y4, 4);
 
 
