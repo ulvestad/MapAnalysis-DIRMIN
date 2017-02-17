@@ -8,6 +8,12 @@ import java.net.URL;
 
 public class GoogleMapScanner {
 
+	//cordinates for scanning a rectangle
+	private Double latTop;
+	private Double latButtom;
+	private Double longLeft;
+	private Double longRigth;
+
 	//generates images with increasing and unique filenames (.jpg files) from X and Y cordinates
 	//uses Google Maps API
 	public void aerialPhoto(String x, String y, int count){
@@ -27,7 +33,7 @@ public class GoogleMapScanner {
 			InputStream is = url.openStream();
 			OutputStream os = new FileOutputStream(destinationFile);
 
-			System.out.println(x + "," + y);
+			System.out.println(count+ ": "+x + "," + y);
 
 			byte[] b = new byte[2048];
 			int length;
@@ -46,22 +52,104 @@ public class GoogleMapScanner {
 	}
 
 	public void scan(){
+		if(!checkIfReady()){
+			return;
+		}
+		System.out.println("Ready to scan...");
+		int i = 0;
+		double templongRigth = getLongRigth();
+		double templongLeft = getLongLeft();
+		double templatTop = getLatTop();
+		double templatButton = getLatButtom();
+		boolean Done = false;
+
+		while(!Done){
+			i++;
+			templongRigth-= 0.0125;
+			String y = String.valueOf(templongRigth);
+			String x = String.valueOf(templatButton);
+			aerialPhoto(x, y, i);
+			if(templongRigth <= templongLeft){
+				templongRigth = getLongRigth();
+				templatButton += 0.0125;
+			}
+			if(templatButton >= templatTop){
+				Done = true;
+			}
+
+		}
+
 
 	}
 
-	public static void main(String[] args) {
-		GoogleMapScanner gms = new GoogleMapScanner();
 
-		double tempx = 62.91273185001395;
-		double tempy = 12.05474853515625;
-		int i = 0;
-		while(tempy >= 7.26995849609375){
-			i ++;
-			tempy -= 0.0125;
-			String x = String.valueOf(tempx);
-			String y = String.valueOf(tempy);
-			gms.aerialPhoto(x, y, i);
+	private boolean checkIfReady() {
+		if(latTop == null || latButtom == null || longLeft == null || longRigth == null){
+			System.err.println("Please set Lat/Long coordinates for rectangle to scan");
+			return false;
 		}
+		return true;
+	}
+
+	public Double getLatTop() {
+		return latTop;
+	}
+
+	public void setLatTop(Double latTop) {
+		this.latTop = latTop;
+	}
+
+	public Double getLatButtom() {
+		return latButtom;
+	}
+
+	public void setLatButtom(Double latButtom) {
+		this.latButtom = latButtom;
+	}
+
+	public Double getLongLeft() {
+		return longLeft;
+	}
+
+	public void setLongLeft(Double longLeft) {
+		this.longLeft = longLeft;
+	}
+
+	public Double getLongRigth() {
+		return longRigth;
+	}
+
+	public void setLongRigth(Double longRigth) {
+		this.longRigth = longRigth;
+	}
+
+	public static void main(String[] args) {
+
+		GoogleMapScanner gms = new GoogleMapScanner();
+		gms.setLongRigth(12.05474853515625);
+		gms.setLongLeft(7.26995849609375);
+		gms.setLatButtom(62.91273185001395);
+		gms.setLatTop(63.68524808030715);
+
+		//tests for accuracy of overlap
+		String y = String.valueOf(gms.longRigth);
+		String x = String.valueOf(gms.latButtom);
+		gms.aerialPhoto(x, y, 1);
+
+		String y1 = String.valueOf(gms.longRigth -0.0125);
+		String x1 = String.valueOf(gms.latButtom);
+		gms.aerialPhoto(x1, y1, 2);
+
+		String y3 = String.valueOf(gms.longRigth);
+		String x3 = String.valueOf(gms.latButtom + 0.0125);
+		gms.aerialPhoto(x3, y3, 3);
+
+		String y4 = String.valueOf(gms.longRigth -0.0125);
+		String x4 = String.valueOf(gms.latButtom +0.0125);
+		gms.aerialPhoto(x4, y4, 4);
+
+
+		//gms.scan();
 
 	}
 }
