@@ -5,14 +5,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class GoogleMapScanner {
 
-	// cordinates for scanning a rectangle
+	//cordinates for scanning a rectangle
 	private Double latTop;
 	private Double latButtom;
 	private Double longLeft;
 	private Double longRigth;
+	//elapsed time while scanning
+	private String elapsedTime;
 
 	// generates images with increasing and unique filenames (.jpg files) from Lat/Long cordinates
 	// uses Google Maps API
@@ -56,6 +60,7 @@ public class GoogleMapScanner {
 		if (!checkIfReady()) {
 			return;
 		}
+		long startTime = System.currentTimeMillis();
 		System.out.println("Scanning...");
 		int i = 0;
 		double templongRigth = getLongRigth();
@@ -77,7 +82,13 @@ public class GoogleMapScanner {
 			if (templatButton >= templatTop) {
 				Done = true;
 			}
+			long endTime = System.currentTimeMillis();
+			long duration = (endTime - startTime);
+			this.elapsedTime = (new SimpleDateFormat("dd:hh:mm:ss")).format(new Date(duration));
+			System.err.println("	Elapsed time: "+elapsedTime +" (dd:hh:mm:ss)");
 		}
+
+
 	}
 
 	//help method for scan()
@@ -143,10 +154,12 @@ public class GoogleMapScanner {
 		 * String x4 = String.valueOf(gms.latButtom +0.0058);
 		 * gms.aerialPhoto(x4, y4, 4);
 		 */
-		String y4 = String.valueOf(63.06933185001397 -0.0125);
-		String x4 = String.valueOf(8.787248535156436);
-		gms.aerialPhoto(x4, y4, 10605);
+		gms.scan();
 
-		//gms.scan();
+		//TODO's: -------------------------------------------------------------------------------------------------------------
+				//TODO: Fix error when more than 24000 request from google maps (now it just retried causing same error)
+						// error is: "Exception in thread "main" java.lang.StackOverflowError"
+
+				//TODO: If HTTP request causes Exception, it skips the image and continues, NEED! to fix so it gets that image and then continue
 	}
 }
