@@ -23,13 +23,13 @@
 					<!-- Start -->
 					<p>Start (X,Y)</p>
 					Latitude start: <input type="number" id= "xPos1" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="63.43300997924799"><br>
-					Longitude end: <input type="number" id= "yPos1" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="10.36311149597168"><br>
+					Longitude start: <input type="number" id= "yPos1" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="10.36311149597168"><br>
 				</div>
 				<div id="endXY">
 					<!-- End -->
 					<p>End (X,Y)</p>
-					Latitude start: <input type="number" id= "xPos2" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="63.40189943061245"><br>
-					Longitude: <input type="number" id= "yPos2" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="10.446882247924805"><br>
+					Latitude end: <input type="number" id= "xPos2" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="63.40189943061245"><br>
+					Longitude end: <input type="number" id= "yPos2" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="10.446882247924805"><br>
 				</div>
 			</form>
 
@@ -110,13 +110,13 @@
 
 	//Scan google maps square (X,Y), (X,Y)----------------
 	function scanArea(){
+		writeFile("coordinates.txt");
 		//Initial Check----------
 		//Coordinates for square
 		lat1 = Number(document.getElementById('xPos1').value);
 		long1 = Number(document.getElementById('yPos1').value);
 		lat2 = Number(document.getElementById('xPos2').value);
 		long2 = Number(document.getElementById('yPos2').value);
-		console.log(lat1 + "" + long1);
 		lat = lat1;
 		long = long1;
 		//Check if input is valid
@@ -135,15 +135,36 @@
 			imageURL = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + long
 				+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyD8rXXlTRsfEiHBUlP6D-uIOjQPgHhBWtY';
 			//Downloads a single image based on imageURL to mapImages
-			downloadFile(imageURL, 'mapImages\\' + imageNum + '.jpg');
+			if(imageNum<10){
+				downloadFile(imageURL, 'maps\\000000' +  imageNum + '.jpg');
+			}
+			else if(imageNum<100){
+				downloadFile(imageURL, 'maps\\00000' +  imageNum + '.jpg');
+			}
+			else if(imageNum<1000){
+				downloadFile(imageURL, 'maps\\0000' +  imageNum + '.jpg');
+			}
+			else if(imageNum<10000){
+				downloadFile(imageURL, 'maps\\000' +  imageNum + '.jpg');
+			}
+			else if(imageNum<10000){
+				downloadFile(imageURL, 'maps\\00' +  imageNum + '.jpg');
+			}
+			else if(imageNum<100000){
+				downloadFile(imageURL, 'maps\\00' +  imageNum + '.jpg');
+			}
+			else{
+				downloadFile(imageURL, 'maps\\0' + imageNum + '.jpg');
+			}
+			appendFile("coordinates.txt", lat, long);
 
-			long += 0.0125; //0.0130: No overlap, 0.0125: ~5% overlap
+			long += 0.0120; //0.0130: No overlap, 0.0125: ~5% overlap
 			
 
 			//Scan reaches bottom
 			if (long >= long2){
 				long = long1;
-				lat -= 0.00540; // -0.00575: No overlap, -0.00540: ~5% overlap
+				lat -= 0.00505; // -0.00575: No overlap, -0.00540: ~5% overlap
 			}
 			//Scan done! (Reaches right)
 			if (lat <= lat2){
@@ -152,7 +173,6 @@
 			}
 			//Image-name increases
 			imageNum += 1;
-			console.log(imageNum);
 			if (imageNum >= 1000){
 				document.getElementById("showMessage").innerHTML = 'Reached end of iteration loop';
 				done = true;
@@ -160,6 +180,18 @@
 		}
 	}
 
+	function writeFile(filename){
+		var fs = require('fs');
+		fs.writeFile(filename, '', function(err) {
+			if(err) {
+				return console.log(err);
+			}
+		console.log("The file was saved!");
+		}); 
+	}
+	function appendFile(filename, lat, long){
+		fs.appendFile(filename, lat + "," + long + '\r\n', function (err) {});
+	}
 
 
 
