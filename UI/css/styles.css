@@ -1,0 +1,31 @@
+html, main{
+	margin: 0px;
+	padding: 0px;
+}
+
+#content{
+	padding-left: 30px;
+}
+.header{
+	background-color: #fff;
+}
+form{
+	margin: 0px;
+}
+#startXY, #endXY{
+	padding: 0px;
+	margin: 0px;
+	display: inline-block;
+}
+#startXY, #endXY, form{
+	padding: 0px;
+}
+#scanButtons{
+	margin:10px 0px 10px 0px;
+}
+#map{
+	margin-top: 10px;
+	width: 600px;
+	height: 430px;
+	position: relative;
+}
