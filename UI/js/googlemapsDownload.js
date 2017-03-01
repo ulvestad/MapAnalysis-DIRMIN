@@ -1,34 +1,45 @@
-//Vars for Google maps download
+//Vars for coordinates
 var lat1 = document.getElementById('xPos1').value;
 var long1 = document.getElementById('yPos1').value;
 var lat2 = document.getElementById('xPos2').value;
 var long2 = document.getElementById('yPos2').value;
 var lat = lat1;
 var long = long1;
+//Vars for mapScan
 var imageNum = 0;
-var done = false;
 var imageURL = '';
-var coordinatesFile = "coordinates.txt";
+//Vars for mapMarkers
 var markers = [];
 var markerCount = 0;
-var imageLimit = 200;
 
+//Limit on amounts of images in 1 scan
+var imageLimit = 1000;
+
+//Vars for filesystem
+var rimraf = require('rimraf');
+var mkdirp = require('mkdirp');
 var request = require('request');
 var fs = require('fs');
+var mapFolder = 'maps';
+var coordinatesFile = "coordinates.txt";
 
-//Launches dev tools when app is run
+//Launches dev tools when app is run, will remove after development
 require('remote').getCurrentWindow().toggleDevTools();
 
-//Google maps stuff------------------------------------
-//Google maps init
+//GoogleMaps functions-------------------------------------------------
+//Init for map-interface with markers
 function initMap() {
+	//Load MAP
 	var trondheim = {lat: 63.42300997924799, lng: 10.40311149597168};
 	var map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 12,
-		center: trondheim
+		center: trondheim,
+		streetViewControl: false,
+		clickableIcons: false
 	});
-
+	//Listener for clicks on MAP
 	map.addListener('click', function(event) {
+		//Adds marker if no marker exists on MAP
 		if (markerCount == 0){
 			var marker = new google.maps.Marker({
 				position: event.latLng, 
@@ -38,6 +49,7 @@ function initMap() {
 			markerCount += 1
 			console.log("Marker1: " + markers[0].getPosition().lat() +", " + markers[0].getPosition().lng());
 		}
+		//Add marker if 1 marker exist on MAP
 		else if (markerCount == 1){
 			var marker = new google.maps.Marker({
 				position: event.latLng, 
@@ -49,7 +61,7 @@ function initMap() {
 		}
 	});
 }
-// Deletes all markers in the array by removing references to them.
+// Deletes all markers in the array and on MAP by removing references to them.
 function removeMarkers() {
 	for (var i = 0; i < markers.length; i++ ) {
 		markers[i].setMap(null);
@@ -57,12 +69,20 @@ function removeMarkers() {
 	markers.length = 0;
 	markerCount = 0;
 }
+//--------------------------------------------------------------------
 
-//Scan google maps square (X,Y), (X,Y)----------------
+
+
+//Scan google maps square (X,Y), (X,Y)--------------------------------
 function scanArea(scanType){
+	//Deletes maps folder
+	rimraf.sync(mapFolder);
+	//Creates maps folder
+	mkdirp.sync(mapFolder);
 	//Deletes all content of the Coordinate-file, creates if not exist
 	createFile(coordinatesFile);
 	
+	//Set variables to text field or markers based on what scan is selected
 	if (scanType == 1){
 		lat1 = Number(document.getElementById('xPos1').value);
 		long1 = Number(document.getElementById('yPos1').value);
@@ -75,14 +95,14 @@ function scanArea(scanType){
 			lat2 = markers[1].getPosition().lat();
 			long2 = markers[1].getPosition().lng();
 		}else{
-			document.getElementById("showMessage").innerHTML = "Two markers are needed to scan.";
+			document.getElementById("showMessage").innerHTML = "Exactly two markers are needed to scan.";
 			return;
 		}
 	}
-	//Coordinates for square
+	//Current coordinates for scan
 	lat = lat1;
 	long = long1;
-	//Initial Check----------
+	//Check if coordinates are correct
 	if (!checkIfReady(lat1, long1, lat2, long2)){
 		document.getElementById("showCoordinates").innerHTML = 'Wrong input.';
 		return;
@@ -92,8 +112,7 @@ function scanArea(scanType){
 
 	//Loop for downloading all images
 	imageNum = 1;
-	done = false;
-	while (!done){
+	while (true){
 		console.log("Lat: " + lat + ", " + "Long: " + long);
 		imageURL = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + long
 			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyD8rXXlTRsfEiHBUlP6D-uIOjQPgHhBWtY';
@@ -130,16 +149,17 @@ function scanArea(scanType){
 		}
 		//Scan done! (Reaches right)
 		if (lat <= lat2){
-			done = true;
 			document.getElementById("showMessage").innerHTML = 'Area scanned!';
+			break;
 		}
 		//Image-name increases
 		imageNum += 1;
 		if (imageNum >= imageLimit){
 			document.getElementById("showMessage").innerHTML = 'Reached max limit of images (' + imageLimit + ")";
-			done = true;
+			break;
 		}
 	}
+	console.log("Scan Complete");
 }
 
 function createFile(filename){
