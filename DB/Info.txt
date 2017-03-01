@@ -1,6 +1,0 @@
-QuarryLocations.db is a sqlite3 database
- - it has two tables
-	KnowLoacations
-	NewLocations
-
-(for more information, see the DB itself)
