@@ -8,36 +8,83 @@ var long = long1;
 var imageNum = 0;
 var done = false;
 var imageURL = '';
+var coordinatesFile = "coordinates.txt";
+var markers = [];
+var markerCount = 0;
+var imageLimit = 200;
 
 var request = require('request');
 var fs = require('fs');
 
+//Launches dev tools when app is run
+require('remote').getCurrentWindow().toggleDevTools();
 
+//Google maps stuff------------------------------------
 //Google maps init
 function initMap() {
-      var uluru = {lat: 63.42300997924799, lng: 10.40311149597168};
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
-        center: uluru
-      });
+	var trondheim = {lat: 63.42300997924799, lng: 10.40311149597168};
+	var map = new google.maps.Map(document.getElementById('map'), {
+		zoom: 12,
+		center: trondheim
+	});
+
+	map.addListener('click', function(event) {
+		if (markerCount == 0){
+			var marker = new google.maps.Marker({
+				position: event.latLng, 
+				map: map
+			});
+			markers[0] = marker;
+			markerCount += 1
+			console.log("Marker1: " + markers[0].getPosition().lat() +", " + markers[0].getPosition().lng());
+		}
+		else if (markerCount == 1){
+			var marker = new google.maps.Marker({
+				position: event.latLng, 
+				map: map
+			});
+			markers[1] = marker;
+			markerCount += 1
+			console.log("Marker2: " + markers[1].getPosition().lat() +", " + markers[1].getPosition().lng());
+		}
+	});
+}
+// Deletes all markers in the array by removing references to them.
+function removeMarkers() {
+	for (var i = 0; i < markers.length; i++ ) {
+		markers[i].setMap(null);
+	}
+	markers.length = 0;
+	markerCount = 0;
 }
 
-
-
 //Scan google maps square (X,Y), (X,Y)----------------
-function scanArea(){
-	//Initial Check----------
+function scanArea(scanType){
+	//Deletes all content of the Coordinate-file, creates if not exist
+	createFile(coordinatesFile);
+	
+	if (scanType == 1){
+		lat1 = Number(document.getElementById('xPos1').value);
+		long1 = Number(document.getElementById('yPos1').value);
+		lat2 = Number(document.getElementById('xPos2').value);
+		long2 = Number(document.getElementById('yPos2').value);
+	}else{
+		if(markers.length > 1){
+			lat1 = markers[0].getPosition().lat();
+			long1 = markers[0].getPosition().lng();
+			lat2 = markers[1].getPosition().lat();
+			long2 = markers[1].getPosition().lng();
+		}else{
+			document.getElementById("showMessage").innerHTML = "Two markers are needed to scan.";
+			return;
+		}
+	}
 	//Coordinates for square
-	lat1 = Number(document.getElementById('xPos1').value);
-	long1 = Number(document.getElementById('yPos1').value);
-	lat2 = Number(document.getElementById('xPos2').value);
-	long2 = Number(document.getElementById('yPos2').value);
-	console.log(lat1 + "" + long1);
 	lat = lat1;
 	long = long1;
-	//Check if input is valid
+	//Initial Check----------
 	if (!checkIfReady(lat1, long1, lat2, long2)){
-		document.getElementById("showCoordinates").innerHTML = '';
+		document.getElementById("showCoordinates").innerHTML = 'Wrong input.';
 		return;
 	}
 	document.getElementById("showCoordinates").innerHTML = "(" + lat1 + ", " + long1 + "), " + "(" + lat2 + ", " + long2 + ")";
@@ -51,15 +98,35 @@ function scanArea(){
 		imageURL = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + long
 			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyD8rXXlTRsfEiHBUlP6D-uIOjQPgHhBWtY';
 		//Downloads a single image based on imageURL to mapImages
-		downloadFile(imageURL, 'mapImages\\' + imageNum + '.jpg');
+		if(imageNum<10){
+ 			downloadFile(imageURL, 'maps\\000000' +  imageNum + '.jpg');
+ 		}
+ 		else if(imageNum<100){
+ 				downloadFile(imageURL, 'maps\\00000' +  imageNum + '.jpg');
+ 		}
+ 		else if(imageNum<1000){
+ 			downloadFile(imageURL, 'maps\\0000' +  imageNum + '.jpg');
+ 		}
+ 		else if(imageNum<10000){
+ 			downloadFile(imageURL, 'maps\\000' +  imageNum + '.jpg');
+ 		}
+ 		else if(imageNum<10000){
+ 			downloadFile(imageURL, 'maps\\00' +  imageNum + '.jpg');
+ 		}
+ 		else if(imageNum<100000){
+ 			downloadFile(imageURL, 'maps\\00' +  imageNum + '.jpg');
+ 		}
+ 		else{
+ 			downloadFile(imageURL, 'maps\\0' + imageNum + '.jpg');
+ 		}
+ 		appendFile(coordinatesFile, lat, long);
 
-		long += 0.0125; //0.0130: No overlap, 0.0125: ~5% overlap
 
-
+		long += 0.0120; //0.0130: No overlap, 0.0125: ~5% overlap
 		//Scan reaches bottom
 		if (long >= long2){
 			long = long1;
-			lat -= 0.00540; // -0.00575: No overlap, -0.00540: ~5% overlap
+			lat -= 0.00505; // -0.00575: No overlap, -0.00540: ~5% overlap
 		}
 		//Scan done! (Reaches right)
 		if (lat <= lat2){
@@ -68,14 +135,19 @@ function scanArea(){
 		}
 		//Image-name increases
 		imageNum += 1;
-		console.log(imageNum);
-		if (imageNum >= 1000){
-			document.getElementById("showMessage").innerHTML = 'Reached end of iteration loop';
+		if (imageNum >= imageLimit){
+			document.getElementById("showMessage").innerHTML = 'Reached max limit of images (' + imageLimit + ")";
 			done = true;
 		}
 	}
 }
 
+function createFile(filename){
+	fs.openSync(coordinatesFile, 'w');
+}
+function appendFile(filename, lat, long){
+	fs.appendFile(filename, lat + "," + long + '\r\n', function (err) {});
+}
 
 //Download specified googleMaps-file
 function downloadFile(file_url , targetPath){

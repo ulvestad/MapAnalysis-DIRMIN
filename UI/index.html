@@ -34,22 +34,27 @@
 			</form>
 
 			<div id="scanButtons">
-				<button onclick="scanArea()">Download maps (Start, End)</button>
+				<button onclick="scanArea(1)">Download maps (Start, End)</button>
 
 				<button onclick="launchProgram()">Start quarry scan</button>
 				<p id="showCoordinates"></p>
 				<p id="showMessage"></p>
 			</div>
+			<div id="mapButtons">
+				<button onclick="scanArea(2)">Scan Area </button>
+				<button onclick="removeMarkers()">Remove Markers </button>
+			</div>
 			<div id="map"></div>
+			
 		</div>
 
 	</div>
 
-  <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
-  </script>
 
 <script src="js/googlemapsDownload.js"></script>
+<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
+</script>
 
 <script src="js/launchEXE.js"></script>
 
