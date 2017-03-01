@@ -8,13 +8,14 @@ var long = long1;
 //Vars for mapScan
 var imageNum = 0;
 var imageURL = '';
+var mapWidth = 0;
+var reachedRight = false;
 //Vars for mapMarkers
 var markers = [];
 var markerCount = 0;
 
-//Limit on amounts of images in 1 scan
+//Limit on amounts of images downloaded in 1 scan
 var imageLimit = 1000;
-
 //Vars for filesystem
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
@@ -26,7 +27,9 @@ var coordinatesFile = "coordinates.txt";
 //Launches dev tools when app is run, will remove after development
 require('remote').getCurrentWindow().toggleDevTools();
 
-//GoogleMaps functions-------------------------------------------------
+
+
+//GOOGLE MAPS FUNCTIONS-------------------------------------------------
 //Init for map-interface with markers
 function initMap() {
 	//Load MAP
@@ -73,8 +76,11 @@ function removeMarkers() {
 
 
 
-//Scan google maps square (X,Y), (X,Y)--------------------------------
+//SCAN/DOWNLOAD google maps square (X,Y), (X,Y)--------------------------------
 function scanArea(scanType){
+	//Reset vars for counting mapWitdh(in images)
+	mapWidth = 0;
+	reachedRight = false;
 	//Deletes maps folder
 	rimraf.sync(mapFolder);
 	//Creates maps folder
@@ -138,12 +144,18 @@ function scanArea(scanType){
  		else{
  			downloadFile(imageURL, 'maps\\0' + imageNum + '.jpg');
  		}
+ 		//Adds coordinates for current map to text file
  		appendFile(coordinatesFile, lat, long);
-
-
+ 		
+ 		//Finds the width (in maps) of the scan
+ 		if (!reachedRight){
+ 			mapWidth += 1;
+ 		}
 		long += 0.0120; //0.0130: No overlap, 0.0125: ~5% overlap
-		//Scan reaches bottom
+		//Scan reaches right edge
 		if (long >= long2){
+			console.log("Reached right");
+			reachedRight = true;
 			long = long1;
 			lat -= 0.00505; // -0.00575: No overlap, -0.00540: ~5% overlap
 		}
@@ -159,8 +171,12 @@ function scanArea(scanType){
 			break;
 		}
 	}
-	console.log("Scan Complete");
+	console.log("Scan Complete. Map-width: " + mapWidth);
 }
+
+
+
+//OTHER FUNCTIONS
 
 function createFile(filename){
 	fs.openSync(coordinatesFile, 'w');
