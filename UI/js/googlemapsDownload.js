@@ -151,13 +151,12 @@ function scanArea(scanType){
  		if (!reachedRight){
  			mapWidth += 1;
  		}
-		long += 0.0120; //0.0130: No overlap, 0.0125: ~5% overlap
+		long += 0.0065; //0.0130: No overlap, 0.0125: ~5% overlap
 		//Scan reaches right edge
 		if (long >= long2){
-			console.log("Reached right");
 			reachedRight = true;
 			long = long1;
-			lat -= 0.00505; // -0.00575: No overlap, -0.00540: ~5% overlap
+			lat -= 0.00300; // -0.00575: No overlap, -0.00540: ~5% overlap
 		}
 		//Scan done! (Reaches right)
 		if (lat <= lat2){
