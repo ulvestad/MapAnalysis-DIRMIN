@@ -24,6 +24,7 @@ var fs = require('fs');
 var mapFolder = 'maps';
 var coordinatesFile = "coordinates.txt";
 var rectangle;
+var map = null;
 
 //Launches dev tools when app is run, will remove after development
 require('remote').getCurrentWindow().toggleDevTools();
@@ -35,7 +36,7 @@ require('remote').getCurrentWindow().toggleDevTools();
 function initMap() {
 	//Load MAP
 	var trondheim = {lat: 63.42300997924799, lng: 10.40311149597168};
-	var map = new google.maps.Map(document.getElementById('map'), {
+	map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 12,
 		center: trondheim,
 		streetViewControl: false,
@@ -141,7 +142,9 @@ function scanArea(scanType){
 	//Loop for downloading all images
 	imageNum = 1;
 	while (true){
-		console.log("#"+imageNum+" Lat/Long " + lat + ", " + long);
+		if(imageNum%1000 == 0){
+			console.log("#"+imageNum+" Lat/Long " + lat + ", " + long);
+		}
 		imageURL = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + long
 			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyD8rXXlTRsfEiHBUlP6D-uIOjQPgHhBWtY';
 		//Downloads a single image based on imageURL to mapImages
@@ -180,8 +183,9 @@ function scanArea(scanType){
 			lat -= 0.00300; // -0.00575: No overlap, -0.00540: ~5% overlap
 		}
 
+		temp_long = long;
 		//Adds coordinates for current map to text file
- 		appendFile(coordinatesFile, lat, long);
+ 		appendFile(coordinatesFile, temp_lat, temp_long-=0.0065);
 		
 		//Scan done! (Reaches right)
 		if (lat <= lat2){
