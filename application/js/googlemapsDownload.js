@@ -23,6 +23,7 @@ var request = require('request');
 var fs = require('fs');
 var mapFolder = 'maps';
 var coordinatesFile = "coordinates.txt";
+var rectangle;
 
 //Launches dev tools when app is run, will remove after development
 require('remote').getCurrentWindow().toggleDevTools();
@@ -40,8 +41,11 @@ function initMap() {
 		streetViewControl: false,
 		clickableIcons: false
 	});
+	//init recatangle between markers
+	rectangle = new google.maps.Rectangle();
 	//Listener for clicks on MAP
 	map.addListener('click', function(event) {
+
 		//Adds marker if no marker exists on MAP
 		if (markerCount == 0){
 			var marker = new google.maps.Marker({
@@ -61,7 +65,23 @@ function initMap() {
 			markers[1] = marker;
 			markerCount += 1
 			console.log("Marker2: " + markers[1].getPosition().lat() +", " + markers[1].getPosition().lng());
+			//init recangle between markers
+			rectangle = new google.maps.Rectangle({
+		          strokeColor: '#e04548',
+		          strokeOpacity: 0.8,
+		          strokeWeight: 2,
+		          fillColor: '#aaaaaa',
+		          fillOpacity: 0.38,
+		          map: map,
+		          bounds: {
+		            north: markers[0].getPosition().lat(),
+		            south: markers[1].getPosition().lat(),
+		            east: markers[1].getPosition().lng(),
+		            west: markers[0].getPosition().lng()
+	         	 }
+	       	 });
 		}
+		
 	});
 }
 // Deletes all markers in the array and on MAP by removing references to them.
@@ -69,6 +89,7 @@ function removeMarkers() {
 	for (var i = 0; i < markers.length; i++ ) {
 		markers[i].setMap(null);
 	}
+	rectangle.setMap(null);
 	markers.length = 0;
 	markerCount = 0;
 }
@@ -94,6 +115,7 @@ function scanArea(scanType){
 		long1 = Number(document.getElementById('yPos1').value);
 		lat2 = Number(document.getElementById('xPos2').value);
 		long2 = Number(document.getElementById('yPos2').value);
+		
 	}else{
 		if(markers.length > 1){
 			lat1 = markers[0].getPosition().lat();
