@@ -144,20 +144,23 @@ function scanArea(scanType){
  		else{
  			downloadFile(imageURL, 'maps\\0' + imageNum + '.jpg');
  		}
- 		//Adds coordinates for current map to text file
- 		appendFile(coordinatesFile, lat+=0.00300, long-=0.0065);
  		
  		//Finds the width (in maps) of the scan
  		if (!reachedRight){
  			mapWidth += 1;
  		}
 		long += 0.0065; //0.0130: No overlap, 0.0125: ~5% overlap
+		
 		//Scan reaches right edge
 		if (long >= long2){
 			reachedRight = true;
 			long = long1;
 			lat -= 0.00300; // -0.00575: No overlap, -0.00540: ~5% overlap
 		}
+
+		//Adds coordinates for current map to text file
+ 		appendFile(coordinatesFile, lat, long);
+		
 		//Scan done! (Reaches right)
 		if (lat <= lat2){
 			document.getElementById("showMessage").innerHTML = 'Area scanned!';
