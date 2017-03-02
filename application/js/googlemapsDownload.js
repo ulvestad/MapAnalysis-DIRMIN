@@ -15,7 +15,7 @@ var markers = [];
 var markerCount = 0;
 
 //Limit on amounts of images downloaded in 1 scan
-var imageLimit = 1000;
+var imageLimit = 50000;
 //Vars for filesystem
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
@@ -119,7 +119,7 @@ function scanArea(scanType){
 	//Loop for downloading all images
 	imageNum = 1;
 	while (true){
-		console.log("Lat: " + lat + ", " + "Long: " + long);
+		console.log("#"imageNum+" Lat/Long " + lat + ", " + long);
 		imageURL = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + long
 			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyD8rXXlTRsfEiHBUlP6D-uIOjQPgHhBWtY';
 		//Downloads a single image based on imageURL to mapImages
@@ -145,7 +145,7 @@ function scanArea(scanType){
  			downloadFile(imageURL, 'maps\\0' + imageNum + '.jpg');
  		}
  		//Adds coordinates for current map to text file
- 		appendFile(coordinatesFile, lat, long);
+ 		appendFile(coordinatesFile, lat+=0.00300, long-=0.0065);
  		
  		//Finds the width (in maps) of the scan
  		if (!reachedRight){
