@@ -119,7 +119,7 @@ function scanArea(scanType){
 	//Loop for downloading all images
 	imageNum = 1;
 	while (true){
-		console.log("#"imageNum+" Lat/Long " + lat + ", " + long);
+		console.log("#"+imageNum+" Lat/Long " + lat + ", " + long);
 		imageURL = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + long
 			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyD8rXXlTRsfEiHBUlP6D-uIOjQPgHhBWtY';
 		//Downloads a single image based on imageURL to mapImages
