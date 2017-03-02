@@ -1,10 +1,10 @@
 //Vars for coordinates
-var lat1 = document.getElementById('xPos1').value;
-var long1 = document.getElementById('yPos1').value;
-var lat2 = document.getElementById('xPos2').value;
-var long2 = document.getElementById('yPos2').value;
-var lat = lat1;
-var long = long1;
+//var lat1 = document.getElementById('xPos1').value;
+//var long1 = document.getElementById('yPos1').value;
+//var lat2 = document.getElementById('xPos2').value;
+//var long2 = document.getElementById('yPos2').value;
+var lat = null//lat1;
+var long = null//long1;
 //Vars for mapScan
 var imageNum = 0;
 var imageURL = '';
@@ -51,7 +51,8 @@ function initMap() {
 		if (markerCount == 0){
 			var marker = new google.maps.Marker({
 				position: event.latLng, 
-				map: map
+				map: map,
+				icon: "icons/mapMarker.png"
 			});
 			markers[0] = marker;
 			markerCount += 1
@@ -61,14 +62,15 @@ function initMap() {
 		else if (markerCount == 1){
 			var marker = new google.maps.Marker({
 				position: event.latLng, 
-				map: map
+				map: map,
+				icon: "icons/mapMarker.png"
 			});
 			markers[1] = marker;
 			markerCount += 1
 			console.log("Marker2: " + markers[1].getPosition().lat() +", " + markers[1].getPosition().lng());
 			//init recangle between markers
 			rectangle = new google.maps.Rectangle({
-		          strokeColor: '#e04548',
+		          strokeColor: '#B9A879',
 		          strokeOpacity: 0.8,
 		          strokeWeight: 2,
 		          fillColor: '#aaaaaa',

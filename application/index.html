@@ -13,36 +13,37 @@
 
 	<div id="content">
 		<div class="header">
-			<h1>Scan Area</h1>
-			<p>Plot in start and end coordinates (Lat/Long) in the text fields or mark an area on the the map below</p>
+			<p style="padding-top:20px;">DIRMIN - Søk etter uttak<p>
 		</div>
-
+		<div id="description">
+			<p style="width:600px;" >Select the area to scan for image colllection, using two markers, by clicking on the map. A box wil appear once both markers are placed showing the seleced area. (NB! First markes should always be to the top left).</p>
+		</div>
 		<div class="column1">
-			<form>
+			<!-- <form>
 				<div id="startXY">
-					<!-- Start -->
+					
 					<p>Start (X,Y)</p>
-					Latitude start: <input type="number" id= "xPos1" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="63.431925518951694"><br>
-					Longitude start: <input type="number" id= "yPos1" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="10.367145538330078"><br>
+					Latitude start: <input style="font-family:Open Sans Condensed;" type="number" id= "xPos1" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="63.431925518951694"><br>
+					Longitude start: <input style="font-family:Open Sans Condensed;" type="number" id= "yPos1" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="10.367145538330078"><br>
 				</div>
 				<div id="endXY">
-					<!-- End -->
+					
 					<p>End (X,Y)</p>
-					Latitude end: <input type="number" id= "xPos2" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="63.41748773087018"><br>
-					Longitude end: <input type="number" id= "yPos2" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="10.413494110107422"><br>
+					Latitude end: <input  style="font-family:Open Sans Condensed;" type="number" id= "xPos2" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="63.41748773087018"><br>
+					Longitude end: <input style="font-family:Open Sans Condensed;" type="number" id= "yPos2" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="10.413494110107422"><br>
 				</div>
-			</form>
+			</form> -->
 
 			<div id="scanButtons">
-				<button onclick="scanArea(1)">Download maps (Start, End)</button>
+				<!--<button onclick="scanArea(1)" style="font-family:Open Sans Condensed;">Download maps (Start, End)</button> -->
 
-				<button onclick="launchProgram()">Start quarry scan</button>
+				<button onclick="launchProgram()" style="font-family:Open Sans Condensed;">Run quarry recongnition</button>
 				<p id="showCoordinates"></p>
 				<p id="showMessage"></p>
 			</div>
 			<div id="mapButtons">
-				<button onclick="scanArea(2)">Scan Area </button>
-				<button onclick="removeMarkers()">Remove Markers </button>
+				<button onclick="scanArea(2)" style="font-family:Open Sans Condensed;">Get images from selected area</button>
+				<button onclick="removeMarkers()" style="font-family:Open Sans Condensed;">Remove markers </button>
 			</div>
 			<div id="map"></div>
 			
