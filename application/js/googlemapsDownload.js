@@ -138,7 +138,7 @@ function scanArea(scanType){
 		document.getElementById("showCoordinates").innerHTML = 'Wrong input.';
 		return;
 	}
-	document.getElementById("showCoordinates").innerHTML = "(" + lat1 + ", " + long1 + "), " + "(" + lat2 + ", " + long2 + ")";
+	//document.getElementById("showCoordinates").innerHTML = "(" + lat1 + ", " + long1 + "), " + "(" + lat2 + ", " + long2 + ")";
 	//-----------------------
 
 	//Loop for downloading all images
@@ -187,11 +187,11 @@ function scanArea(scanType){
 
 		temp_long = long;
 		//Adds coordinates for current map to text file
- 		appendFile(coordinatesFile, temp_lat, temp_long-=0.0065);
+ 		appendFile(coordinatesFile, lat, temp_long-=0.0065);
 		
 		//Scan done! (Reaches right)
 		if (lat <= lat2){
-			document.getElementById("showMessage").innerHTML = 'Area scanned!';
+			//document.getElementById("showMessage").innerHTML = 'Area scanned!';
 			break;
 		}
 		//Image-name increases
