@@ -11,8 +11,8 @@ body{
 	font-style: normal;
 	font-variant: normal;
 }
-#content{
-
+.content{
+	background-color: red;
 }
 .header{
 	background-color: #B9A879;
@@ -39,8 +39,30 @@ form{
 	margin:10px 0px 10px 0px;
 }
 #map{
-	margin-top: 10px;
+	margin-top: 20px;
 	width: 600px;
-	height: 430px;
+	height: 438px;
 	position: relative;
+}
+.output{
+
+}
+.leftside{
+	float: left;
+}
+.rightside{
+	float: left;
+	margin-left: 20px;
+	margin-top: 130px;
+}
+textarea {
+   resize: none;
+   overflow-y: scroll;
+   font-family: "Open Sans Condensed";
+   font-style: normal;
+   font-variant: normal;
+   resize: none;
+   text-align: justify;
+   -moz-text-align-last: left;
+   text-align-last: left;
 }
