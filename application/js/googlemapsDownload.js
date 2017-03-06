@@ -187,7 +187,7 @@ function scanArea(scanType){
 
 		temp_long = long;
 		//Adds coordinates for current map to text file
- 		appendFile(coordinatesFile, temp_lat, temp_long-=0.0065);
+ 		appendFile(coordinatesFile, lat, temp_long-=0.0065);
 		
 		//Scan done! (Reaches right)
 		if (lat <= lat2){
