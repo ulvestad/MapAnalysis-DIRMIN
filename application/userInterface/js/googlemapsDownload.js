@@ -1,10 +1,10 @@
 //Vars for coordinates
-var lat1 = document.getElementById('xPos1').value;
-var long1 = document.getElementById('yPos1').value;
-var lat2 = document.getElementById('xPos2').value;
-var long2 = document.getElementById('yPos2').value;
-var lat = lat1;
-var long = long1;
+//var lat1 = document.getElementById('xPos1').value;
+//var long1 = document.getElementById('yPos1').value;
+//var lat2 = document.getElementById('xPos2').value;
+//var long2 = document.getElementById('yPos2').value;
+var lat = null//lat1;
+var long = null//long1;
 //Vars for mapScan
 var imageNum = 0;
 var imageURL = '';
@@ -23,6 +23,9 @@ var request = require('request');
 var fs = require('fs');
 var mapFolder = 'maps';
 var coordinatesFile = "coordinates.txt";
+var iconImg = "icons/mapMarker.png";
+var rectangle;
+var map = null;
 
 //Launches dev tools when app is run, will remove after development
 require('remote').getCurrentWindow().toggleDevTools();
@@ -34,19 +37,23 @@ require('remote').getCurrentWindow().toggleDevTools();
 function initMap() {
 	//Load MAP
 	var trondheim = {lat: 63.42300997924799, lng: 10.40311149597168};
-	var map = new google.maps.Map(document.getElementById('map'), {
+	map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 12,
 		center: trondheim,
 		streetViewControl: false,
 		clickableIcons: false
 	});
+	//init recatangle between markers
+	rectangle = new google.maps.Rectangle();
 	//Listener for clicks on MAP
 	map.addListener('click', function(event) {
+
 		//Adds marker if no marker exists on MAP
 		if (markerCount == 0){
 			var marker = new google.maps.Marker({
 				position: event.latLng, 
-				map: map
+				map: map,
+				icon: iconImg
 			});
 			markers[0] = marker;
 			markerCount += 1
@@ -56,12 +63,29 @@ function initMap() {
 		else if (markerCount == 1){
 			var marker = new google.maps.Marker({
 				position: event.latLng, 
-				map: map
+				map: map,
+				icon: iconImg
 			});
 			markers[1] = marker;
 			markerCount += 1
 			console.log("Marker2: " + markers[1].getPosition().lat() +", " + markers[1].getPosition().lng());
+			//init recangle between markers
+			rectangle = new google.maps.Rectangle({
+		          strokeColor: '#B9A879',
+		          strokeOpacity: 0.8,
+		          strokeWeight: 2,
+		          fillColor: '#aaaaaa',
+		          fillOpacity: 0.38,
+		          map: map,
+		          bounds: {
+		            north: markers[0].getPosition().lat(),
+		            south: markers[1].getPosition().lat(),
+		            east: markers[1].getPosition().lng(),
+		            west: markers[0].getPosition().lng()
+	         	 }
+	       	 });
 		}
+		
 	});
 }
 // Deletes all markers in the array and on MAP by removing references to them.
@@ -69,6 +93,7 @@ function removeMarkers() {
 	for (var i = 0; i < markers.length; i++ ) {
 		markers[i].setMap(null);
 	}
+	rectangle.setMap(null);
 	markers.length = 0;
 	markerCount = 0;
 }
@@ -94,6 +119,7 @@ function scanArea(scanType){
 		long1 = Number(document.getElementById('yPos1').value);
 		lat2 = Number(document.getElementById('xPos2').value);
 		long2 = Number(document.getElementById('yPos2').value);
+		
 	}else{
 		if(markers.length > 1){
 			lat1 = markers[0].getPosition().lat();
@@ -113,13 +139,15 @@ function scanArea(scanType){
 		document.getElementById("showCoordinates").innerHTML = 'Wrong input.';
 		return;
 	}
-	document.getElementById("showCoordinates").innerHTML = "(" + lat1 + ", " + long1 + "), " + "(" + lat2 + ", " + long2 + ")";
+	//document.getElementById("showCoordinates").innerHTML = "(" + lat1 + ", " + long1 + "), " + "(" + lat2 + ", " + long2 + ")";
 	//-----------------------
 
 	//Loop for downloading all images
 	imageNum = 1;
 	while (true){
-		console.log("#"+imageNum+" Lat/Long " + lat + ", " + long);
+		if(imageNum%1000 == 0){
+			console.log("#"+imageNum+" Lat/Long " + lat + ", " + long);
+		}
 		imageURL = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + long
 			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyD8rXXlTRsfEiHBUlP6D-uIOjQPgHhBWtY';
 		//Downloads a single image based on imageURL to mapImages
@@ -158,12 +186,13 @@ function scanArea(scanType){
 			lat -= 0.00300; // -0.00575: No overlap, -0.00540: ~5% overlap
 		}
 
+		temp_long = long;
 		//Adds coordinates for current map to text file
- 		appendFile(coordinatesFile, lat, long);
+ 		appendFile(coordinatesFile, lat, temp_long-=0.0065);
 		
 		//Scan done! (Reaches right)
 		if (lat <= lat2){
-			document.getElementById("showMessage").innerHTML = 'Area scanned!';
+			//document.getElementById("showMessage").innerHTML = 'Area scanned!';
 			break;
 		}
 		//Image-name increases
