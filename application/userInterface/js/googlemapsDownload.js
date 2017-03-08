@@ -23,6 +23,7 @@ var request = require('request');
 var fs = require('fs');
 var mapFolder = 'maps';
 var coordinatesFile = "coordinates.txt";
+var iconImg = "icons/mapMarker.png";
 var rectangle;
 var map = null;
 
@@ -52,7 +53,7 @@ function initMap() {
 			var marker = new google.maps.Marker({
 				position: event.latLng, 
 				map: map,
-				icon: "icons/mapMarker.png"
+				icon: iconImg
 			});
 			markers[0] = marker;
 			markerCount += 1
@@ -63,7 +64,7 @@ function initMap() {
 			var marker = new google.maps.Marker({
 				position: event.latLng, 
 				map: map,
-				icon: "icons/mapMarker.png"
+				icon: iconImg
 			});
 			markers[1] = marker;
 			markerCount += 1
