@@ -1,1 +1,0 @@
-INDEX VERSION 1.129+C:\Users\marti\git\MapAnalysis-DIRMIN\.metadata\.plugins\org.eclipse.jdt.core
