@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Analysis of Map and Satellite Images</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+	<div class="header">
+			<img src="icons/dirminLogo.png" alt="dirmin logo" height="60px" widht="45px" style="float:left; margin-top:5px;">
+			<p style="float:left">DIRMIN - Potential Quarries<p>
+	</div>
+	<div class="content">
+		<div class="leftside">
+			<div class="description">
+			<p style="width:600px;" >Select the area to scan for image colllection, using two markers, by clicking on the map. A box wil appear once both markers are placed showing the seleced area. (NB! First markes should always be to the top left).</p>
+			</div>
+			<div class="column1">
+
+				<div id="map"></div>
+			</div>
+		</div>
+		<div class="rightside">		
+				<div>
+					<p style="float:left">Quarry Loctions</p>
+					<button style="margin-top:15px; margin-left:90px"><img src="icons/refresh.png" width="12px" heigth="12px" alt="refresh" style="margin-top:3px; overflow:hidden"></button>
+					<br>
+					<div id="mapButtons" id="left">
+						<button onclick="editMarker()" style="font-family:Open Sans Condensed;">Edit selected quarry</button>
+						<button onclick="deleteMarkers()" style="font-family:Open Sans Condensed;">Delete selected quarry</button>
+					</div>
+					<textarea rows="24" cols="30" readonly>
+					</textarea>
+				</div>
+		</div>
+
+	</div>
+
+<script src="js/result.js"></script>
+<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
+</script>
+<script src="js/launchEXE.js"></script>
+
+</body>
+
+</html>
