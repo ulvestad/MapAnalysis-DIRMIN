@@ -26,15 +26,21 @@
 		</div>
 		<div class="rightside">		
 				<div>
-					<p style="float:left">Quarry Loctions</p>
+					<p style="float:left">Quarries</p>
 					<button style="margin-top:15px; margin-left:90px"><img src="icons/refresh.png" width="12px" heigth="12px" alt="refresh" style="margin-top:3px; overflow:hidden"></button>
 					<br>
+					<textarea rows="12" cols="30" readonly>
+					</textarea>
+					<form>
+					 	<input type="checkbox" name="quarry1" value="Known"> Known Quarries<br>
+					 	<input type="checkbox" name="quarry2" value="New"> New Quarries<br>
+					 	<input type="checkbox" name="quarry3" value="Placeholder"> Placeholder<br>
+					</form> 
+
 					<div id="mapButtons" id="left">
 						<button onclick="editMarker()" style="font-family:Open Sans Condensed;">Edit selected quarry</button>
 						<button onclick="deleteMarkers()" style="font-family:Open Sans Condensed;">Delete selected quarry</button>
 					</div>
-					<textarea rows="24" cols="30" readonly>
-					</textarea>
 				</div>
 		</div>
 
