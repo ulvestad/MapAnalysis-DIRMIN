@@ -61,6 +61,10 @@ function initMap() {
 		}
 		//Add marker if 1 marker exist on MAP
 		else if (markerCount == 1){
+			latLng2 = event.latLng;
+			if (latLng2.lat() > markers[0].getPosition().lat() || latLng2.lng() < markers[0].getPosition().lng()){
+				return;
+			}
 			var marker = new google.maps.Marker({
 				position: event.latLng, 
 				map: map,
