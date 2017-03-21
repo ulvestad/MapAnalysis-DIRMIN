@@ -59,3 +59,15 @@ function initMap() {
 		
 	});
 }
+
+//DATABASE INTERACTIONS
+//REQUIRES SQLITE3
+function initDb() {
+	var fs = require('fs')
+	var sql = require('sql.js')
+	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
+	var db = new sql.Database(bfr)
+	db.each('SELECT * FROM NewLocations', function (row) {
+	  console.log(row)
+	})
+}
