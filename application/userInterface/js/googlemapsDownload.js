@@ -28,7 +28,7 @@ var rectangle;
 var map = null;
 
 //Launches dev tools when app is run, will remove after development
-require('remote').getCurrentWindow().toggleDevTools();
+//require('remote').getCurrentWindow().toggleDevTools();
 
 
 
