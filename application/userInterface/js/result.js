@@ -68,6 +68,8 @@ function initDb() {
 	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
 	var db = new sql.Database(bfr)
 	db.each('SELECT * FROM NewLocations', function (row) {
-	  console.log(row)
+		str = JSON.stringify(row)
+		document.getElementById("results").value += "\n" + str
+		console.log(row)
 	})
 }
