@@ -160,7 +160,7 @@ function scanArea(scanType){
 			console.log("#"+imageNum+" Lat/lng " + lat + ", " + lng);
 		}
 		imageURL = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + lng
-			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyASL_U-mOP8hsyaKWZTIBw7oBwsQM28-B0';
+			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag';
 		//Downloads a single image based on imageURL to mapImages
 		if(imageNum<10){
  			downloadFile(imageURL, 'maps\\000000' +  imageNum + '.jpg');
