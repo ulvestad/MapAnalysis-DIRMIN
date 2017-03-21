@@ -1,63 +1,22 @@
 //Launches dev tools when app is run, will remove after development
 require('remote').getCurrentWindow().toggleDevTools();
 
+var map;
+var tables = ["KnownLocations", "NewLocations"];
 
 
 //GOOGLE MAPS FUNCTIONS-------------------------------------------------
 //Init for map-interface with markers
 function initMap() {
 	//Load MAP
-	var trondheim = {lat: 63.42300997924799, lng: 10.40311149597168};
+	var middle_norway = {lat: 65.14611484756372, lng: 13.18359375};
 	map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 12,
-		center: trondheim,
+		zoom: 4,
+		center: middle_norway,
 		streetViewControl: false,
 		clickableIcons: false
 	});
-	//init recatangle between markers
-	rectangle = new google.maps.Rectangle();
-	//Listener for clicks on MAP
-	map.addListener('click', function(event) {
 
-		//Adds marker if no marker exists on MAP
-		if (markerCount == 0){
-			var marker = new google.maps.Marker({
-				position: event.latLng, 
-				map: map,
-				icon: iconImg
-			});
-			markers[0] = marker;
-			markerCount += 1
-			console.log("Marker1: " + markers[0].getPosition().lat() +", " + markers[0].getPosition().lng());
-		}
-		//Add marker if 1 marker exist on MAP
-		else if (markerCount == 1){
-			var marker = new google.maps.Marker({
-				position: event.latLng, 
-				map: map,
-				icon: iconImg
-			});
-			markers[1] = marker;
-			markerCount += 1
-			console.log("Marker2: " + markers[1].getPosition().lat() +", " + markers[1].getPosition().lng());
-			//init recangle between markers
-			rectangle = new google.maps.Rectangle({
-		          strokeColor: '#B9A879',
-		          strokeOpacity: 0.8,
-		          strokeWeight: 2,
-		          fillColor: '#aaaaaa',
-		          fillOpacity: 0.38,
-		          map: map,
-		          bounds: {
-		            north: markers[0].getPosition().lat(),
-		            south: markers[1].getPosition().lat(),
-		            east: markers[1].getPosition().lng(),
-		            west: markers[0].getPosition().lng()
-	         	 }
-	       	 });
-		}
-		
-	});
 }
 
 //DATABASE INTERACTIONS
@@ -67,9 +26,35 @@ function initDb() {
 	var sql = require('sql.js')
 	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
 	var db = new sql.Database(bfr)
-	db.each('SELECT * FROM NewLocations', function (row) {
+	db.each('SELECT ID as idy, Latitude as lat, Longitude as lng, Score as scr FROM KnownLocations', function (row) {
 		str = JSON.stringify(row)
-		document.getElementById("results").value += "\n" + str
-		console.log(row)
+		var id = row.idy;
+		var lat = row.lat;
+		var lng = row.lng;
+		var scr = row.scr.toFixed(3);
+		plotMarker(id,lat,lng,scr)
+		//document.getElementById("results").value += "\n" + str
+		//console.log(row)
 	})
+	db.close();
+}
+
+//PLOT MARKERS ON MAP
+function plotMarker(id, lat, lng, scr){
+	var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(lat, lng),
+        map: map
+    });
+    var content = '<div>' +
+						'<b>ID: </b>'+id+'<br><b>Latitude: </b>'+lat+'<br><b>Longitude: </b>'+lng+'<br><b>Score: </b>'+scr+''+
+						'</div>';
+    var infowindow = new google.maps.InfoWindow();
+	google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+	    return function() {
+	        infowindow.setContent(content);
+	        infowindow.open(map,marker);
+	    };
+	})(marker,content,infowindow));  
+  
+
 }
