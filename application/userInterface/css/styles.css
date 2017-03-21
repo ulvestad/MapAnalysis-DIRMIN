@@ -55,6 +55,10 @@ form{
 	margin-left: 20px;
 	margin-top: 130px;
 }
+#textOutput{
+	word-spacing: 1px;
+	font-size: 12px;
+}
 textarea {
    resize: none;
    overflow-y: scroll;

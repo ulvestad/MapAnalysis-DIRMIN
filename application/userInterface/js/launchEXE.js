@@ -12,6 +12,7 @@ function launchProgram(){
       return;
     }
     console.log(data.toString());
+    document.getElementById("textOutput").value += "--------------------- Process --------------------\nStarting quarry recongntion, this may take some time.";
   });
 }
 //----------------------------------------------------
