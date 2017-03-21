@@ -107,7 +107,6 @@ function removeMarkers() {
 
 //SCAN/DOWNLOAD google maps square (X,Y), (X,Y)--------------------------------
 function scanArea(scanType){
-	setTimeout(function(){
 	//Reset vars for counting mapWitdh(in images)
 	mapWidth = 0;
 	reachedRight = false;
@@ -134,8 +133,6 @@ function scanArea(scanType){
 		}else{	
 			//Information output to textarea
 			writeToTexArea("Exactly two markers are needed to scan!")
-
-			
 			return;
 		}
 	}
@@ -163,7 +160,7 @@ function scanArea(scanType){
 			console.log("#"+imageNum+" Lat/lng " + lat + ", " + lng);
 		}
 		imageURL = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + lng
-			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyD8rXXlTRsfEiHBUlP6D-uIOjQPgHhBWtY';
+			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyASL_U-mOP8hsyaKWZTIBw7oBwsQM28-B0';
 		//Downloads a single image based on imageURL to mapImages
 		if(imageNum<10){
  			downloadFile(imageURL, 'maps\\000000' +  imageNum + '.jpg');
@@ -220,10 +217,7 @@ function scanArea(scanType){
 	}
 	//Information output to textarea
 	writeToTexArea("Done, fecthing complete!")
-
-	
 	console.log("Scan Complete. Map-width: " + mapWidth);
-}, 1000);
 } 
 
 
@@ -258,10 +252,8 @@ function checkIfReady(x1, y1, x2, y2){
 	return true;
 }
 function writeToTexArea (text) {
-	setTimeout(function(){
 		var obj = document.getElementById("textOutput");
 		obj.value += (text+ "\n");
 		obj.scrollTop = obj.scrollHeight;
-	},1);
 }
 //----------------------------------------------------
