@@ -7,13 +7,31 @@
 
     <title>Analysis of Map and Satellite Images</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navbar.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 </head>
 <body>
-	<div class="header">
-			<img src="icons/dirminLogo.png" alt="dirmin logo" height="60px" widht="45px" style="float:left; margin-top:5px;">
-			<p style="float:left">DIRMIN - Potential Quarries<p>
-	</div>
+	<nav class="navbar navbar-inverse" id="navbar">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">Map Analysis</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="index.html" onclick="navbar_open">Scan Areas</a></li>
+          <li><a href="resultPage.html" onclick="navbar_open">View Results</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
 	<div class="content">
 		<div class="leftside">
 			<div class="description">
@@ -26,15 +44,11 @@
 		</div>
 		<div class="rightside">		
 				<div>
-					<p style="float:left">Quarries</p>
-					<button style="margin-top:15px; margin-left:90px"><img src="icons/refresh.png" width="12px" heigth="12px" alt="refresh" style="margin-top:3px; overflow:hidden"></button>
-					<br>
-					<textarea id="results" rows="12" cols="45" readonly>
-					</textarea>
+					<p style="float:left">Select quarries</p>
 					<form>
-					 	<input type="checkbox" name="quarry1" value="Known"> Known Quarries<br>
-					 	<input type="checkbox" name="quarry2" value="New"> New Quarries<br>
-					 	<input type="checkbox" name="quarry3" value="Placeholder"> Placeholder<br>
+					 	<input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
+					 	<input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
+					 	<input onclick="" type="checkbox" id="table3"> Placeholder<br>
 					</form> 
 
 					<div id="mapButtons" id="left">
@@ -51,6 +65,7 @@
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
 </script>
 <script src="js/launchEXE.js"></script>
+<script src="js/navbar.js"></script>
 
 </body>
 
