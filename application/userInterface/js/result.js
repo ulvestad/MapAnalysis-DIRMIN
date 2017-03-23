@@ -61,26 +61,26 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		var marker = new google.maps.Marker({
 	        position: new google.maps.LatLng(lat, lng),
 	        map: map,
-	        icon: micon 
+	        icon: micon
 	    });
 	    var content = '<div>' +
 							'<b>ID: </b>'+id+'<br><b>Latitude: </b>'+lat+'<br><b>Longitude: </b>'+lng+'<br><b>Score: </b>'+scr+''+
 							'</div>';
 	    var infowindow = new google.maps.InfoWindow();
-		google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+		google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
 		    return function() {
 		        infowindow.setContent(content);
 		        infowindow.open(map,marker);
 		    };
-		})(marker,content,infowindow)); 
+		})(marker,content,infowindow));
 		stack.push(marker);
 	}else{
 		stack.forEach(function(x){
 			mrk = stack.pop();
-			mrk.setMap(null);  
+			mrk.setMap(null);
 		});
 	}
-	 
-  
+
+
 
 }

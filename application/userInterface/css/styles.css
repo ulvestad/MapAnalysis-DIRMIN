@@ -62,8 +62,6 @@ body{
 
 .potentialQuarries {
 		position: relative;
-		margin-right: inherit;
-		margin-top: auto;
 }
 
 #startXY, #endXY{
