@@ -34,27 +34,15 @@
 
   <div class="flex-container">
 			<div class="flex-item column1">
-
-				<div class="flex-item scanButtons" id="scanButtons">
-					<!--<button onclick="scanArea(1)" style="font-family:Open Sans Condensed;">Download maps (Start, End)</button> -->
-
-					<button onclick="launchProgram()" style="font-family:Open Sans Condensed;">Run quarry recongnition</button>
-					<p id="showCoordinates"></p>
-					<p id="showMessage"></p>
-				</div>
-				<div class="flex-item mapbuttons" id="mapButtons" id="left">
-					<button onclick="scanArea(2)" style="font-family:Open Sans Condensed;">Get images from selected area</button>
-					<button onclick="removeMarkers()" style="font-family:Open Sans Condensed;">Remove markers </button>
-				</div>
 				<div class="flex-item map" id="map"></div>
 			</div>
 
       <div class="flex-item potentialQuarries">
         <form>
-          <input type="checkbox" name="quarry1" value="Known"> Known Quarries<br>
-          <input type="checkbox" name="quarry2" value="New"> New Quarries<br>
-          <input type="checkbox" name="quarry3" value="Placeholder"> Placeholder<br>
-        </form>
+		 	<input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
+		 	<input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
+		 	<input onclick="" type="checkbox" id="table3"> Placeholder<br>
+		</form> 
 				<p style="float:left">Quarries</p>
 				<button style="margin-top:15px; margin-left:90px"><img src="icons/refresh.png" width="12px" heigth="12px" alt="refresh" style="margin-top:3px; overflow:hidden"></button>
 				<br>
@@ -62,8 +50,8 @@
 				</textarea>
 
         <div id="mapButtons" id="left">
-					<button onclick="initDb()" style="font-family:Open Sans Condensed;">Edit selected quarry</button>
-					<button onclick="deleteMarkers()" style="font-family:Open Sans Condensed;">Delete selected quarry</button>
+					<button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit selected quarry</button>
+					<button onclick="" id="Delete" disabled style="font-family:Open Sans Condensed;">Delete selected quarry</button>
         </div>
       </div>
     </div>

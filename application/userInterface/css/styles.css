@@ -90,3 +90,8 @@ textarea {
    -moz-text-align-last: left;
    text-align-last: left;
 }
+button[disabled=disabled], button:disabled {
+    border: 1px solid #999999;
+ 	background-color: #cccccc;
+	color: #666666;
+}
