@@ -5,38 +5,50 @@ var lat2;
 var lng2;
 var lat;
 var lng;
+var deltaLng = 0.01286;
+var deltaLat = 0.00556;
 
-//Vars for mapScan
+//More vars
 var imageNum = 0;
 var imageURL = '';
 var mapWidth = 0;
+var mapHeight = 0;
 var reachedRight = false;
-//Vars for mapMarkers
+var iteration = 0;
+var map = null;
 
-
-//Limit on amounts of images downloaded in 1 scan
+//Limit on total amount of images
 var imageLimit = 50000;
+//Limit of images downlaoded per chunk
+var chunkLimit = 10;
+
 //Vars for filesystem
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
 var request = require('request');
 var fs = require('fs');
+var https = require('https');
 var mapFolder = 'maps';
 var coordinatesFile = "coordinates.txt";
 var mapDataFile = "map_data.txt";
 var iconImg = "icons/mapMarker.png";
-var map = null;
 
-var deltaLng = 0.01286;
-var deltaLat = 0.00556;
+//Vars for download
+var numDownloads = 0;
+var finishedDownloads = 0;
+var totalImages = 0;
+var complete = false;
 
 //Launches dev tools when app is run, will remove after development
 require('remote').getCurrentWindow().toggleDevTools();
 
 
-//SCAN/DOWNLOAD google maps square (X,Y), (X,Y)--------------------------------
+//INIT DOWNLOAD google maps square (X,Y), (X,Y)--------------------------------
 function scanArea(scanType){
 	//Reset vars for counting mapWitdh(in images)
+	totalImages = 0;
+	iteration = 0;
+	finishedDownloads = 0;
 	mapWidth = 0;
 	mapHeight = 0;
 	reachedRight = false;
@@ -90,7 +102,22 @@ function scanArea(scanType){
 
 	//Loop for downloading all images
 	imageNum = 1;
-	while (true){
+	
+	//Information output to textarea
+ 	writeToTexArea("Done, fecthing complete!.. nope.");
+	
+
+	scanChunk();
+}
+
+//Downloads one chunk of the whole map every time it is run
+function scanChunk(){
+	iteration += 1;
+	finishedDownloads = 0;
+	numDownloads = 0;
+	console.log("Iteration " + iteration + " started");
+	for (i=0; i < chunkLimit; i++) {
+		numDownloads += 1;
 		if(imageNum%100 == 0){
 			writeToTexArea("#"+imageNum)
 		}
@@ -98,31 +125,31 @@ function scanArea(scanType){
 			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag';
 		//Downloads a single image based on imageURL to mapImages
 		if(imageNum<10){
- 			downloadFile(imageURL, 'maps\\000000' +  imageNum + '.jpg');
- 		}
- 		else if(imageNum<100){
- 				downloadFile(imageURL, 'maps\\00000' +  imageNum + '.jpg');
- 		}
- 		else if(imageNum<1000){
- 			downloadFile(imageURL, 'maps\\0000' +  imageNum + '.jpg');
- 		}
- 		else if(imageNum<10000){
- 			downloadFile(imageURL, 'maps\\000' +  imageNum + '.jpg');
- 		}
- 		else if(imageNum<10000){
- 			downloadFile(imageURL, 'maps\\00' +  imageNum + '.jpg');
- 		}
- 		else if(imageNum<100000){
- 			downloadFile(imageURL, 'maps\\00' +  imageNum + '.jpg');
- 		}
- 		else{
- 			downloadFile(imageURL, 'maps\\0' + imageNum + '.jpg');
- 		}
- 		
- 		//Finds the width (in maps) of the scan
- 		if (!reachedRight){
- 			mapWidth += 1;
- 		}
+				download(imageURL, 'maps\\000000' +  imageNum + '.jpg');
+			}
+			else if(imageNum<100){
+					download(imageURL, 'maps\\00000' +  imageNum + '.jpg');
+			}
+			else if(imageNum<1000){
+				download(imageURL, 'maps\\0000' +  imageNum + '.jpg');
+			}
+			else if(imageNum<10000){
+				downloadFile(imageURL, 'maps\\000' +  imageNum + '.jpg');
+			}
+			else if(imageNum<10000){
+				download(imageURL, 'maps\\00' +  imageNum + '.jpg');
+			}
+			else if(imageNum<100000){
+				download(imageURL, 'maps\\00' +  imageNum + '.jpg');
+			}
+			else{
+				download(imageURL, 'maps\\0' + imageNum + '.jpg');
+			}
+			
+			//Finds the width (in maps) of the scan
+			if (!reachedRight){
+				mapWidth += 1;
+			}
 		lng += deltaLng; //0.0130: No overlap, 0.0125: ~5% overlap
 		
 		//Scan reaches right edge
@@ -134,32 +161,30 @@ function scanArea(scanType){
 		}
 
 		//Adds coordinates for current map to text file
- 		appendFile(coordinatesFile, lat, lng - deltaLng);
+		appendFile(coordinatesFile, lat, lng - deltaLng);
 		
-		//Scan done! (Reaches right)
+		//Scan done! (Reaches bottom)
 		if (lat <= lat2){
 			//document.getElementById("showMessage").innerHTML = 'Area scanned!';
+			complete = true;
 			break;
 		}
 		//Image-name increases
 		imageNum += 1;
 		if (imageNum >= imageLimit){
 			//Information output to textarea
- 			writeToTexArea("Reached max limit of images (" + imageLimit + ")");
- 			//document.getElementById("showMessage").innerHTML = 'Reached max limit of images (' + imageLimit + ")";
+			writeToTexArea("Reached max limit of images (" + imageLimit + ")");
+			//document.getElementById("showMessage").innerHTML = 'Reached max limit of images (' + imageLimit + ")";
+			complete = true;
 			break;
 		}
 	}
-	//Information output to textarea
- 	writeToTexArea("Done, fecthing complete!");
-	console.log("Scan Complete. Map-width: " + mapWidth + ". Map height: " + mapHeight);
-	appendFile(mapDataFile, mapWidth, mapHeight);
+	
 }
 
 
 
-//OTHER FUNCTIONS
-
+//FILE FUNCTIONS
 function createFile(filename){
 	fs.openSync(filename, 'w');
 }
@@ -167,7 +192,8 @@ function appendFile(filename, lat, lng){
 	fs.appendFile(filename, lat + "," + lng + '\r\n', function (err) {});
 }
 
-//Download specified googleMaps-file
+//OTHER FUNCTIONS
+//Download specified googleMaps-file (NOT USED)
 function downloadFile(file_url , targetPath){
 	var req = request({
 	    method: 'GET',
@@ -176,8 +202,37 @@ function downloadFile(file_url , targetPath){
 	var out = fs.createWriteStream(targetPath);
 	req.pipe(out);
 }
+//Legit download function
+var download = function(url, dest, cb) {
+	var file = fs.createWriteStream(dest);
+	var request = https.get(url, function(response) {
+		response.pipe(file);
 
-//Input validation
+		file.on('finish', function() {
+			file.close(cb);  // close() is async, call cb after close completes.
+			finishedDownloads += 1;
+
+			//Decides whether or not the system should run another chunk-scan when the previous scan is complete. 
+			console.log("Current downloads: " + finishedDownloads + ", Chunk limit: " + chunkLimit);
+			if (finishedDownloads >= chunkLimit && !complete){
+				console.log("Chunk complete. ")
+				totalImages += finishedDownloads;
+				scanChunk();
+			}else if(complete && finishedDownloads >= numDownloads){
+				whenDone();
+			}
+		});
+	});
+}
+//Is run when the entire download is finished
+function whenDone(){
+	totalImages += finishedDownloads;
+	console.log("Download complete! Mapwidth: " + mapWidth + ", mapHeight: " + mapHeight);
+	console.log("Images downloaded: " + totalImages)
+	appendFile(mapDataFile, mapWidth, mapHeight);
+}
+
+//Input validation (NOT USED)
 function checkIfReady(x1, y1, x2, y2){
 	if (x1 == '' || y1 == '' || x2 == '' || y2 == ''){
 		//document.getElementById("showMessage").innerHTML = "Input data is invalid.";
