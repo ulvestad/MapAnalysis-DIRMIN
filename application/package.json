@@ -5,7 +5,8 @@
   "main": "main.js",
   "dependencies": {
     "electron-save-file": "^1.0.2",
-    "pretty-bytes": "^2.0.1"
+    "pretty-bytes": "^2.0.1",
+    "sqlite3": "^3.1.8"
   },
   "devDependencies": {
     "electron-prebuilt": "^0.35.2"
