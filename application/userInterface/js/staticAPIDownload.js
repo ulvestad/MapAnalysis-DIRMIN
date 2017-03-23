@@ -23,17 +23,22 @@ var request = require('request');
 var fs = require('fs');
 var mapFolder = 'maps';
 var coordinatesFile = "coordinates.txt";
+var mapDataFile = "map_data.txt";
 var iconImg = "icons/mapMarker.png";
 var map = null;
 
+var deltaLng = 0.01286;
+var deltaLat = 0.00556;
+
 //Launches dev tools when app is run, will remove after development
-//require('remote').getCurrentWindow().toggleDevTools();
+require('remote').getCurrentWindow().toggleDevTools();
 
 
 //SCAN/DOWNLOAD google maps square (X,Y), (X,Y)--------------------------------
 function scanArea(scanType){
 	//Reset vars for counting mapWitdh(in images)
 	mapWidth = 0;
+	mapHeight = 0;
 	reachedRight = false;
 	//Deletes maps folder
 	rimraf.sync(mapFolder);
@@ -41,6 +46,7 @@ function scanArea(scanType){
 	mkdirp.sync(mapFolder);
 	//Deletes all content of the Coordinate-file, creates if not exist
 	createFile(coordinatesFile);
+	createFile(mapDataFile);
 	
 	//Set variables to text field or markers based on what scan is selected
 	if (scanType == 1){
@@ -53,14 +59,21 @@ function scanArea(scanType){
 		if(markers.length > 1){
 			lat1 = markers[0].getPosition().lat();
 			lng1 = markers[0].getPosition().lng();
-			lat2 = markers[1].getPosition().lat();
-			lng2 = markers[1].getPosition().lng();
-		}else{	
-			//Information output to textarea
-			writeToTexArea("Exactly two markers are needed to scan!")
+			lat2 = markers[1].getPosition().lat() - deltaLat / 2;
+			lng2 = markers[1].getPosition().lng() + deltaLng / 2;
+		}else{
+			writeToTexArea("Exactly two markers are needed to scan!");
 			return;
 		}
 	}
+
+	if ((Math.ceil(Math.abs(lng2 - lng1) / deltaLng) % 2) != 0) {
+		lng2 += deltaLng;
+	}
+	if ((Math.ceil(Math.abs(lat1 - lat2) / deltaLat) % 2) != 0) {
+		lat2 -= deltaLat;
+	}
+
 	//Current coordinates for scan
 	lat = lat1;
 	lng = lng1;
@@ -71,18 +84,15 @@ function scanArea(scanType){
 	}
 	//document.getElementById("showCoordinates").innerHTML = "(" + lat1 + ", " + lng1 + "), " + "(" + lat2 + ", " + lng2 + ")";
 	//-----------------------
-	
-	//Information output to textarea
-	writeToTexArea("--------------------- Process --------------------\nFecthing images from selected area...")
 
-	
+	//Information output to textarea
+ 	writeToTexArea("--------------------- Process --------------------\nFecthing images from selected area...");
 
 	//Loop for downloading all images
 	imageNum = 1;
 	while (true){
-		if(imageNum%10 == 0){
+		if(imageNum%100 == 0){
 			writeToTexArea("#"+imageNum)
-			console.log("#"+imageNum+" Lat/lng " + lat + ", " + lng);
 		}
 		imageURL = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + lng
 			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag';
@@ -113,18 +123,18 @@ function scanArea(scanType){
  		if (!reachedRight){
  			mapWidth += 1;
  		}
-		lng += 0.0065; //0.0130: No overlap, 0.0125: ~5% overlap
+		lng += deltaLng; //0.0130: No overlap, 0.0125: ~5% overlap
 		
 		//Scan reaches right edge
 		if (lng >= lng2){
 			reachedRight = true;
+			mapHeight += 1;
 			lng = lng1;
-			lat -= 0.00300; // -0.00575: No overlap, -0.00540: ~5% overlap
+			lat -= deltaLat; // -0.00575: No overlap, -0.00540: ~5% overlap
 		}
 
-		temp_lng = lng;
 		//Adds coordinates for current map to text file
- 		appendFile(coordinatesFile, lat, temp_lng-=0.0065);
+ 		appendFile(coordinatesFile, lat, lng - deltaLng);
 		
 		//Scan done! (Reaches right)
 		if (lat <= lat2){
@@ -135,23 +145,23 @@ function scanArea(scanType){
 		imageNum += 1;
 		if (imageNum >= imageLimit){
 			//Information output to textarea
-			writeToTexArea("Reached max limit of images (" + imageLimit + ")")
-			//document.getElementById("showMessage").innerHTML = 'Reached max limit of images (' + imageLimit + ")";
+ 			writeToTexArea("Reached max limit of images (" + imageLimit + ")");
+ 			//document.getElementById("showMessage").innerHTML = 'Reached max limit of images (' + imageLimit + ")";
 			break;
 		}
 	}
 	//Information output to textarea
-	writeToTexArea("Done, fecthing complete!")
-	console.log("Scan Complete. Map-width: " + mapWidth);
-} 
-
+ 	writeToTexArea("Done, fecthing complete!");
+	console.log("Scan Complete. Map-width: " + mapWidth + ". Map height: " + mapHeight);
+	appendFile(mapDataFile, mapWidth, mapHeight);
+}
 
 
 
 //OTHER FUNCTIONS
 
 function createFile(filename){
-	fs.openSync(coordinatesFile, 'w');
+	fs.openSync(filename, 'w');
 }
 function appendFile(filename, lat, lng){
 	fs.appendFile(filename, lat + "," + lng + '\r\n', function (err) {});
@@ -176,9 +186,10 @@ function checkIfReady(x1, y1, x2, y2){
 	//document.getElementById("showMessage").innerHTML = '';
 	return true;
 }
+
 function writeToTexArea (text) {
-		var obj = document.getElementById("textOutput");
-		obj.value += (text+ "\n");
-		obj.scrollTop = obj.scrollHeight;
-}
+ 		var obj = document.getElementById("textOutput");
+ 		obj.value += (text+ "\n");
+ 		obj.scrollTop = obj.scrollHeight;
+ }
 //----------------------------------------------------
