@@ -65,6 +65,10 @@ function initMap() {
 		}
 		//Add marker if 1 marker exist on MAP
 		else if (markerCount == 1){
+			latLng2 = event.latLng;
+ 			if (latLng2.lat() > markers[0].getPosition().lat() || latLng2.lng() < markers[0].getPosition().lng()){
+ 				return;
+ 			}
 			var marker = new google.maps.Marker({
 				position: event.latLng, 
 				map: map,
@@ -133,7 +137,7 @@ function scanArea(scanType){
 			lat2 = markers[1].getPosition().lat() - deltaLat / 2;
 			lng2 = markers[1].getPosition().lng() + deltaLng / 2;
 		}else{
-			document.getElementById("showMessage").innerHTML = "Exactly two markers are needed to scan.";
+			writeToTexArea("Exactly two markers are needed to scan!");
 			return;
 		}
 	}
@@ -150,20 +154,23 @@ function scanArea(scanType){
 	lng = lng1;
 	//Check if coordinates are correct
 	if (!checkIfReady(lat1, lng1, lat2, lng2)){
-		document.getElementById("showCoordinates").innerHTML = 'Wrong input.';
+		//document.getElementById("showCoordinates").innerHTML = 'Wrong input.';
 		return;
 	}
 	//document.getElementById("showCoordinates").innerHTML = "(" + lat1 + ", " + lng1 + "), " + "(" + lat2 + ", " + lng2 + ")";
 	//-----------------------
 
+	//Information output to textarea
+ 	writeToTexArea("--------------------- Process --------------------\nFecthing images from selected area...");
+
 	//Loop for downloading all images
 	imageNum = 1;
 	while (true){
-		if(imageNum%1000 == 0){
-			console.log("#"+imageNum+" Lat/lng " + lat + ", " + lng);
+		if(imageNum%100 == 0){
+			writeToTexArea("#"+imageNum)
 		}
 		imageURL = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + lng
-			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyD8rXXlTRsfEiHBUlP6D-uIOjQPgHhBWtY';
+			+ '&zoom=16&size=600x600&maptype=satellite&format=jpg&key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag';
 		//Downloads a single image based on imageURL to mapImages
 		if(imageNum<10){
  			downloadFile(imageURL, 'maps\\000000' +  imageNum + '.jpg');
@@ -212,10 +219,14 @@ function scanArea(scanType){
 		//Image-name increases
 		imageNum += 1;
 		if (imageNum >= imageLimit){
-			document.getElementById("showMessage").innerHTML = 'Reached max limit of images (' + imageLimit + ")";
+			//Information output to textarea
+ 			writeToTexArea("Reached max limit of images (" + imageLimit + ")");
+ 			//document.getElementById("showMessage").innerHTML = 'Reached max limit of images (' + imageLimit + ")";
 			break;
 		}
 	}
+	//Information output to textarea
+ 	writeToTexArea("Done, fecthing complete!");
 	console.log("Scan Complete. Map-width: " + mapWidth + ". Map height: " + mapHeight);
 	appendFile(mapDataFile, mapWidth, mapHeight);
 }
@@ -244,10 +255,16 @@ function downloadFile(file_url , targetPath){
 //Input validation
 function checkIfReady(x1, y1, x2, y2){
 	if (x1 == '' || y1 == '' || x2 == '' || y2 == ''){
-		document.getElementById("showMessage").innerHTML = "Input data is invalid.";
+		//document.getElementById("showMessage").innerHTML = "Input data is invalid.";
 		return false;
 	}
-	document.getElementById("showMessage").innerHTML = '';
+	//document.getElementById("showMessage").innerHTML = '';
 	return true;
 }
+
+function writeToTexArea (text) {
+ 		var obj = document.getElementById("textOutput");
+ 		obj.value += (text+ "\n");
+ 		obj.scrollTop = obj.scrollHeight;
+ }
 //----------------------------------------------------
