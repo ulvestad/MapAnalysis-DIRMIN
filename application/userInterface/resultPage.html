@@ -44,14 +44,14 @@
 		 	<input onclick="" type="checkbox" id="table3"> Placeholder<br>
 		</form> 
 				<p style="float:left">Quarries</p>
-				<button style="margin-top:15px; margin-left:90px"><img src="icons/refresh.png" width="12px" heigth="12px" alt="refresh" style="margin-top:3px; overflow:hidden"></button>
 				<br>
-				<textarea id="results" rows="12" cols="45" readonly>
+				<textarea id="editArea" rows="12" cols="45" readonly>
 				</textarea>
 
         <div id="mapButtons" id="left">
 					<button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit selected quarry</button>
-					<button onclick="" id="Delete" disabled style="font-family:Open Sans Condensed;">Delete selected quarry</button>
+					<button onclick="deleteMarker()" id="Delete" disabled style="font-family:Open Sans Condensed;">Delete selected quarry</button>
+          <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button>
         </div>
       </div>
     </div>

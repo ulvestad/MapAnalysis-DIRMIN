@@ -31,7 +31,7 @@ var deltaLng = 0.01286;
 var deltaLat = 0.00556;
 
 //Launches dev tools when app is run, will remove after development
-require('remote').getCurrentWindow().toggleDevTools();
+//require('remote').getCurrentWindow().toggleDevTools();
 
 
 //SCAN/DOWNLOAD google maps square (X,Y), (X,Y)--------------------------------
