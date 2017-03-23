@@ -71,16 +71,29 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		    return function() {
 		        infowindow.setContent(content);
 		        infowindow.open(map,marker);
+		        if(type == "NewLocations"){
+		        	document.getElementById("Edit").disabled = false;
+		        	document.getElementById("Delete").disabled = false;
+		        }
 		    };
 		})(marker,content,infowindow)); 
 		stack.push(marker);
+		google.maps.event.addListener(infowindow,'closeclick',function(){
+		   		disableButtons();
+		});
 	}else{
 		stack.forEach(function(x){
 			mrk = stack.pop();
-			mrk.setMap(null);  
+			mrk.setMap(null);
+	       	disableButtons();
 		});
 	}
-	 
-  
+}
 
+function editMarker(){
+	console.log("Edit marker")
+}
+function disableButtons(){
+		document.getElementById("Edit").disabled = true;
+	    document.getElementById("Delete").disabled = true;
 }
