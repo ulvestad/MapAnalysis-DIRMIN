@@ -2,8 +2,11 @@ import tensorflow as tf, sys, os
 import sqlite3
 
 image_dir = "maps"
+log_filename = "log.txt"
+log = open(log_filename, 'w')
 conn = sqlite3.connect('db/QuarryLocations.db')
 counter = 0
+threshold = 0.65
 
 # Loads label file, strips off carriage return
 label_lines = [line.rstrip() for line 
@@ -31,10 +34,12 @@ with tf.Session() as sess:
             top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
             print ("\n")
             print (filename)
+            log.write(filename +'\t')
             for node_id in top_k:
                 human_string = label_lines[node_id]
                 score = predictions[0][node_id]
                 print('%s (score = %.5f)' % (human_string, score))
+                log.write('%s (score = %.5f)\t' % (human_string, score))
                 if score > 0.65 and human_string == 'uttak':
                     line = open("coordinates.txt", "r").readlines()[counter-1]
                     cordinates = line.replace('\n','').split(',')
@@ -42,13 +47,19 @@ with tf.Session() as sess:
                     print (cordinates)
                     lat_data = cordinates[0]
                     long_data = cordinates[1]
+                    scr = float(score)
+                    scr = format(scr, ".5g")
                     conn.execute("INSERT INTO NewLocations (ID,Latitude,Longitude) VALUES (null, ?, ?)",(lat_data, long_data))
                     conn.commit()
-
+            log.write('\n')
             continue
         else:
             continue
         conn.close()
+        log.close()
+    except:
+        print("Some error occured")
+        pass
 
 
 
