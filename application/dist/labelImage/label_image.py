@@ -22,41 +22,42 @@ with tf.Session() as sess:
     # Feed the image_data as input to the graph and get first prediction
     softmax_tensor = sess.graph.get_tensor_by_name('final_result:0')
 
-    for filename in os.listdir(image_dir):
-        counter += 1
-        if filename.endswith(".jpg"): 
-            filename = os.path.join(image_dir, filename)
-            image_data = tf.gfile.FastGFile(filename, 'rb').read()
-            predictions = sess.run(softmax_tensor, \
-                     {'DecodeJpeg/contents:0': image_data})
-            
-            # Sort to show labels of first prediction in order of confidence
-            top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
-            print ("\n")
-            print (filename)
-            log.write(filename +'\t')
-            for node_id in top_k:
-                human_string = label_lines[node_id]
-                score = predictions[0][node_id]
-                print('%s (score = %.5f)' % (human_string, score))
-                log.write('%s (score = %.5f)\t' % (human_string, score))
-                if score > 0.65 and human_string == 'uttak':
-                    line = open("coordinates.txt", "r").readlines()[counter-1]
-                    cordinates = line.replace('\n','').split(',')
-                    print('*************************  Found something  ***************************')
-                    print (cordinates)
-                    lat_data = cordinates[0]
-                    long_data = cordinates[1]
-                    scr = float(score)
-                    scr = format(scr, ".5g")
-                    conn.execute("INSERT INTO NewLocations (ID,Latitude,Longitude) VALUES (null, ?, ?)",(lat_data, long_data))
-                    conn.commit()
-            log.write('\n')
-            continue
-        else:
-            continue
-        conn.close()
-        log.close()
+    try:
+        for filename in os.listdir(image_dir):
+            counter += 1
+            if filename.endswith(".jpg"): 
+                filename = os.path.join(image_dir, filename)
+                image_data = tf.gfile.FastGFile(filename, 'rb').read()
+                predictions = sess.run(softmax_tensor, \
+                         {'DecodeJpeg/contents:0': image_data})
+                
+                # Sort to show labels of first prediction in order of confidence
+                top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
+                print ("\n")
+                print (filename)
+                log.write(filename +'\t')
+                for node_id in top_k:
+                    human_string = label_lines[node_id]
+                    score = predictions[0][node_id]
+                    print('%s (score = %.5f)' % (human_string, score))
+                    log.write('%s (score = %.5f)\t' % (human_string, score))
+                    if score > 0.65 and human_string == 'uttak':
+                        line = open("coordinates.txt", "r").readlines()[counter-1]
+                        cordinates = line.replace('\n','').split(',')
+                        print('*************************  Found something  ***************************')
+                        print (cordinates)
+                        lat_data = cordinates[0]
+                        long_data = cordinates[1]
+                        scr = float(score)
+                        scr = format(scr, ".5g")
+                        conn.execute("INSERT INTO NewLocations (ID,Latitude,Longitude) VALUES (null, ?, ?)",(lat_data, long_data))
+                        conn.commit()
+                log.write('\n')
+                continue
+            else:
+                continue
+            conn.close()
+            log.close()
     except:
         print("Some error occured")
         pass
