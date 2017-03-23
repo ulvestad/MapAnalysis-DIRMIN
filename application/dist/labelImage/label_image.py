@@ -50,7 +50,7 @@ with tf.Session() as sess:
                         long_data = cordinates[1]
                         scr = float(score)
                         scr = format(scr, ".5g")
-                        conn.execute("INSERT INTO NewLocations (ID,Latitude,Longitude, Score) VALUES (null, ?, ?, ?)",(lat_data, long_data))
+                        conn.execute("INSERT INTO NewLocations (ID,Latitude,Longitude, Score) VALUES (null, ?, ?, ?)",(lat_data, long_data, scr))
                         conn.commit()
                 log.write('\n')
                 continue
