@@ -7,12 +7,12 @@
 
     <title>Analysis of Map and Satellite Images</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/navbar.css">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 </head>
 <body>
+
 	<nav class="navbar navbar-inverse" id="navbar">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -32,41 +32,62 @@
     </div>
   </nav>
 
-	<div class="content">
-		<div class="leftside">
-			<div class="description">
-			<p style="width:600px;" >Select the area to scan for image colllection, using two markers, by clicking on the map. A box wil appear once both markers are placed showing the seleced area. (NB! First markes should always be to the top left).</p>
-			</div>
-			<div class="column1">
+  <div class="flex-container">
+			<div class="flex-item column1">
 
-				<div id="map"></div>
-			</div>
-		</div>
-		<div class="rightside">		
-				<div>
-					<p style="float:left">Select quarries</p>
-					<form>
-					 	<input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
-					 	<input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
-					 	<input onclick="" type="checkbox" id="table3"> Placeholder<br>
-					</form> 
+				<div class="flex-item scanButtons" id="scanButtons">
+					<!--<button onclick="scanArea(1)" style="font-family:Open Sans Condensed;">Download maps (Start, End)</button> -->
 
-					<div id="mapButtons" id="left">
-						<button onclick="initDb()" style="font-family:Open Sans Condensed;">Edit selected quarry</button>
-						<button onclick="deleteMarkers()" style="font-family:Open Sans Condensed;">Delete selected quarry</button>
-					</div>
+					<button onclick="launchProgram()" style="font-family:Open Sans Condensed;">Run quarry recongnition</button>
+					<p id="showCoordinates"></p>
+					<p id="showMessage"></p>
 				</div>
-		</div>
+				<div class="flex-item mapbuttons" id="mapButtons" id="left">
+					<button onclick="scanArea(2)" style="font-family:Open Sans Condensed;">Get images from selected area</button>
+					<button onclick="removeMarkers()" style="font-family:Open Sans Condensed;">Remove markers </button>
+				</div>
+				<div class="flex-item map" id="map"></div>
+			</div>
 
-	</div>
+      <div class="flex-item potentialQuarries">
+        <form>
+          <input type="checkbox" name="quarry1" value="Known"> Known Quarries<br>
+          <input type="checkbox" name="quarry2" value="New"> New Quarries<br>
+          <input type="checkbox" name="quarry3" value="Placeholder"> Placeholder<br>
+        </form>
+				<p style="float:left">Quarries</p>
+				<button style="margin-top:15px; margin-left:90px"><img src="icons/refresh.png" width="12px" heigth="12px" alt="refresh" style="margin-top:3px; overflow:hidden"></button>
+				<br>
+				<textarea id="results" rows="12" cols="45" readonly>
+				</textarea>
 
-<script src="js/result.js"></script>
+        <div id="mapButtons" id="left">
+					<button onclick="initDb()" style="font-family:Open Sans Condensed;">Edit selected quarry</button>
+					<button onclick="deleteMarkers()" style="font-family:Open Sans Condensed;">Delete selected quarry</button>
+        </div>
+      </div>
+    </div>
+
+
+<!-- Needed to solve jquery issue  -->
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Needed to solve jquery issue -->
+<script>if (window.module) module = window.module;</script>
+
+<script src="js/googlemapsDownload.js"></script>
 <script async defer
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
 </script>
 <script src="js/launchEXE.js"></script>
 <script src="js/navbar.js"></script>
+<script src="js/result.js"></script>
+
 
 </body>
+
 
 </html>
