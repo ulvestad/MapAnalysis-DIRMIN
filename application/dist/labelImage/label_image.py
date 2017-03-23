@@ -41,7 +41,7 @@ with tf.Session() as sess:
                     score = predictions[0][node_id]
                     print('%s (score = %.5f)' % (human_string, score))
                     log.write('%s (score = %.5f)\t' % (human_string, score))
-                    if score > 0.65 and human_string == 'uttak':
+                    if score > threshold and human_string == 'uttak':
                         line = open("coordinates.txt", "r").readlines()[counter-1]
                         cordinates = line.replace('\n','').split(',')
                         print('*************************  Found something  ***************************')
@@ -50,18 +50,17 @@ with tf.Session() as sess:
                         long_data = cordinates[1]
                         scr = float(score)
                         scr = format(scr, ".5g")
-                        conn.execute("INSERT INTO NewLocations (ID,Latitude,Longitude) VALUES (null, ?, ?)",(lat_data, long_data))
+                        conn.execute("INSERT INTO NewLocations (ID,Latitude,Longitude, Score) VALUES (null, ?, ?, ?)",(lat_data, long_data))
                         conn.commit()
                 log.write('\n')
                 continue
             else:
                 continue
-            conn.close()
-            log.close()
+        conn.close()
+        log.close()
     except:
         print("Some error occured")
         pass
-
 
 
 """
