@@ -60,9 +60,10 @@ body{
 		position: relative;
 }
 
-form{
-	margin: 0px;
+.potentialQuarries {
+		position: relative;
 }
+
 #startXY, #endXY{
 	padding: 0px;
 	margin: 0px;
