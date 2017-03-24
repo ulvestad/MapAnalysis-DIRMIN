@@ -7,9 +7,8 @@ var marker_icon = ["icons/mapMarker.png", "icons/mapMarkerStandard.png"]
 var markers = [[],[]];
 var markerSelected;
 var prev_infowindow = false;
-var new_lat;
-var new_lng;
-
+var editing = false;
+var old_latlng;
 
 //GOOGLE MAPS FUNCTIONS-------------------------------------------------
 //Init for map-interface with markers
@@ -24,12 +23,10 @@ function initMap() {
 	});
 	//init map listener
 	map.addListener('click', function(event) {
-		var check = document.getElementById("editArea").value;
-		if(check == "Editing marker..."){
-			var new_LatLng = event.latLng;
-		    new_lat = new_LatLng.lat();
-		    new_lng = new_LatLng.lng();
-		    console.log(new_lat+" "+new_lng);
+		var new_LatLng = event.latLng;
+		if(editing == true && markerSelected.getPosition() != new_LatLng){
+    		markerSelected.setPosition(new_LatLng);
+    		setTextToArea("New position for selected marker: " +new_LatLng, true);
 		}
 		else{
 			return;
@@ -85,23 +82,38 @@ function plotMarker(type, checked, id, lat, lng, scr){
 	    var infowindow = new google.maps.InfoWindow();
 		google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
 		    return function() {
-		    	console.log(infowindow)
 		        infowindow.setContent(content);
-		        infowindow.open(map,marker);
+		        if(editing){
+		        	infowindow.open(map,markerSelected);
+		        }else{
+		        	infowindow.open(map,marker);
+		        }
 		        if(type == "NewLocations"){
+		        	if(editing){
+		        		if(!confirmExitEdit()){
+		        			return;
+		        		}
+		        	}
 		        	document.getElementById("Edit").disabled = false;
 		        	document.getElementById("Delete").disabled = false;
 		        	document.getElementById("Finish").disabled = false;
 		        	markerSelected = marker;
-		        	setTextToArea("Now you can edit the marker selected. To do so, click the \"Edit button\" and select a new position on the map.");
+		        	setTextToArea("Now you can edit the marker selected. To do so, click the \"Edit button\" and select a new position on the map.", false);
 		        	changeMarkerIcon(false);
+		        	editing = false;
 		        }
 		        else if (type == "KnownLocations"){
-		        	setTextToArea("");
+		        	if(editing){
+		        		if(!confirmExitEdit()){
+		        			return;
+		        		}
+		        	}
+		        	setTextToArea("", false);
 		        	disableButtons();
 		        	changeMarkerIcon(false);
+		        	editing = false;
 		        }
-		        if( prev_infowindow && prev_infowindow!=infowindow ) {
+		        if(prev_infowindow && prev_infowindow!=infowindow ) {
            			prev_infowindow.close();
         		}
         		prev_infowindow = infowindow;
@@ -109,27 +121,36 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		})(marker,content,infowindow));
 		markers[stack].push(marker);
 		google.maps.event.addListener(infowindow,'closeclick',function(){
+				if(editing){
+		        		return;
+		        }
 		   		disableButtons();
-		   		setTextToArea("");
+		   		setTextToArea("",false);
 		   		changeMarkerIcon(false);
+		   		editing = false;
 		});
 	}else{
+		if(editing){
+    		if(!confirmExitEdit()){
+    			return;
+    		}
+    	}
 		markers[stack].forEach(function(x){
 			mrk = markers[stack].pop();
 			mrk.setMap(null);
 	       	disableButtons();
-	       	setTextToArea("");
+	       	setTextToArea("",false);
 	       	changeMarkerIcon(false);
+	       	editing = false;
 		});
 	}
 }
 
 function editMarker(){
 	changeMarkerIcon(true);	
-	setTextToArea("Editing marker...");
-	var latlng = new google.maps.LatLng(new_lat, new_lng);
-	console.log(new_lat+" "+new_lng)
-    //markerSelected.setPosition(latlng);
+	editing = true;
+	setTextToArea("Editing marker...",false);
+	old_latlng = markerSelected.getPosition();
 }
 function deleteMarker(){
 	console.log("Delete marker")
@@ -137,7 +158,6 @@ function deleteMarker(){
 
 function finishEdit(){
 	if (confirm('Are you sure you want to edit the markers position? \nNB: Changes will be done to database.')) {
-    	
     	console.log("changes finished");
 	} else {
 		console.log("not sure");
@@ -150,8 +170,14 @@ function disableButtons(){
 	    document.getElementById("Finish").disabled = true;
 
 }
-function setTextToArea(text){
-	document.getElementById("editArea").value = text;
+function setTextToArea(text,append){
+	if(append){
+		document.getElementById("editArea").style.color= "#ff0000";
+		document.getElementById("editArea").value += "\n"+text;
+	}else{
+		document.getElementById("editArea").style.color= "#000000";
+		document.getElementById("editArea").value = text;
+	}
 
 }	
 function changeMarkerIcon(disable){
@@ -174,3 +200,14 @@ function changeMarkerIcon(disable){
 	}
 }
 
+function confirmExitEdit(){
+	if (confirm('You are editing a markers position, are you \nsure you want to stop editing?\n NB: Position will be reset.')) {
+    		console.log("exit edit");
+    		markerSelected.setPosition(old_latlng);
+    		return true;
+	} else {
+		console.log("not exit");
+		setTextToArea("Now you can edit the marker selected. To do so, click the \"Edit button\" and select a new position on the map.",false)
+		return false;
+    }
+}
