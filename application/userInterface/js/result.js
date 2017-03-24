@@ -9,6 +9,8 @@ var markerSelected;
 var prev_infowindow = false;
 var editing = false;
 var old_latlng;
+var new_lat;
+var new_lng;
 
 //GOOGLE MAPS FUNCTIONS-------------------------------------------------
 //Init for map-interface with markers
@@ -26,7 +28,9 @@ function initMap() {
 		var new_LatLng = event.latLng;
 		if(editing == true && markerSelected.getPosition() != new_LatLng){
     		markerSelected.setPosition(new_LatLng);
-    		setTextToArea("New position for selected marker: " +new_LatLng, true);
+    		new_lat = markerSelected.getPosition().lat();
+			new_lng = markerSelected.getPosition().lng();
+    		setTextToArea("\nNew position for selected marker: " +new_LatLng, true);
 		}
 		else{
 			return;
@@ -55,6 +59,23 @@ function initDb(type, checked) {
 		var lng = row.lng;
 		var scr = row.scr.toFixed(3);
 		plotMarker(type,checked, id,lat,lng,scr);
+	});
+	db.close();
+}
+function writeToDB() {
+	var fs = require('fs')
+	var sql = require('sql.js')
+	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
+	var db = new sql.Database(bfr)
+	var pos = 0;
+	for(var i = 0, len = markers[1].length; i < len; i++) {
+        if (markers[1][i] === markerSelected){
+        	pos = i+1;
+        }
+    }
+    console.log(pos)
+	db.each('UPDATE NewLocations SET Latitude='+new_lat+', Longitude='+new_lng+' WHERE ID='+pos+'', function (row) {
+		console.log("updated db")
 	});
 	db.close();
 }
@@ -158,6 +179,7 @@ function deleteMarker(){
 
 function finishEdit(){
 	if (confirm('Are you sure you want to edit the markers position? \nNB: Changes will be done to database.')) {
+		writeToDB();
     	console.log("changes finished");
 	} else {
 		console.log("not sure");
@@ -171,13 +193,15 @@ function disableButtons(){
 
 }
 function setTextToArea(text,append){
+	var obj = document.getElementById("editArea");
 	if(append){
-		document.getElementById("editArea").style.color= "#ff0000";
-		document.getElementById("editArea").value += "\n"+text;
+		obj.style.color= "#ff0000";
+		obj.value += "\n"+text;
 	}else{
-		document.getElementById("editArea").style.color= "#000000";
-		document.getElementById("editArea").value = text;
+		obj.style.color= "#000000";
+		obj.value = text;
 	}
+	obj.scrollTop = obj.scrollHeight;
 
 }	
 function changeMarkerIcon(disable){
