@@ -1,11 +1,16 @@
 //Global vars
-window.markers = [];
+markers = [];
+window.coordinates = [];
 //Vars
 var markerCount = 0;
 var rectangle;
 
 function initMap() {
 	//Load MAP
+	var tlLat;
+	var tlLng;
+	var brLat;
+	var brLng;
 	var trondheim = {lat: 63.42300997924799, lng: 10.40311149597168};
 	map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 12,
@@ -33,9 +38,9 @@ function initMap() {
 		//Add marker if 1 marker exist on MAP
 		else if (markerCount == 1){
 			latLng2 = event.latLng;
-			if (latLng2.lat() > markers[0].getPosition().lat() || latLng2.lng() < markers[0].getPosition().lng()){
-				return;
-			}
+			//if (latLng2.lat() > markers[0].getPosition().lat() || latLng2.lng() < markers[0].getPosition().lng()){
+			//	return;
+			//}
 			var marker = new google.maps.Marker({
 				position: event.latLng, 
 				map: map,
@@ -44,6 +49,24 @@ function initMap() {
 			markers[1] = marker;
 			markerCount += 1
 			console.log("Marker2: " + markers[1].getPosition().lat() +", " + markers[1].getPosition().lng());
+
+			tlLat = markers[0].getPosition().lat();
+			tlLng = markers[0].getPosition().lng();
+			brLat = markers[1].getPosition().lat();
+			brLng = markers[1].getPosition().lng();
+			if (tlLat < brLat) {
+				tlLat = markers[1].getPosition().lat();
+				brLat = markers[0].getPosition().lat();
+			}
+			if (tlLng > brLng) {
+				tlLng = markers[1].getPosition().lng();
+				brLng = markers[0].getPosition().lng();
+			}
+			coordinates[0] = tlLat;
+			coordinates[1] = tlLng;
+			coordinates[2] = brLat;
+			coordinates[3] = brLng;
+
 			//init recangle between markers
 			rectangle = new google.maps.Rectangle({
 		          strokeColor: '#B9A879',
@@ -53,12 +76,13 @@ function initMap() {
 		          fillOpacity: 0.38,
 		          map: map,
 		          bounds: {
-		            north: markers[0].getPosition().lat(),
-		            south: markers[1].getPosition().lat(),
-		            east: markers[1].getPosition().lng(),
-		            west: markers[0].getPosition().lng()
+		            north: tlLat,
+		            south: brLat,
+		            east: brLng,
+		            west: tlLng
 	         	 }
 	       	 });
+
 		}
 		
 	});
