@@ -41,7 +41,7 @@ var mapHeight = 0;
 
 
 //Launches dev tools when app is run, will remove after development
-require('remote').getCurrentWindow().toggleDevTools();
+//require('remote').getCurrentWindow().toggleDevTools();
 
 
 //INIT DOWNLOAD google maps square (X,Y), (X,Y)--------------------------------
