@@ -63,21 +63,15 @@ function initDb(type, checked) {
 	db.close();
 }
 function writeToDB() {
-	var fs = require('fs')
-	var sql = require('sql.js')
-	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
-	var db = new sql.Database(bfr)
 	var pos = 0;
 	for(var i = 0, len = markers[1].length; i < len; i++) {
         if (markers[1][i] === markerSelected){
         	pos = i+1;
         }
     }
+    var statment = 'UPDATE NewLocations SET Latitude='+new_lat+', Longitude='+new_lng+' WHERE ID='+pos+'';
     console.log(pos)
-	db.each('UPDATE NewLocations SET Latitude='+new_lat+', Longitude='+new_lng+' WHERE ID='+pos+'', function (row) {
-		console.log("updated db")
-	});
-	db.close();
+    console.log(statment)
 }
 
 //PLOT MARKERS ON MAP
