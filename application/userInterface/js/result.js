@@ -3,8 +3,14 @@
 
 var map;
 var marker_icon = ["icons/mapMarker.png", "icons/mapMarkerStandard.png"]
-var knownmarkers = [];
-var newmarkers = [];
+//markers 2d array of knowmarkers and newmarkers
+var markers = [[],[]];
+var markerSelected;
+var prev_infowindow = false;
+var editing = false;
+var old_latlng;
+var new_lat;
+var new_lng;
 
 //GOOGLE MAPS FUNCTIONS-------------------------------------------------
 //Init for map-interface with markers
@@ -16,6 +22,19 @@ function initMap() {
 		center: middle_norway,
 		streetViewControl: false,
 		clickableIcons: false
+	});
+	//init map listener
+	map.addListener('click', function(event) {
+		var new_LatLng = event.latLng;
+		if(editing == true && markerSelected.getPosition() != new_LatLng){
+    		markerSelected.setPosition(new_LatLng);
+    		new_lat = markerSelected.getPosition().lat();
+			new_lng = markerSelected.getPosition().lng();
+    		setTextToArea("\nNew position for selected marker: " +new_LatLng, true);
+		}
+		else{
+			return;
+		}
 	});
 }
 
@@ -40,10 +59,19 @@ function initDb(type, checked) {
 		var lng = row.lng;
 		var scr = row.scr.toFixed(3);
 		plotMarker(type,checked, id,lat,lng,scr);
-		//document.getElementById("results").value += "\n" + str
-		//console.log(row)
-	})
+	});
 	db.close();
+}
+function writeToDB() {
+	var pos = 0;
+	for(var i = 0, len = markers[1].length; i < len; i++) {
+        if (markers[1][i] === markerSelected){
+        	pos = i+1;
+        }
+    }
+    var statment = 'UPDATE NewLocations SET Latitude='+new_lat+', Longitude='+new_lng+' WHERE ID='+pos+'';
+    console.log(pos)
+    console.log(statment)
 }
 
 //PLOT MARKERS ON MAP
@@ -52,10 +80,10 @@ function plotMarker(type, checked, id, lat, lng, scr){
 	var micon;
 		if(type == "KnownLocations"){
 			micon = marker_icon[0]
-			stack = knownmarkers;
+			stack = 0;
 		}else{
 			micon = marker_icon[1]
-			stack = newmarkers;
+			stack = 1;
 		}
 	if (checked){
 		var marker = new google.maps.Marker({
@@ -64,38 +92,140 @@ function plotMarker(type, checked, id, lat, lng, scr){
 	        icon: micon
 	    });
 	    var content = '<div>' +
-							'<b>ID: </b>'+id+'<br><b>Latitude: </b>'+lat+'<br><b>Longitude: </b>'+lng+'<br><b>Score: </b>'+scr+''+
+							'<b>'+type+'</b><br><br><b>ID: </b>'+id+'<br><b>Latitude: </b>'+lat+'<br><b>Longitude: </b>'+lng+'<br><b>Score: </b>'+scr+''+
 							'</div>';
 	    var infowindow = new google.maps.InfoWindow();
 		google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
 		    return function() {
 		        infowindow.setContent(content);
-		        infowindow.open(map,marker);
+		        if(editing){
+		        	infowindow.open(map,markerSelected);
+		        }else{
+		        	infowindow.open(map,marker);
+		        }
 		        if(type == "NewLocations"){
+		        	if(editing){
+		        		if(!confirmExitEdit()){
+		        			return;
+		        		}
+		        	}
 		        	document.getElementById("Edit").disabled = false;
 		        	document.getElementById("Delete").disabled = false;
+		        	document.getElementById("Finish").disabled = false;
+		        	markerSelected = marker;
+		        	setTextToArea("Now you can edit the marker selected. To do so, click the \"Edit button\" and select a new position on the map.", false);
+		        	changeMarkerIcon(false);
+		        	editing = false;
 		        }
+		        else if (type == "KnownLocations"){
+		        	if(editing){
+		        		if(!confirmExitEdit()){
+		        			return;
+		        		}
+		        	}
+		        	setTextToArea("", false);
+		        	disableButtons();
+		        	changeMarkerIcon(false);
+		        	editing = false;
+		        }
+		        if(prev_infowindow && prev_infowindow!=infowindow ) {
+           			prev_infowindow.close();
+        		}
+        		prev_infowindow = infowindow;
 		    };
 		})(marker,content,infowindow));
-		stack.push(marker);
+		markers[stack].push(marker);
 		google.maps.event.addListener(infowindow,'closeclick',function(){
+				if(editing){
+		        		return;
+		        }
 		   		disableButtons();
+		   		setTextToArea("",false);
+		   		changeMarkerIcon(false);
+		   		editing = false;
 		});
 	}else{
-		stack.forEach(function(x){
-			mrk = stack.pop();
+		if(editing){
+    		if(!confirmExitEdit()){
+    			return;
+    		}
+    	}
+		markers[stack].forEach(function(x){
+			mrk = markers[stack].pop();
 			mrk.setMap(null);
 	       	disableButtons();
+	       	setTextToArea("",false);
+	       	changeMarkerIcon(false);
+	       	editing = false;
 		});
 	}
 }
 
 function editMarker(){
-	console.log("Edit marker")
+	changeMarkerIcon(true);	
+	editing = true;
+	setTextToArea("Editing marker...",false);
+	old_latlng = markerSelected.getPosition();
+}
+function deleteMarker(){
+	console.log("Delete marker")
+}
+
+function finishEdit(){
+	if (confirm('Are you sure you want to edit the markers position? \nNB: Changes will be done to database.')) {
+		writeToDB();
+    	console.log("changes finished");
+	} else {
+		console.log("not sure");
+		return;
+    }
 }
 function disableButtons(){
 		document.getElementById("Edit").disabled = true;
 	    document.getElementById("Delete").disabled = true;
-}
-		
+	    document.getElementById("Finish").disabled = true;
 
+}
+function setTextToArea(text,append){
+	var obj = document.getElementById("editArea");
+	if(append){
+		obj.style.color= "#ff0000";
+		obj.value += "\n"+text;
+	}else{
+		obj.style.color= "#000000";
+		obj.value = text;
+	}
+	obj.scrollTop = obj.scrollHeight;
+
+}	
+function changeMarkerIcon(disable){
+	if(disable){
+		markers.forEach(function each(mark) {
+		mark.forEach(function each (mrk){
+			if(mrk == markerSelected){
+    			return;
+    		}
+			mrk.setOpacity(0.35);
+		});
+	});
+	}
+	else{
+		markers.forEach(function each(mark) {
+			mark.forEach(function each (mrk){
+				mrk.setOpacity(1);
+			});
+	});
+	}
+}
+
+function confirmExitEdit(){
+	if (confirm('You are editing a markers position, are you \nsure you want to stop editing?\n NB: Position will be reset.')) {
+    		console.log("exit edit");
+    		markerSelected.setPosition(old_latlng);
+    		return true;
+	} else {
+		console.log("not exit");
+		setTextToArea("Now you can edit the marker selected. To do so, click the \"Edit button\" and select a new position on the map.",false)
+		return false;
+    }
+}
