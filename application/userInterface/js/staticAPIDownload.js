@@ -69,10 +69,14 @@ function scanArea(scanType){
 		
 	}else{
 		if(markers.length > 1){
-			lat1 = markers[0].getPosition().lat();
-			lng1 = markers[0].getPosition().lng();
-			lat2 = markers[1].getPosition().lat() - deltaLat / 2;
-			lng2 = markers[1].getPosition().lng() + deltaLng / 2;
+			//lat1 = markers[0].getPosition().lat();
+			//lng1 = markers[0].getPosition().lng();
+			//lat2 = markers[1].getPosition().lat() - deltaLat / 2;
+			//lng2 = markers[1].getPosition().lng() + deltaLng / 2;
+			lat1 = coordinates[0];
+			lng1 = coordinates[1];
+			lat2 = coordinates[2];
+			lng2 = coordinates[3];
 		}else{
 			writeToTexArea("Exactly two markers are needed to scan!");
 			return;
