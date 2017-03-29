@@ -1,10 +1,10 @@
 //Launches dev tools when app is run, will remove after development
 //require('remote').getCurrentWindow().toggleDevTools();
 
+//VARIOUS VARBIALES DECLARATIONS--------------------------------------------------------------------------------------------
 var map;
 var marker_icon = ["icons/mapMarker.png", "icons/mapMarkerStandard.png"]
-//markers 2d array of knowmarkers and newmarkers
-var markers = [[],[]];
+var markers = [[],[]]; //2d array consitiong of knowquarry-markers[0] and newquarry-markers[1]
 var markerSelected;
 var prev_infowindow = false;
 var editing = false;
@@ -12,10 +12,10 @@ var old_latlng;
 var new_lat;
 var new_lng;
 
-//GOOGLE MAPS FUNCTIONS-------------------------------------------------
-//Init for map-interface with markers
+//GOOGLE MAPS FUNCTIONS----------------------------------------------------------------------------------------------------
+//Init for map and listener
 function initMap() {
-	//Load MAP
+	//Load 'map' utilizing google map api
 	var middle_norway = {lat: 65.14611484756372, lng: 13.18359375};
 	map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 4,
@@ -23,7 +23,7 @@ function initMap() {
 		streetViewControl: false,
 		clickableIcons: false
 	});
-	//init map listener
+	//Init map listener which handles "new positon clicks when editing quarry-marker location"
 	map.addListener('click', function(event) {
 		var new_LatLng = event.latLng;
 		if(editing == true && markerSelected.getPosition() != new_LatLng){
@@ -38,15 +38,17 @@ function initMap() {
 	});
 }
 
-//CHECKBOX MARKED
+//CHECKBOX MARKED----------------------------------------------------------------------------------------------------------
+//function for when checkboxes are checked on/off
 function checkboxMarked(table){
 	var obj = document.getElementById(table);
 	var type = table;
-	initDb(type, obj.checked);
+	initDb(type, obj.checked); //if checkbox is TRUE/checked -> begin marker loading of those markes specified from checkbox
 }
 
-//DATABASE INTERACTIONS
+//DATABASE INITIALIZATON---------------------------------------------------------------------------------------------------
 //REQUIRES SQLITE3
+//fethes every row from specified table 'type' and forward it to be plotted on map 
 function initDb(type, checked) {
 	var fs = require('fs')
 	var sql = require('sql.js')
@@ -58,26 +60,26 @@ function initDb(type, checked) {
 		var lat = row.lat;
 		var lng = row.lng;
 		var scr = row.scr.toFixed(3);
-		plotMarker(type,checked, id,lat,lng,scr);
+		plotMarker(type,checked, id,lat,lng,scr); //forwards data from row to be plotted
 	});
 	db.close();
 }
+
+//WRITE/UPDATE DATA ON SPECIFIED ROW IN 'NEWLOCATIONS' TABLE--------------------------------------------------------------
+//used when editing marker position 
 function writeToDB() {
-	var pos = 0;
-	for(var i = 0, len = markers[1].length; i < len; i++) {
-        if (markers[1][i] === markerSelected){
-        	pos = i+1;
-        }
-    }
-    var statment = 'UPDATE NewLocations SET Latitude='+new_lat+', Longitude='+new_lng+' WHERE ID='+pos+'';
-    console.log(pos)
-    console.log(statment)
+	var pos = markerPos(); //return pos of marker in the markers array
+	var spawn  = require("child_process").spawn; //spawns a childs proc.
+	var child = spawn('python',["userInterface/py/updateDB.py", new_lat, new_lng, pos]); //calls a python script 
 }
 
-//PLOT MARKERS ON MAP
+//PLOT MARKERS ON MAP-------------------------------------------------------------------------------------------------------
+//plots the marker on the map
+//adds infowindow with info of marker 
+//adds eventlistener to marker for 'click on marker' and 'closeclick of infowindow' 
 function plotMarker(type, checked, id, lat, lng, scr){
-	var stack;
-	var micon;
+	var stack; //which stack in markers array (eg. knowquarries[0] or newquarries[1])
+	var micon; //array for diffrent marker icons depending on known/new
 		if(type == "KnownLocations"){
 			micon = marker_icon[0]
 			stack = 0;
@@ -85,25 +87,32 @@ function plotMarker(type, checked, id, lat, lng, scr){
 			micon = marker_icon[1]
 			stack = 1;
 		}
+	//user has checked box -> plot marker
 	if (checked){
+		//create new marker
 		var marker = new google.maps.Marker({
 	        position: new google.maps.LatLng(lat, lng),
 	        map: map,
 	        icon: micon
 	    });
+		//create content of marker
 	    var content = '<div>' +
 							'<b>'+type+'</b><br><br><b>ID: </b>'+id+'<br><b>Latitude: </b>'+lat+'<br><b>Longitude: </b>'+lng+'<br><b>Score: </b>'+scr+''+
 							'</div>';
 	    var infowindow = new google.maps.InfoWindow();
+	    //init listener for 'click on marker'
 		google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
 		    return function() {
+		    	//diplays infowindow to current marker
 		        infowindow.setContent(content);
 		        if(editing){
 		        	infowindow.open(map,markerSelected);
 		        }else{
 		        	infowindow.open(map,marker);
 		        }
+		        //if newquarry-marker is clicked -> make edit buttons enabled (default is diabled), display info text to textoutput area
 		        if(type == "NewLocations"){
+		        	//if user is editing -> prompt for validation to exit edit or continue edit
 		        	if(editing){
 		        		if(!confirmExitEdit()){
 		        			return;
@@ -117,39 +126,49 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		        	changeMarkerIcon(false);
 		        	editing = false;
 		        }
+		        //if knowquarry-marker is clicked and user is editing -> for validation to exit edit or continue edit
 		        else if (type == "KnownLocations"){
 		        	if(editing){
 		        		if(!confirmExitEdit()){
 		        			return;
 		        		}
 		        	}
+		        	//exit edit ->  disable buttons for editing and set varaibles/textarea to "not editing"
 		        	setTextToArea("", false);
 		        	disableButtons();
 		        	changeMarkerIcon(false);
 		        	editing = false;
 		        }
+		        //handles infowindow swithcing
 		        if(prev_infowindow && prev_infowindow!=infowindow ) {
            			prev_infowindow.close();
         		}
         		prev_infowindow = infowindow;
 		    };
 		})(marker,content,infowindow));
+		//push markers to array
 		markers[stack].push(marker);
+		//init listener for infowwindow close click
 		google.maps.event.addListener(infowindow,'closeclick',function(){
 				if(editing){
 		        		return;
 		        }
+		        //various tasks for infowindow close
 		   		disableButtons();
 		   		setTextToArea("",false);
 		   		changeMarkerIcon(false);
 		   		editing = false;
 		});
-	}else{
-		if(editing){
+	}
+	//user has unchecked box -> begin validation -> if user wants to remove marker remove them
+	else{
+		if(editing){ //if user is editing a marker, prompt with validation of action
     		if(!confirmExitEdit()){
-    			return;
+    			return; //does not want to remove markers -> keep them (return;)
     		}
     	}
+    	//user wants to remove them -> pop them out of stash and remove them from 'map'
+    	//also disable buttons for editing and set varaibles/textarea to "not editing"
 		markers[stack].forEach(function(x){
 			mrk = markers[stack].pop();
 			mrk.setMap(null);
@@ -161,43 +180,58 @@ function plotMarker(type, checked, id, lat, lng, scr){
 	}
 }
 
+//BUTTON 'edit marker pos' ONCLICK FUNCTION  CALL -----------------------------------------------------------------------
+//handles edit marker tasks
 function editMarker(){
-	changeMarkerIcon(true);	
-	editing = true;
-	setTextToArea("Editing marker...",false);
-	old_latlng = markerSelected.getPosition();
+	changeMarkerIcon(true); //set all other markers opactity down to ~0.35	
+	editing = true; //set boolean editing to true
+	setTextToArea("Editing marker...",false); //writes to textare with edit info
+	old_latlng = markerSelected.getPosition(); //stores old pos of marker
 }
+//BUTTON 'delete marker' ONCLICK FUNCTION  CALL ------------------------------------------------------------------------
+//handles delete marker tasks
 function deleteMarker(){
 	console.log("Delete marker")
 }
 
+//BUTTON 'finish edit' ONCLICK FUNCTION  CALL --------------------------------------------------------------------------
+//handles finish edit tasks
 function finishEdit(){
+	//promt validation for confirming edit finish
 	if (confirm('Are you sure you want to edit the markers position? \nNB: Changes will be done to database.')) {
-		writeToDB();
-    	console.log("changes finished");
+		writeToDB(); //store new pos to db
+		updateInfowindow(); //updates infowindow to new pos
+		editing = false; //edit boolean to false
+		setTextToArea('Finished edit of marker. Changes stored to database.', false); //text info to textarea
+		//TODO: exit edit of marker and reset to allow for new edit
 	} else {
-		console.log("not sure");
+		//user does not want to finish -> continue
 		return;
     }
 }
+//DISABLE BUTTONS USED FOR EDITING ACTIONS -----------------------------------------------------------------------------
+//diables buttons 
 function disableButtons(){
 		document.getElementById("Edit").disabled = true;
 	    document.getElementById("Delete").disabled = true;
 	    document.getElementById("Finish").disabled = true;
-
 }
+//SET TEXT ON TEXTAREA TO ARGUMENT 1 -----------------------------------------------------------------------------------
+//appending or overwites
 function setTextToArea(text,append){
 	var obj = document.getElementById("editArea");
-	if(append){
+	if(append){ //red text used for mainly edit info
 		obj.style.color= "#ff0000";
 		obj.value += "\n"+text;
-	}else{
+	}else{ //standard text
 		obj.style.color= "#000000";
 		obj.value = text;
 	}
-	obj.scrollTop = obj.scrollHeight;
-
+	obj.scrollTop = obj.scrollHeight; //always scroled at button
 }	
+
+//CHANGE MARKER OPACITY -------------------------------------------------------------------------------------------------
+//sets opactity down or up (depending of argument) on all markers except the on that is beein edited
 function changeMarkerIcon(disable){
 	if(disable){
 		markers.forEach(function each(mark) {
@@ -218,14 +252,36 @@ function changeMarkerIcon(disable){
 	}
 }
 
+//PROMPT VALIDATION FOR EXIT EDIT ------------------------------------------------------------------------------------------
+//promts user is he/she wants to continue edit or exit edit
+//actions based on result of user
+//return choice of user
 function confirmExitEdit(){
+	//exit edit -> rest pos of marker
 	if (confirm('You are editing a markers position, are you \nsure you want to stop editing?\n NB: Position will be reset.')) {
     		console.log("exit edit");
     		markerSelected.setPosition(old_latlng);
     		return true;
-	} else {
+	} 
+	//no exit, continue edit
+	else {
 		console.log("not exit");
 		setTextToArea("Now you can edit the marker selected. To do so, click the \"Edit button\" and select a new position on the map.",false)
 		return false;
     }
+}
+function updateInfowindow(){
+		//TODO: Update infowindow with new lat and lng 
+}
+
+//POSITION OF MARKER IN ARRAY---------------------------------------------------------------------------------------------------
+//returns postions of newwuarry-marker in the aray
+function markerPos(){
+	var pos = 0;
+	for(var i = 0, len = markers[1].length; i < len; i++) {
+        if (markers[1][i] === markerSelected){
+        	pos = i+1;
+        }
+	}
+	return pos;
 }
