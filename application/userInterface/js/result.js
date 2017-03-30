@@ -191,7 +191,16 @@ function editMarker(){
 //BUTTON 'delete marker' ONCLICK FUNCTION  CALL ------------------------------------------------------------------------
 //handles delete marker tasks
 function deleteMarker(){
-	console.log("Delete marker")
+	//promt validation for confirming delete 
+	if(confirm('Are you sure you want to delete the marker? \nNB: Changes will be done to the database.')){
+		var pos = markerPos(); //return pos of marker in the markers array
+		var spawn  = require("child_process").spawn; //spawns a childs proc.
+		console.log('start')
+		var child = spawn('python', ["userInterface/py/deleteRowDB.py", pos]); //calls a python script 
+		console.log('mellom')
+	} else{
+		return;
+	}
 }
 
 //BUTTON 'finish edit' ONCLICK FUNCTION  CALL --------------------------------------------------------------------------
