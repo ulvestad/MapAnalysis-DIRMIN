@@ -9,7 +9,7 @@ var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
 var request = require('request');
 var fs = require('fs');
-var https = require('https');
+var http = require('http');
 var mapFolder = 'maps';
 var coordinatesFile = "coordinates.txt";
 var mapDataFile = "map_data.txt";
@@ -210,7 +210,7 @@ function downloadFile(file_url , targetPath){
 //Legit download function
 var download = function(url, dest, cb) {
 	var file = fs.createWriteStream(dest);
-	var request = https.get(url, function(response) {
+	var request = http.get('http://wms.geonorge.no/skwms1/wms.nib?version=1.3.0&request=GetMap&CRS=CRS%3A84&bbox=10.38963318,59.74947737,10.87165833,59.93506447&width=760&height=360&layers=ortofoto&styles=default&format=image%2Fjpeg', function(response) {
 		response.pipe(file);
 
 		file.on('finish', function() {
