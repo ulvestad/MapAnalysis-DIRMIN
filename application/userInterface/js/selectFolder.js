@@ -20,7 +20,7 @@ function getFolderPath(){
 	}else{
 		//Returns the path to the selected folder, but only the correct path if it's located in the 'maps' folder
 		//Splits the "fake" path and saves the important part of it
-		finalFolderpath = "\\maps" + folderPath.toString().split("fakepath")[1];
+		finalFolderpath = "maps" + folderPath.toString().split("fakepath")[1];
 		console.log(finalFolderpath);
 		return finalFolderpath;
 	}

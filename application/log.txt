@@ -1,1 +1,4 @@
-maps\test.jpg	vanlig (score = 0.76431)	uttak (score = 0.23569)	
+maps\somequarries\0633.jpg	uttak (score = 0.86282)	vanlig (score = 0.13718)	
+maps\somequarries\0634.jpg	uttak (score = 0.71157)	vanlig (score = 0.28843)	
+maps\somequarries\0635.jpg	uttak (score = 0.62387)	vanlig (score = 0.37613)	
+maps\somequarries\0636.jpg	uttak (score = 0.98853)	vanlig (score = 0.01147)	
