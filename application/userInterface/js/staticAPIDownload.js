@@ -100,12 +100,12 @@ function scanArea(scanType){
 		//-----------------------
 
 		//Information output to textarea
-	 	writeToTexArea("--------------------- Process --------------------\nFecthing images from selected area...");
+	 	writeToTexArea("----------- Process ----------\nFetching images from selected area...");
 
 		//Loop for downloading all images
 		
 		//Information output to textarea
-	 	writeToTexArea("Done, fecthing complete!.. nope.");
+	 	//writeToTexArea("Download completed.");
 		
 
 		scanChunk();
@@ -235,6 +235,7 @@ function whenDone(){
 	console.log("Images downloaded: " + totalImages)
 	console.log("Download completed! Mapwidth: " + mapWidth + ", mapHeight: " + mapHeight);
 	appendFile(mapDataFile, mapWidth, mapHeight);
+	writeToTexArea("Download completed.");
 
 	//Resetting vars
 	totalImages = 0;

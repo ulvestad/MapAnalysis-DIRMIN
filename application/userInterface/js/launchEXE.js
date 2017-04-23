@@ -6,13 +6,15 @@ var parameters = [""];
 
 //Launches a .EXE file --------------------------------
 function launchProgram(){
+  document.getElementById("textOutput").value += "----------- Process ----------\nStarting quarry recogntion, this may take some time.\n";
   child(executablePath, function(err, data) {
     if(err){
+      document.getElementById("textOutput").value += "Some error occured.\n";
       console.error(err);
       return;
     }
     console.log(data.toString());
-    document.getElementById("textOutput").value += "--------------------- Process --------------------\nStarting quarry recongntion, this may take some time.";
+    document.getElementById("textOutput").value += "Scan complete!\n";
   });
 }
 //----------------------------------------------------
