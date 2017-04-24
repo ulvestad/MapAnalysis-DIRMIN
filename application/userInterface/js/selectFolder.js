@@ -7,6 +7,8 @@ function openFolder(){
 		var chooser = document.querySelector(name);
 		chooser.addEventListener("change", function(evt) {
 			folderPath = this.value;
+			console.log(folderPath);
+			document.getElementById("textOutput").value += "Directory '" + folderPath + "' selected.\n";
 		}, false);
 
 		chooser.click();  

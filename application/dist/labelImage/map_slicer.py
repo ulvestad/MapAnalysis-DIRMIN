@@ -7,7 +7,7 @@ This script will slice 6400x4800 images into 12 new 1600x1600 images.
 """
 
 # Sets up directories
-map_dir = "../../maps/"
+map_dir = "../../../../Kartverket/vestfold_1m_jpg/"
 sliced_map_dir = map_dir + 'sliced/'
 
 # Reads images in directory into array
@@ -43,7 +43,10 @@ def slice_img(image_name, slice_width, slice_height):
 
 	# Saves the new images as .jpg files in the 'sliced' subdirectory
 	for i in range(len(new_images)):
-		misc.imsave(sliced_map_dir + image_name.split('.')[0] + '-' + str(i) + '.jpg', new_images[i])
+		if i < 10:
+			misc.imsave(sliced_map_dir + image_name.split('.')[0] + '-0' + str(i) + '.jpg', new_images[i])
+		else:
+			misc.imsave(sliced_map_dir + image_name.split('.')[0] + '-' + str(i) + '.jpg', new_images[i])
 
 # For each image call slice_img
 for img in images:
