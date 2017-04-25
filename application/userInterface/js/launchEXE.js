@@ -6,7 +6,7 @@ var parameters = [""];
 
 //Launches a .EXE file --------------------------------
 function launchProgram(){
-  document.getElementById("textOutput").value += "----------- Process ----------\nStarting quarry recogntion, this may take some time.\n";
+  document.getElementById("textOutput").value += "----------- Process ----------\nStarting quarry recognition, this may take some time.\n";
   child(executablePath, function(err, data) {
     if(err){
       document.getElementById("textOutput").value += "Some error occured.\n";
