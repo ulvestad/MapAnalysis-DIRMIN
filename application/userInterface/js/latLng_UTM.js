@@ -568,8 +568,8 @@
 
         UTMXYToLatLon (x, y, zone, southhemi, latlon);
         
-        document.frmConverter.txtLongitude.value = RadToDeg (latlon[1]);
-        document.frmConverter.txtLatitude.value = RadToDeg (latlon[0]);
+        //document.frmConverter.txtLongitude.value = RadToDeg (latlon[1]);
+        //document.frmConverter.txtLatitude.value = RadToDeg (latlon[0]);
 
         return latlon;
     }
