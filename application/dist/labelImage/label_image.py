@@ -17,6 +17,7 @@ label_lines = [line.rstrip() for line
 with tf.gfile.FastGFile("graphs/retrained_graph.pb", 'rb') as f:
     graph_def = tf.GraphDef()
     graph_def.ParseFromString(f.read())
+    del(graph_def.node[1].attr["dct_method"]) #needed for newGraphs
     _ = tf.import_graph_def(graph_def, name='')
 
 with tf.Session() as sess:
@@ -57,9 +58,8 @@ with tf.Session() as sess:
                 continue
         conn.close()
         log.close()
-    except:
-
-        print("Some error occured")
+    except Exception as e:
+        print(str(e))
         pass
 
 

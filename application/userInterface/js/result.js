@@ -70,7 +70,7 @@ function initDb(type, checked) {
 function writeToDB() {
 	var pos = markerPos(); //return pos of marker in the markers array
 	var spawn  = require("child_process").spawn; //spawns a childs proc.
-	var child = spawn('python',["userInterface/py/updateDB.py", new_lat, new_lng, pos]); //calls a python script 
+	var child = spawn('python',["userInterface/py/updateDB.py", new_lat, new_lng, pos]); //calls a python script with parameters
 }
 
 //PLOT MARKERS ON MAP-------------------------------------------------------------------------------------------------------
