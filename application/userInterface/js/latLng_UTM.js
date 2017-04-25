@@ -1,5 +1,8 @@
     //Source: http://home.hiwaay.net/~taylorc/toolbox/geography/geoutm.html
 
+
+//Rewritten file, call toGeographic(UTMx, UTMy) to return an array of latlng values.
+
 <SCRIPT TYPE="text/javascript">
 
     <!--
