@@ -1,11 +1,17 @@
 import sqlite3
 import sys
 
-#conn = sqlite3.connect('db/QuarryLocations.db')
+conn = sqlite3.connect('../QuarryLocations.db')
 skipFirstLine = True
 counter = 0
 csvFile = sys.argv[1]
 
+#remove all content from table
+conn.execute('DELETE FROM KnownLocations')
+conn.execute('VACUUM')
+conn.commit()
+
+#insert new content into table
 with open(csvFile) as f:
     for line in f:
     	if(skipFirstLine):
@@ -14,13 +20,15 @@ with open(csvFile) as f:
         #remove whitespace characters like `\n` at the end of each line
         content = line.strip()
         content = content.split(';')
-        ##lat_data = content[1]
-        #long_data = content[0]
+        utmZone = int(content[2])
+        utmEast = int (content[3])
+        utmNorth = int(content[4])
         score = 1.0
-        #print content
-        print (counter, int(content[3]), int(content[4]))
         counter+=1
-        #conn.execute('INSERT INTO KnownLocations (ID,Latitude,Longitude, Score) VALUES (null, ?, ?, ?)',(lat_data, long_data,score))
-        #conn.commit()
+        #print sql statement
+        #print('UPDATE KnownLocations SET (ID,UTMZone, UTMEast, UTMNorth) VALUES (null, ?, ?, ?) WHERE ID = ' + str(counter)+'',(utmZone,utmEast,utmNorth))
+        conn.execute('INSERT INTO KnownLocations (ID,UTMZone,UTMEast,UTMNorth, Score)  VALUES (null,?,?,?,?)',(utmZone,utmEast,utmNorth, score))
+        conn.commit()
 
-#conn.close()
+conn.close()
+    
