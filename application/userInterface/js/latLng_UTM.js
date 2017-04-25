@@ -4,7 +4,7 @@
 
     <!--
 
-    var pi = 3.14159265358979;
+    var pi = Math.PI;
 
     /* Ellipsoid model constants (actual values here are for WGS84) */
     var sm_a = 6378137.0;
