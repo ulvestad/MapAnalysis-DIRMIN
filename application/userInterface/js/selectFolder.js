@@ -6,7 +6,7 @@ function openFolder(){
 	function chooseFile(name) {
 		var chooser = document.querySelector(name);
 		chooser.addEventListener("change", function(evt) {
-			folderPath = this.value;
+			folderPath = document.getElementById("fileDialog").files[0].path;
 			console.log(folderPath);
 			document.getElementById("textOutput").value += "Directory '" + folderPath + "' selected.\n";
 		}, false);
@@ -20,10 +20,6 @@ function getFolderPath(){
 	if (folderPath == null){
 		return null;
 	}else{
-		//Returns the path to the selected folder, but only the correct path if it's located in the 'maps' folder
-		//Splits the "fake" path and saves the important part of it
-		finalFolderpath = "maps" + folderPath.toString().split("fakepath")[1];
-		console.log(finalFolderpath);
-		return finalFolderpath;
+		return folderPath;
 	}
 }
