@@ -527,38 +527,39 @@
     * Called when the btnToGeographic button is clicked.
     *
     */
-    function btnToGeographic_OnClick ()
+    function toGeographic (UTMx, UTMy)
     {                                  
         latlon = new Array(2);
         var x, y, zone, southhemi;  
         southhemi = false;
+        zone = 33;
         
-        if (isNaN (parseFloat (document.frmConverter.txtX.value))) {
+        /*if (isNaN (parseFloat (document.frmConverter.txtX.value))) {
             alert ("Please enter a valid easting in the x field.");
             return false;
-        }
+        }*/
 
-        x = parseFloat (document.frmConverter.txtX.value);
+        x = UTMx;
 
-        if (isNaN (parseFloat (document.frmConverter.txtY.value))) {
+        /*if (isNaN (parseFloat (document.frmConverter.txtY.value))) {
             alert ("Please enter a valid northing in the y field.");
             return false;
-        }
+        }*/
 
-        y = parseFloat (document.frmConverter.txtY.value);
+        y =UTMy;
 
-        if (isNaN (parseInt (document.frmConverter.txtZone.value))) {
+       /*if (isNaN (parseInt (document.frmConverter.txtZone.value))) {
             alert ("Please enter a valid UTM zone in the zone field.");
             return false;
-        }
+        }*/
 
-        zone = parseFloat (document.frmConverter.txtZone.value);
+        /*zone = parseFloat (document.frmConverter.txtZone.value);
 
         if ((zone < 1) || (60 < zone)) {
             alert ("The UTM zone you entered is out of range.  " +
                    "Please enter a number in the range [1, 60].");
             return false;
-        }
+        }*/
         
 /*        if (document.frmConverter.rbtnHemisphere[1].checked == true)
             southhemi = true;
@@ -570,7 +571,7 @@
         document.frmConverter.txtLongitude.value = RadToDeg (latlon[1]);
         document.frmConverter.txtLatitude.value = RadToDeg (latlon[0]);
 
-        return true;
+        return latlon;
     }
 
     //    -->
