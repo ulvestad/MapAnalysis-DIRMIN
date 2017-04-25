@@ -66,6 +66,8 @@
 
 					<button onclick="launchProgram()" style="font-family:Open Sans Condensed;">Run quarry recognition</button>
 					<button onclick="openFolder()" style="font-family:Open Sans Condensed;">Select map folder</button>
+          <button onclick="openCSVFile()" style="font-family:Open Sans Condensed;">Update Database with .csv</button>
+
 					<p id="showCoordinates"></p>
 					<p id="showMessage"></p>
 				</div>
@@ -87,6 +89,7 @@
 
 <!-- Needed to select folders or some shit -->
 <input style="display:none;" id="fileDialog" type="file" webkitdirectory />
+<input style="display:none;" id="csvFile" type="file"  />
 
 <!-- Needed to solve jquery issue  -->
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
@@ -108,6 +111,7 @@
 <script src="js/launchEXE.js"></script>
 <script src="js/navbar.js"></script>
 <script src="js/selectFolder.js"></script>
+<script src="js/updateDBSelectFile.js"></script>
 
 
 </body>

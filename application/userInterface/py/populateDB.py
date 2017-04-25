@@ -1,10 +1,11 @@
 import sqlite3
 import sys
 
-conn = sqlite3.connect('../QuarryLocations.db')
+conn = sqlite3.connect('db/QuarryLocations.db')
 skipFirstLine = True
 counter = 0
 csvFile = sys.argv[1]
+print (csvFile)
 
 #remove all content from table
 conn.execute('DELETE FROM KnownLocations')
@@ -26,7 +27,7 @@ with open(csvFile) as f:
         score = 1.0
         counter+=1
         #print sql statement
-        #print('UPDATE KnownLocations SET (ID,UTMZone, UTMEast, UTMNorth) VALUES (null, ?, ?, ?) WHERE ID = ' + str(counter)+'',(utmZone,utmEast,utmNorth))
+        #print('INSERT INTO KnownLocations (ID,UTMZone,UTMEast,UTMNorth, Score)  VALUES (null,?,?,?,?)',(utmZone,utmEast,utmNorth, score))
         conn.execute('INSERT INTO KnownLocations (ID,UTMZone,UTMEast,UTMNorth, Score)  VALUES (null,?,?,?,?)',(utmZone,utmEast,utmNorth, score))
         conn.commit()
 
