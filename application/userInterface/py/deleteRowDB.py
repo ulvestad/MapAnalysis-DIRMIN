@@ -5,4 +5,5 @@ import sys
 conn = sqlite3.connect('db/QuarryLocations.db');
 conn.execute('DELETE FROM NewLocations WHERE ID=?',(sys.argv[1])); #deletes a specific row
 conn.commit();
-conn.close(); #CLOSE DB CONNETION	
+conn.close(); #CLOSE DB CONNETION
+sys.exit(0)

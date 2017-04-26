@@ -46,7 +46,7 @@ def stitch(img1, img2, img3, img4):
 		corrupted = img3
 	elif br.shape == ():
 		corrupted = img4
-		
+
 	if corrupted != None:
 		print('ERROR: Corrupted image (' + corrupted + '), stitching aborted.')
 		sys.exit()
@@ -65,9 +65,9 @@ for i in range(0, len(images), 2):
 	for j in range(0, len(images[i]), 2):
 		#print(images[i][j], images[i][j + 1], images[i + 1][j], images[i + 1][j + 1])
 		img_names.append(images[i][j])
-		stitched_images.append(stitch(images[i][j], 
-									  images[i][j + 1], 
-									  images[i + 1][j], 
+		stitched_images.append(stitch(images[i][j],
+									  images[i][j + 1],
+									  images[i + 1][j],
 									  images[i + 1][j + 1]))
 
 
@@ -82,3 +82,4 @@ for i in range(len(stitched_images)):
 
 
 print('Stitching complete!')
+sys.exit(0)

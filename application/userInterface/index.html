@@ -39,7 +39,7 @@
 
 
 		<div class="flex-container">
-      
+
 			<div class="flex-item description">
 			<p>Select the area to scan for image colllection, using two markers,
         by clicking on the map. A box wil appear once both markers are placed showing the seleced area.
@@ -65,13 +65,12 @@
 					<!--<button onclick="scanArea(1)" style="font-family:Open Sans Condensed;">Download maps (Start, End)</button> -->
           <textarea rows="1" cols="30" readonly id="folderPathSelected" style = "height:20px; overflow:hidden; font-size: 11px ">
           </textarea><br>
-					<button onclick="openFolder()" style="font-family:Open Sans Condensed;">Prepare imagefolder for scanning</button> <br><br>
-          <button onclick="" style="font-family:Open Sans Condensed;">Run preprocessing</button> <br><br>
+					<button onclick="openFolder()" style="font-family:Open Sans Condensed;">Start preprocessing</button> <br><br>
           <button onclick="launchProgram()" style="font-family:Open Sans Condensed;">Scan selected folder(s)</button> <br><br>
           <button onclick="openCSVFile()" style="font-family:Open Sans Condensed;">Update known quarries with .csv</button> <br><br>
           <button onclick="exportNewLocaitonsToCSV()" style="font-family:Open Sans Condensed;">Export new results</button> <br><br>
-          <button onclick="" style="font-family:Open Sans Condensed;">Resest database</button> <br><br>
- 
+          <button onclick="deleteAllRowsFromNewAndPossbileInDB()" style="font-family:Open Sans Condensed;">Resest database</button> <br><br>
+
 
 					<p id="showCoordinates"></p>
 					<p id="showMessage"></p>
@@ -120,6 +119,7 @@
 <script src="js/runPreprocessing.js"></script>
 <script src="js/moveFiles.js"></script>
 <script src="js/xmlReader.js"></script>
+<script src="js/resetDB.js"></script>
 
 
 </body>
