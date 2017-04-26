@@ -1,5 +1,4 @@
 import sqlite3
-import sys
 
 conn = sqlite3.connect('db/QuarryLocations.db')
 #remove all content from table
