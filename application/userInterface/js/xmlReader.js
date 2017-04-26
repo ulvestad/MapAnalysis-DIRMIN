@@ -25,10 +25,10 @@ function metadataFile(files, xmlNum, folderPath) {
   files.open("GET", url, true);
   //Checking if request is good, and sending xml file to xmlparser to parse the file
   files.onreadystatechange = function () {
-    console.log("onreadystatechange is run")
+    //console.log("onreadystatechange is run")
     if (files.readyState == 4 && files.status == 200) {
-      console.log("if sentence completed")
-      xmlparser(files);
+      //console.log("if sentence completed")
+      xmlParserAndWriter(files);
     }
   }
   files.send();
@@ -43,7 +43,7 @@ function metadataFile(files, xmlNum, folderPath) {
 
 
 //function to fetch coordinates and filename, parameter is xmlfile
-function xmlparser(xml) {
+function xmlParserAndWriter(xml) {
   var east, west, north, south, i, xmlDoc, xmlData;
   xmlDoc = xml.responseXML;
   xmlData = [];
@@ -53,9 +53,19 @@ function xmlparser(xml) {
   north = xmlDoc.getElementsByTagName("northBP")[0].childNodes[0].nodeValue;
   south = xmlDoc.getElementsByTagName("southBP")[0].childNodes[0].nodeValue;
   filename = xmlDoc.getElementsByTagName("mdFilename")[0].childNodes[0].nodeValue;
-  xmlData.push(east,west,north,south, filename);
-  console.log(xmlData);
-  return xmlData;
+  
+  width = east - west;
+  height = north - south;
+  console.log("Width:" + width + "," + " Height:" +  height);
+
+  for (i=0; i++; i<3) {
+    for(j=0; j++; j<4) {
+      
+    }
+  }
+  
+
+
 
   /*var textToSave = xmlData;
   var textToSaveAsBlob = new Blob([textToSave], {type:"text/plain"});
