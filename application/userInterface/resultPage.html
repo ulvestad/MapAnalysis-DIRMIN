@@ -13,6 +13,7 @@
 </head>
 <body>
 
+<!-- Navbar-code -->
 	<nav class="navbar navbar-inverse" id="navbar">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -20,6 +21,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
+
         </button>
         <a class="navbar-brand" href="index.html">Map Analysis</a>
       </div>
@@ -31,30 +33,42 @@
       </div>
     </div>
   </nav>
+  <!-- End Navbar-code -->
 
+  <!-- Document body -->
   <div class="flex-container">
-			<div class="flex-item column1">
-				<div class="flex-item map" id="map"></div>
-			</div>
+    <!-- Google maps map -->
+		<div class="flex-item column1">
+			<div class="flex-item map" id="map"></div>
+		</div>
 
-      <div class="flex-item potentialQuarries">
-        <form>
-		 	<input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
-		 	<input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
-		 	<input onclick="" type="checkbox" id="table3"> Placeholder<br>
-		</form> 
-				<p style="float:left">Quarries</p>
-				<button style="margin-top:15px; margin-left:90px"><img src="icons/refresh.png" width="12px" heigth="12px" alt="refresh" style="margin-top:3px; overflow:hidden"></button>
-				<br>
-				<textarea id="results" rows="12" cols="45" readonly>
-				</textarea>
+    <!-- Results -->
+    <div class="flex-item potentialQuarries">
+      <form>
+  		 	<input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
+  		 	<input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
+  		 	<input onclick="" type="checkbox" id="table3"> Placeholder<br>
+      </form> 
+			<p style="float:left">Quarries</p>
+			<br>
+			<textarea id="editArea" rows="12" cols="45" readonly style= "text-align: left; ">
+			</textarea>
 
-        <div id="mapButtons" id="left">
-					<button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit selected quarry</button>
-					<button onclick="" id="Delete" disabled style="font-family:Open Sans Condensed;">Delete selected quarry</button>
-        </div>
+      <div id="mapButtons" id="left">
+		<!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
+		
+        <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
+        <button onclick="deleteMarker()" id="Delete" disabled style="font-family:Open Sans Condensed;">Confirm Quary</button>
+        <button onclick="deleteMarker()" id="Delete" disabled style="font-family:Open Sans Condensed;">Delete quarry</button>
+        <button onclick="getCurrentImage('0633.jpg')" id="testx" style="font-family:Open Sans Condensed;">Show quarry(test)</button>
       </div>
     </div>
+    
+    <!-- Image for selected potential quarry -->
+    <div class="flex-item column1">
+      <img id="quarryImage" src="" style="width:350px;height:350px;">
+    </div>
+  </div>
 
 
 <!-- Needed to solve jquery issue  -->
@@ -66,16 +80,19 @@
 <!-- Needed to solve jquery issue -->
 <script>if (window.module) module = window.module;</script>
 
-<script src="js/googlemapsDownload.js"></script>
+<!-- Google Maps script (API KEY) -->
+
+
+<!-- Javascript files -->
+<script src="js/staticAPIDownload.js"></script>
 <script async defer
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
 </script>
+<script src="js/setMarkerInit.js"></script>
 <script src="js/launchEXE.js"></script>
 <script src="js/navbar.js"></script>
 <script src="js/result.js"></script>
-
+<script src="js/displayImage.js"></script>
 
 </body>
-
-
 </html>
