@@ -5,12 +5,12 @@ import os
 
 
 
-conn = sqlite3.connect('../../db/QuarryLocations.db')
+conn = sqlite3.connect('db/QuarryLocations.db')
 cursor = conn.execute('SELECT * FROM NewLocations')
 result_set = cursor.fetchall()
 conn.commit()
 conn.close()
-print('sdadasdasdsad')
+
 filename = "./../../exportedCSV/NewLocations(" +time.strftime("%d.%m.%Y-%H.%M")+ ").csv"
 
 dir = os.path.dirname(filename)
@@ -24,7 +24,7 @@ with open(filename, "wb") as f:
 		content = [str(row[0]),str(row[1]),str(row[2]),str(row[3]),str(row[4]),str(row[5]),str(row[6]),str(row[7])]
 		writer.writerow(content)
 	#writer.writerows(result_set)
-
+	print('done')
 		
 
 
