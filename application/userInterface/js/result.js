@@ -1,5 +1,6 @@
 //Launches dev tools when app is run, will remove after development
 //require('remote').getCurrentWindow().toggleDevTools();
+const coordinateConvo = require('./LatLng_UTM.js');
 
 var map;
 var marker_icon = ["icons/mapMarker.png", "icons/mapMarkerStandard.png"]
@@ -36,8 +37,9 @@ function initDb(type, checked) {
 	db.each('SELECT ID as idy, Latitude as lat, Longitude as lng, Score as scr FROM '+type+'', function (row) {
 		str = JSON.stringify(row);
 		var id = row.idy;
-		var lat = row.lat;
-		var lng = row.lng;
+		var xy = coordinateConvo.toGeographic(row.lat, row.lng)
+		var lat = xy[0]
+		var lng = xy[1];
 		var scr = row.scr.toFixed(3);
 		plotMarker(type,checked, id,lat,lng,scr);
 		//document.getElementById("results").value += "\n" + str
