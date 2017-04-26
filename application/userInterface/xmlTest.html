@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html>
 <body>
-
-<script>
+<script type="text/javascript">
 var fs = require('fs');
 var files = fs.readdirSync('userInterface/metadata/');
+var pictures = fs.readdirSync('userInterface/mapPictures');
 
-var xhttp = new XMLHttpRequest();
-xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        xmlparser(this);
+function metadataFile(files) {
+  urlList = [];
+  for (i=0, j=files.length; i<j; i++){
+    var file = new File([""], files[0,i], {path: "metadata/" + files[0,i]});
+    console.log(file);
+    url = "metadata/" + file.name;
+    console.log(url);
+    urlList.push(url);
+    console.log(urlList);
+  }
+  for (i=0, j=files.length; i<j; i++){
+    files = new XMLHttpRequest();
+    console.log(files);
+    files.open("GET", urlList[0,i], true);
+    files.onreadystatechange = function () {
+      if (files.readyState == 4 && files.status == 200) {
+        xmlparser(files);
+      }
     }
-};
-
-var newFilename;
-function metadataFilename(files) {
-  for (newFilename of files) {
-    console.log(newFilename);
-    xhttp.open("GET", "metadata/" + newFilename, true);
-    xhttp.send();
+    files.send();
   }
 }
-metadataFilename(files);
 
-
+window.onload = function(){
+    metadataFile(files);
+}
 
 function destroyClickedElement(event)
 {
@@ -31,44 +39,33 @@ function destroyClickedElement(event)
 }
 
 function xmlparser(xml) {
-    var xmlDoc = xml.responseXML;
-    east =
-    xmlDoc.getElementsByTagName("eastBP")[0].childNodes[0].nodeValue;
-    console.log(east);
+  var east, west, north, south, i, xmlDoc, xmlData;
+  xmlDoc = xml.responseXML;
+  xmlData = [];
+  for (i = 0; i< files.length; i++) {
+    east = xmlDoc.getElementsByTagName("eastBP")[0].childNodes[0].nodeValue;
+    west = xmlDoc.getElementsByTagName("westBP")[0].childNodes[0].nodeValue;
+    north = xmlDoc.getElementsByTagName("northBP")[0].childNodes[0].nodeValue;
+    south = xmlDoc.getElementsByTagName("southBP")[0].childNodes[0].nodeValue;
+    filename = xmlDoc.getElementsByTagName("mdFilename")[0].childNodes[0].nodeValue;
+    xmlData.push(east,west,north,south, filename);
+  }
+  console.log(xmlData);
+  /*var textToSave = xmlData;
+  var textToSaveAsBlob = new Blob([textToSave], {type:"text/plain"});
+  var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+  var fileNameToSaveAs = "coordinates.txt";
 
-    west =
-    xmlDoc.getElementsByTagName("westBP")[0].childNodes[0].nodeValue;
-    console.log(west);
+  var downloadLink = document.createElement("a");
+  downloadLink.download = fileNameToSaveAs;
+  downloadLink.innerHTML = "Download File";
+  downloadLink.href = textToSaveAsURL;
+  downloadLink.onclick = destroyClickedElement;
+  downloadLink.style.display = "none";
+  document.body.appendChild(downloadLink);
 
-    north =
-    xmlDoc.getElementsByTagName("northBP")[0].childNodes[0].nodeValue;
-    console.log(north);
-
-    south =
-    xmlDoc.getElementsByTagName("southBP")[0].childNodes[0].nodeValue;
-    console.log(south);
-
-    filename =
-    xmlDoc.getElementsByTagName("mdFilename")[0].childNodes[0].nodeValue;
-    console.log(filename);
-
-
-    var textToSave = [east, west, north, south, filename];
-    var textToSaveAsBlob = new Blob([textToSave], {type:"text/plain"});
-    var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
-    var fileNameToSaveAs = "coordinates.txt";
-
-    var downloadLink = document.createElement("a");
-    downloadLink.download = fileNameToSaveAs;
-    downloadLink.innerHTML = "Download File";
-    downloadLink.href = textToSaveAsURL;
-    downloadLink.onclick = destroyClickedElement;
-    downloadLink.style.display = "none";
-    document.body.appendChild(downloadLink);
-
-    downloadLink.click();
+  downloadLink.click();*/
 }
 </script>
-
 </body>
 </html>
