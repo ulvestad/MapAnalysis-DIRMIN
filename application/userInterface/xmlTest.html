@@ -3,11 +3,14 @@
 <body>
 <script type="text/javascript">
 var fs = require('fs');
+//Using node.js to get an array with the files from the metadata folder
 var files = fs.readdirSync('userInterface/metadata/');
 var pictures = fs.readdirSync('userInterface/mapPictures');
 
+//Function to create file objects from the metadata directory
 function metadataFile(files) {
   urlList = [];
+  //creating all files in the metadata folder
   for (i=0, j=files.length; i<j; i++){
     var file = new File([""], files[0,i], {path: "metadata/" + files[0,i]});
     console.log(file);
@@ -16,10 +19,12 @@ function metadataFile(files) {
     urlList.push(url);
     console.log(urlList);
   }
+  //Creating HttpRequest for each file in the metadatafolder
   for (i=0, j=files.length; i<j; i++){
     files = new XMLHttpRequest();
     console.log(files);
     files.open("GET", urlList[0,i], true);
+    //Checking if request is good, and sending xml file to xmlparser to parse the file
     files.onreadystatechange = function () {
       if (files.readyState == 4 && files.status == 200) {
         xmlparser(files);
@@ -29,15 +34,18 @@ function metadataFile(files) {
   }
 }
 
+//Main function
 window.onload = function(){
     metadataFile(files);
 }
 
-function destroyClickedElement(event)
+/*function destroyClickedElement(event)
 {
     document.body.removeChild(event.target);
-}
+}*/
 
+
+//function to fetch coordinates and filename, parameter is xmlfile
 function xmlparser(xml) {
   var east, west, north, south, i, xmlDoc, xmlData;
   xmlDoc = xml.responseXML;
