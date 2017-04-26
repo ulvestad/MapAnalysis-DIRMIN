@@ -24,11 +24,10 @@ with open(csvFile) as f:
         utmZone = int(content[2])
         utmEast = int (content[3])
         utmNorth = int(content[4])
-        score = 1.0
         counter+=1
         #print sql statement
         #print('INSERT INTO KnownLocations (ID,UTMZone,UTMEast,UTMNorth, Score)  VALUES (null,?,?,?,?)',(utmZone,utmEast,utmNorth, score))
-        conn.execute('INSERT INTO KnownLocations (ID,UTMZone,UTMEast,UTMNorth, Score)  VALUES (null,?,?,?,?)',(utmZone,utmEast,utmNorth, score))
+        conn.execute('INSERT INTO KnownLocations (ID,UTMZone,UTMEast,UTMNorth)  VALUES (null,?,?,?)',(utmZone,utmEast,utmNorth))
         conn.commit()
 
 conn.close()
