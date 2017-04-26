@@ -7,8 +7,7 @@ This script will slice 6400x4800 images into 12 new 1600x1600 images.
 """
 
 # Sets up directories
-map_dir = sys.argv[1]
-map_dir += "/"
+map_dir = sys.argv[1] + "/"
 sliced_map_dir = 'maps/'
 
 # Reads images in directory into array
