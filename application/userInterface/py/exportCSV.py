@@ -10,17 +10,20 @@ cursor = conn.execute('SELECT * FROM NewLocations')
 result_set = cursor.fetchall()
 conn.commit()
 conn.close()
+print('sdadasdasdsad')
+filename = "./../../exportedCSV/NewLocations(" +time.strftime("%d.%m.%Y-%H.%M")+ ").csv"
 
-filename = "NewLocations(" +time.strftime("%d.%m.%Y")+ ").csv"
-
-dir = os.path.dirname("./"+filename)
+dir = os.path.dirname(filename)
 if not os.path.exists(dir):
     os.makedirs(dir)
-with open(filename, "w") as f:
+with open(filename, "wb") as f:
+	csv.excel.delimiter=';'
+	writer = csv.writer(f, dialect=csv.excel)
+	writer.writerow(["Identifier:","FileName:","UTMZone:","UTMEast:","UTMNorth:","UTMSouth:","UTMWest:","Score:"])
 	for row in result_set:
-		writer = csv.writer(f)
-		print row[0]
-		writer.writerows(row)
+		content = [str(row[0]),str(row[1]),str(row[2]),str(row[3]),str(row[4]),str(row[5]),str(row[6]),str(row[7])]
+		writer.writerow(content)
+	#writer.writerows(result_set)
 
 		
 
