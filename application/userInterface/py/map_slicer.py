@@ -52,4 +52,4 @@ def slice_img(image_name, slice_width, slice_height):
 # For each image call slice_img
 for img in images:
 	slice_img(img, 4, 3)
-
+sys.exit(0)
