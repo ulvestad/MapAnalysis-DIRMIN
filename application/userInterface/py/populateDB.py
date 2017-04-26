@@ -31,4 +31,4 @@ with open(csvFile) as f:
         conn.commit()
 
 conn.close()
-    
+sys.exit(0)    
