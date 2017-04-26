@@ -8,7 +8,6 @@ var process = require( "process" );
 
 
 
-getAllxml("C:/Users/marti/Documents/mapPictures2");
 
 //Function to create file objects from the metadata directory, xmlNum = the xml file to be read
 function metadataFile(files, xmlNum, folderPath) {
@@ -116,8 +115,10 @@ function getAllxml(folderPath){
     } 
 
     files.forEach( function( file, index ) {
-      if (path.extname(file) != '.xml'){
-        console.log('Not a xml');
+      extension = file.split(".")
+      //if (path.extname(file) != '.xml'){
+      if (extension[extension.length - 1] != "xml") {
+        //console.log('Not a xml');
         return;
       }
       metadataFile(files, index, folderPath);

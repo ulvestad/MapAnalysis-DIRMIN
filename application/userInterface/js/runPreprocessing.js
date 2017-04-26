@@ -11,6 +11,7 @@ function openFolder(){
 			split_path = folderPath.split("\\");
 			partial_path = split_path[split_path.length -2 ] +"/" +split_path[split_path.length -1] + "/"
 			document.getElementById("folderPathSelected").value =  "  ✔ "+partial_path;
+			document.getElementById("textOutput").value += "Starting pre-processing...\n";
 			preProcessing();
 		}, false);
 
@@ -31,7 +32,15 @@ function getFolderPath(){
 function preProcessing() {
 	path = getFolderPath();
 	path = path.split("\\").join("/");
+	console.log(path);
+	getAllxml(path);
 	console.log("Starting image slicing on " + path);
 	var spawn = require("child_process").spawn;
 	var child = spawn('python',["userInterface/py/map_slicer.py", path]);
+
+	child.stdout.on('data', function(data) {
+		if (data.toString().trim() === "slicing done") {
+			document.getElementById("textOutput").value += "Image slicing complete!\n";
+		}
+	});
 }

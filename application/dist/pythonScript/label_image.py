@@ -44,7 +44,7 @@ with tf.Session() as sess:
                     if score > threshold and human_string == 'uttak':
                         line = open("coordinates.txt", "r").readlines()[counter-1]
                         cordinates = line.replace('\n','').split(',')
-                        print('*************************  Found something  ***************************')
+                        print('***************  Found something  *****************')
                         print (cordinates)
                         lat_data = cordinates[0]
                         long_data = cordinates[1]
