@@ -1,21 +1,22 @@
 
 var fs = require('fs');
 var mv = require('mv');
+var path = require('path');
 // In newer Node.js versions where process is already global this isn't necessary.
 var process = require( "process" );
 //Using node.js to get an array with the files from the metadata folder
-var files = fs.readdirSync('userInterface/metadata/');
-var pictures = fs.readdirSync('userInterface/mapPictures');
 
-getAllxml("userinterface/metadata/");
+
+
+getAllxml("C:/Users/marti/Documents/mapPictures");
 
 //Function to create file objects from the metadata directory, xmlNum = the xml file to be read
-function metadataFile(files, xmlNum) {
+function metadataFile(files, xmlNum, folderPath) {
 
   //creating all files in the metadata folder
-  var file = new File([""], files[0,xmlNum], {path: "metadata/" + files[0,xmlNum]});
+  var file = new File([""], files[0,xmlNum], {path: folderPath + '/' + files[0,xmlNum]});
   //console.log(file);
-  url = "metadata/" + file.name;
+  url = folderPath + '/' + file.name;
   //console.log(url);
 
   //Creating HttpRequest for the specified file
@@ -73,6 +74,7 @@ function xmlparser(xml) {
 }
 
 function getAllxml(folderPath){
+  var files = fs.readdirSync(folderPath);
   fs.readdir( folderPath, function( err, files ) {
     if( err ) {
       console.error( "Could not list the directory.", err );
@@ -80,7 +82,11 @@ function getAllxml(folderPath){
     } 
 
     files.forEach( function( file, index ) {
-      metadataFile(files, index);
+      if (path.extname(file) != '.xml'){
+        console.log('Not a xml');
+        return;
+      }
+      metadataFile(files, index, folderPath);
      });
   });
 }
