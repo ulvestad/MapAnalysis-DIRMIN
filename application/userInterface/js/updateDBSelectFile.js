@@ -14,7 +14,7 @@ function openCSVFile(){
 			}else{
 			document.getElementById("textOutput").value += "\nChosen file: " + filePath + "\n";
 			var temp_string = filePath.split(".");
-			fileFormat = temp_string[1];
+			fileFormat = temp_string[temp_string.length-1];
 				if(fileFormat != "csv"){
 					document.getElementById("textOutput").value += "Wrong format on file selected. Please make sure it is a .csv file and try again.\n";
 					return;
