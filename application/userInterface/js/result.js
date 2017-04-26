@@ -57,10 +57,10 @@ function initDb(type, checked) {
 	db.each('SELECT ID as idy, UTMNorth as lat, UTMEast as lng FROM '+type+'', function (row) {
 		str = JSON.stringify(row);
 		var id = row.idy;
-		var xy = toGeographic(row.lat, row.lng);
+		var xy = toGeographic(row.lng, row.lat);
 		console.log(xy);
-		var lng = xy[0];
-		var lat = xy[1];
+		var lat = xy[0];
+		var lng = xy[1];
 		//var scr = row.scr.toFixed(3);
 		plotMarker(type,checked, id,lat,lng); //forwards data from row to be plotted
 	});
@@ -223,9 +223,9 @@ function finishEdit(){
 //DISABLE BUTTONS USED FOR EDITING ACTIONS -----------------------------------------------------------------------------
 //diables buttons 
 function disableButtons(){
-		document.getElementById("Edit").disabled = true;
-	    document.getElementById("Delete").disabled = true;
-	    document.getElementById("Finish").disabled = true;
+		//document.getElementById("Edit").disabled = true;
+	    //document.getElementById("Delete").disabled = true;
+	    //document.getElementById("Finish").disabled = true;
 }
 //SET TEXT ON TEXTAREA TO ARGUMENT 1 -----------------------------------------------------------------------------------
 //appending or overwites
