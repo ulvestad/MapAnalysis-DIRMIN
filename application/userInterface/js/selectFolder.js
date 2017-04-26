@@ -7,8 +7,11 @@ function openFolder(){
 		var chooser = document.querySelector(name);
 		chooser.addEventListener("change", function(evt) {
 			folderPath = document.getElementById("fileDialog").files[0].path;
-			console.log(folderPath);
-			document.getElementById("textOutput").value += "Directory '" + folderPath + "' selected.\n";
+			//document.getElementById("textOutput").value += "Directory '" + folderPath + "' selected.\n";
+			split_path = folderPath.split("\\");
+			console.log(split_path)
+			partial_path = split_path[split_path.length -2 ] +"/" +split_path[split_path.length -1] + "/"
+			document.getElementById("folderPathSelected").value =  "  ✔ "+partial_path;
 		}, false);
 
 		chooser.click();  

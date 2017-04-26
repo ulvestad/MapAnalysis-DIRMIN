@@ -63,9 +63,10 @@
 
 				<div class="flex-item scanButtons" id="scanButtons">
 					<!--<button onclick="scanArea(1)" style="font-family:Open Sans Condensed;">Download maps (Start, End)</button> -->
-          <textarea rows="1" cols="20" readonly id="folderPathSelected" style = "height:20px;">
+          <textarea rows="1" cols="30" readonly id="folderPathSelected" style = "height:20px; overflow:hidden; font-size: 11px ">
           </textarea><br>
 					<button onclick="openFolder()" style="font-family:Open Sans Condensed;">Prepare imagefolder for scanning</button> <br><br>
+          <button onclick="" style="font-family:Open Sans Condensed;">Run preprocessing</button> <br><br>
           <button onclick="launchProgram()" style="font-family:Open Sans Condensed;">Scan selected folder(s)</button> <br><br>
           <button onclick="openCSVFile()" style="font-family:Open Sans Condensed;">Update known quarries with .csv</button> <br><br>
           <button onclick="" style="font-family:Open Sans Condensed;">Export to results</button> <br><br>
