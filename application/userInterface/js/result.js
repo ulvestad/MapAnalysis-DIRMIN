@@ -1,6 +1,5 @@
 //Launches dev tools when app is run, will remove after development
 //require('remote').getCurrentWindow().toggleDevTools();
-const coordinateConvo = require('./LatLng_UTM.js');
 
 //VARIOUS VARBIALES DECLARATIONS--------------------------------------------------------------------------------------------
 var map;
@@ -55,14 +54,15 @@ function initDb(type, checked) {
 	var sql = require('sql.js')
 	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
 	var db = new sql.Database(bfr)
-	db.each('SELECT ID as idy, Latitude as lat, Longitude as lng, Score as scr FROM '+type+'', function (row) {
+	db.each('SELECT ID as idy, UTMNorth as lat, UTMEast as lng FROM '+type+'', function (row) {
 		str = JSON.stringify(row);
 		var id = row.idy;
-		var xy = coordinateConvo.toGeographic(row.lat, row.lng)
-		var lat = xy[0]
-		var lng = xy[1];
-		var scr = row.scr.toFixed(3);
-		plotMarker(type,checked, id,lat,lng,scr); //forwards data from row to be plotted
+		var xy = toGeographic(row.lat, row.lng);
+		console.log(xy);
+		var lng = xy[0];
+		var lat = xy[1];
+		//var scr = row.scr.toFixed(3);
+		plotMarker(type,checked, id,lat,lng); //forwards data from row to be plotted
 	});
 	db.close();
 }
@@ -79,7 +79,7 @@ function writeToDB() {
 //plots the marker on the map
 //adds infowindow with info of marker 
 //adds eventlistener to marker for 'click on marker' and 'closeclick of infowindow' 
-function plotMarker(type, checked, id, lat, lng, scr){
+function plotMarker(type, checked, id, lat, lng){
 	var stack; //which stack in markers array (eg. knowquarries[0] or newquarries[1])
 	var micon; //array for diffrent marker icons depending on known/new
 		if(type == "KnownLocations"){
@@ -99,8 +99,8 @@ function plotMarker(type, checked, id, lat, lng, scr){
 	    });
 		//create content of marker
 	    var content = '<div>' +
-							'<b>'+type+'</b><br><br><b>ID: </b>'+id+'<br><b>Latitude: </b>'+lat+'<br><b>Longitude: </b>'+lng+'<br><b>Score: </b>'+scr+''+
-							'</div>';
+							'<b>'+type+'</b><br><br><b>ID: </b>'+id+'<br><b>Latitude: </b>'+lat+'<br><b>Longitude: </b>'+lng+
+						'</div>';
 	    var infowindow = new google.maps.InfoWindow();
 	    //init listener for 'click on marker'
 		google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){

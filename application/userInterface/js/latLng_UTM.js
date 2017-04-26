@@ -3,8 +3,6 @@
 
 //Rewritten file, call toGeographic(UTMx, UTMy) to return an array of latlng values.
 
-<SCRIPT TYPE="text/javascript">
-
     <!--
 
     var pi = Math.PI;
@@ -530,8 +528,7 @@
     * Called when the btnToGeographic button is clicked.
     *
     */
-    function toGeographic (UTMx, UTMy)
-    {                                  
+        function toGeographic (UTMx, UTMy){                                  
         latlon = new Array(2);
         var x, y, zone, southhemi;  
         southhemi = false;
@@ -556,28 +553,24 @@
             return false;
         }*/
 
-        /*zone = parseFloat (document.frmConverter.txtZone.value);
 
-        if ((zone < 1) || (60 < zone)) {
+        /*if ((zone < 1) || (60 < zone)) {
             alert ("The UTM zone you entered is out of range.  " +
                    "Please enter a number in the range [1, 60].");
             return false;
         }*/
         
 /*        if (document.frmConverter.rbtnHemisphere[1].checked == true)
-            southhemi = true;
+            southhemi = false;
         else
             southhemi = false;*/
 
         UTMXYToLatLon (x, y, zone, southhemi, latlon);
         
-        //document.frmConverter.txtLongitude.value = RadToDeg (latlon[1]);
-        //document.frmConverter.txtLatitude.value = RadToDeg (latlon[0]);
+        latlon[1] = RadToDeg (latlon[1]);
+        latlon[0] = RadToDeg (latlon[0]);
 
         return latlon;
     }
 
     //    -->
-
-</SCRIPT>
-
