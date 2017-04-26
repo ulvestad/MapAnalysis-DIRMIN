@@ -11,9 +11,9 @@ conn.close()
 
 filename = "exportedCSV/NewLocations(" +time.strftime("%d.%m.%Y-%H.%M")+ ").csv"
 
-dir = os.path.dirname(filename)
-if not os.path.exists(dir):
-    os.makedirs(dir)
+dire = os.path.dirname(filename)
+if not os.path.exists(dire):
+    os.makedirs(dire)
 with open(filename, "wb") as f:
 	csv.excel.delimiter=';'
 	writer = csv.writer(f, dialect=csv.excel)
