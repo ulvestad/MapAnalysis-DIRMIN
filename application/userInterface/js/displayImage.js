@@ -1,13 +1,12 @@
-var imagePath = "../maps/vestfold/test.jpg"
+//Static imagePath to the ScannedMaps folder
+var imagePath = "../scannedMaps/";
 
-function setImagePath(newImagePath){
-	
-	imagePath = newImagePath;
-}
-
-function getCurrentImage(){
-	if (imagePath == null){
+//Run this function when clicking on a marker/list item for a quarry. Insert correct imageName
+function getCurrentImage(imageName){
+	fullImagePath = imagePath + imageName;
+	console.log(fullImagePath)
+	if (fullImagePath == null){
 		console.log("No image available for this position");
 	}
-	document.getElementById('quarryImage').src=imagePath;
+	document.getElementById('quarryImage').src=fullImagePath;
 }
