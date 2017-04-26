@@ -7,8 +7,8 @@ This script will slice 6400x4800 images into 12 new 1600x1600 images.
 """
 
 # Sets up directories
-map_dir = "../../../../Kartverket/vestfold_1m_jpg/"
-sliced_map_dir = map_dir + 'sliced/'
+map_dir = sys.argv[1] + "/"
+sliced_map_dir = 'maps/'
 
 # Reads images in directory into array
 images = []
@@ -17,7 +17,7 @@ for filename in os.listdir(map_dir):
 		images.append(filename)
 
 # Creates new subdirectory for the new images if it does not exist
-if not os.path.exists(sliced_map_dir):
+if not os.path.exists("../../" + sliced_map_dir):
     os.makedirs(sliced_map_dir)
 
 """
