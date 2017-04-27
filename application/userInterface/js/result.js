@@ -53,26 +53,25 @@ function initDb(type, checked) {
 	var fs = require('fs')
 	var sql = require('sql.js')
 	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
-	var db = new sql.Database(bfr)
-	if type == KnownLocations {
+	var db = new sql.Database(bfr);
+	if (type === "KnownLocations") {
 		db.each('SELECT ID as idy, UTMNorth as lat, UTMEast as lng FROM '+type+'', function (row) {
 			str = JSON.stringify(row);
 			var id = row.idy;
 			var xy = toGeographic(row.lng, row.lat);
-			console.log(xy);
 			var lat = xy[0];
 			var lng = xy[1];
 			//var scr = row.scr.toFixed(3);
 			plotMarker(type,checked, id,lat,lng); //forwards data from row to be plotted
 		}) 
 	} else {
-			db.each('SELECT ID as idy, UTMNorth1 as lat1, UTMSouth as lat2, UTMEast1 as lng1, UTMWest as lng2 FROM '+type+'', function (row) {
+			db.each('SELECT ID as idy, UTMNorth as lat1, UTMSouth as lat2, UTMEast as lng1, UTMWest as lng2 FROM '+type+'', function (row) {
 			str = JSON.stringify(row);
+			var id = row.idy;
 			var xy1 = toGeographic(row.lng1, row.lat1);
 			var xy2 = toGeographic(row.lng2, row.lat2);
-			console.log(xy);
 			var lat = xy1[0] - (xy1[0]-xy2[0])/2;
-			var lng = xy1[1] - (xy1[0] - xy2[0]/2);
+			var lng = xy1[1] - (xy1[1] - xy2[1]/2);
 			plotMarker(type,checked, id,lat,lng); //forwards data from row to be plotted
 			})
 		}
