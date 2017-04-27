@@ -4,7 +4,7 @@
 //VARIOUS VARBIALES DECLARATIONS--------------------------------------------------------------------------------------------
 var map;
 var marker_icon = ["icons/mapMarker.png", "icons/mapMarkerStandard.png"]
-var markers = [[],[]]; //2d array consitiong of knowquarry-markers[0] and newquarry-markers[1]
+var markers = [[],[],[]]; //2d array consitiong of knowquarry-markers[0] and newquarry-markers[1]
 var markerSelected;
 var prev_infowindow = false;
 var editing = false;
@@ -106,10 +106,13 @@ function plotMarker(type, checked, id, lat, lng){
 		if(type == "KnownLocations"){
 			micon = marker_icon[0]
 			stack = 0;
-		}else{
+		}else if (type == "NewLocations"){
 			micon = marker_icon[1]
 			stack = 1;
-		}
+		} else if (type == "PossibleLocations") {
+			micon = marker_icon[2]
+			stack = 2;
+		};
 	//user has checked box -> plot marker
 	if (checked){
 		//create new marker
