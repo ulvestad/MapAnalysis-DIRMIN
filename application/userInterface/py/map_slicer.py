@@ -1,7 +1,6 @@
-import os, sys
 from scipy import misc
 import numpy as np
-
+import os, sys
 """
 This script will slice 6400x4800 images into 12 new 1600x1600 images.
 """
@@ -33,8 +32,8 @@ def slice_img(image_name, slice_width, slice_height):
 	image = misc.imread(map_dir + image_name)
 	height = len(image)
 	width = len(image[0])
-	new_height = height / slice_height
-	new_width = width / slice_width
+	new_height = height // slice_height
+	new_width = width // slice_width
 	new_images = []
 
 	# Slices image into new smaller images, and appends tham to array
