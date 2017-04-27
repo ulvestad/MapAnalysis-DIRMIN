@@ -1,5 +1,4 @@
 import sqlite3, sys
-print("yey c:")
 conn = sqlite3.connect('db/QuarryLocations.db')
 #remove all content from table
 conn.execute('DELETE FROM NewLocations')
