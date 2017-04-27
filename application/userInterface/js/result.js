@@ -4,7 +4,7 @@
 //VARIOUS VARBIALES DECLARATIONS--------------------------------------------------------------------------------------------
 var map;
 var marker_icon = ["icons/mapMarker.png", "icons/mapMarkerStandard.png"]
-var markers = [[],[],[]]; //2d array consitiong of knowquarry-markers[0] and newquarry-markers[1]
+var markers = [[],[],[]]; //2d array consitiong of knowquarry-markers[0], newquarry-markers[1] and PossibleLocations[2]
 var markerSelected;
 var prev_infowindow = false;
 var editing = false;
@@ -173,6 +173,11 @@ function plotMarker(type, checked, id, lat, lng){
 		    };
 		})(marker,content,infowindow));
 		//push markers to array
+		/*markers[stack].push(marker);
+		if (markers[stack].length > 500){
+			markers[stack].length = 500;
+		}*/
+		
 		markers[stack].push(marker);
 		//init listener for infowwindow close click
 		google.maps.event.addListener(infowindow,'closeclick',function(){
