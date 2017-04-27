@@ -47,7 +47,7 @@
       <form>
   		 	<input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
   		 	<input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
-  		 	<input onclick="" type="checkbox" id="table3"> Placeholder<br>
+  		 	<input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations"> Possible Locations<br>
       </form> 
 			<p style="float:left">Quarries</p>
 			<br>
@@ -89,6 +89,7 @@
 <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
 </script>
+<script src="js/latLng_UTM.js"></script>
 <script src="js/setMarkerInit.js"></script>
 <script src="js/launchEXE.js"></script>
 <script src="js/navbar.js"></script>
