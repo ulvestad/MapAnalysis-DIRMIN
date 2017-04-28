@@ -6,12 +6,14 @@ function openCSVFile(){
 	//Let the user choose a folder from the filesystem
 	function chooseFile(name) {
 		var chooser = document.querySelector(name);
+		//Adds an event listener when user opens file selection. Code beneath is run when a file is selected.
 		chooser.addEventListener("change", function(evt) {
 			filePath = document.getElementById("csvFile").files[0].path
 			if (filePath == null){
 				document.getElementById("textOutput").value += "No file selected, please try again.\n";
 				return;
 			}else{
+			//Gets the path from the selected folder and checks if the filetype is correct
 			document.getElementById("textOutput").value += "\nChosen file: " + filePath + "\n";
 			var temp_string = filePath.split(".");
 			fileFormat = temp_string[temp_string.length-1];

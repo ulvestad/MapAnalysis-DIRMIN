@@ -1,3 +1,5 @@
+//THIS FILE IS NOT USED ANYMORE
+
 //Global vars
 markers = [];
 window.coordinates = [];

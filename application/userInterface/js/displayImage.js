@@ -1,3 +1,4 @@
+//DISPLAYS IMAGE OF SELECTED POTENTIAL QUARRY
 //Static imagePath to the ScannedMaps folder
 var imagePath = "../scannedMaps/";
 

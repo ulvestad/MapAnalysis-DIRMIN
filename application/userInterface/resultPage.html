@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<!-- Navbar-code -->
+<!-- NAVBAR-CODE -->
 	<nav class="navbar navbar-inverse" id="navbar">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -33,29 +33,34 @@
       </div>
     </div>
   </nav>
-  <!-- End Navbar-code -->
+  <!-- END NAVBAR-CODE -->
 
   <!-- Document body -->
   <div class="flex-container">
-    <!-- Google maps map -->
+    <!-- Google Maps Map (for displaying quary positions) -->
 		<div class="flex-item column1">
 			<div class="flex-item map" id="map"></div>
 		</div>
+    <!-- END GOOGLE MAPS -->
 
-    <!-- Results -->
     <div class="flex-item potentialQuarries">
+      
+      <!-- CHECKBOXES -->
       <form>
   		 	<input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
   		 	<input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
   		 	<input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations"> Possible Locations<br>
       </form> 
+      
+      <!-- TEXTAREA -->
 			<p style="float:left">Quarries</p>
 			<br>
 			<textarea id="editArea" rows="12" cols="45" readonly style= "text-align: left; ">
 			</textarea>
-
+      
+      <!-- BUTTONS -->
       <div id="mapButtons" id="left">
-		<!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
+		    <!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
 		
         <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
         <button onclick="deleteMarker()" id="Delete" disabled style="font-family:Open Sans Condensed;">Confirm Quary</button>
@@ -63,14 +68,17 @@
         <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button>
         <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button>
       </div>
+      <!-- END BUTTONS -->
+
     </div>
     
-    <!-- Image for selected potential quarry -->
+    <!-- IMAGE FOR SELECTED QUARRY -->
     <div class="flex-item column1">
       <img id="quarryImage" src="" style="width:350px;height:350px;">
     </div>
   </div>
 
+<!-- SCRIPTS ETC. -->
 
 <!-- Needed to solve jquery issue  -->
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
@@ -85,7 +93,6 @@
 
 
 <!-- Javascript files -->
-<script src="js/staticAPIDownload.js"></script>
 <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
 </script>
