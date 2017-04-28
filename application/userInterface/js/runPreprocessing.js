@@ -45,4 +45,10 @@ function preProcessing() {
 		}
 		console.log(data.toString());
 	});
+	//child.stdout.on('data', function(data) {
+	//	if (data.toString().trim() === "slicing done") {
+	//		document.getElementById("textOutput").value += "Image slicing complete!\n";
+	//	}
+
+	//});
 }
