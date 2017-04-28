@@ -71,7 +71,7 @@ function initDb(type, checked) {
 			var xy1 = toGeographic(row.lng1, row.lat1);
 			var xy2 = toGeographic(row.lng2, row.lat2);
 			var lat = xy1[0] - (xy1[0]-xy2[0])/2;
-			var lng = xy1[1] - (xy1[1] - xy2[1]/2);
+			var lng = xy1[1] - (xy1[1] - xy2[1])/2;
 			plotMarker(type,checked, id,lat,lng); //forwards data from row to be plotted
 			})
 		} else if (type === "PossibleLocations"){
@@ -81,7 +81,7 @@ function initDb(type, checked) {
 			var xy1 = toGeographic(row.lng1, row.lat1);
 			var xy2 = toGeographic(row.lng2, row.lat2);
 			var lat = xy1[0] - (xy1[0]-xy2[0])/2;
-			var lng = xy1[1] - (xy1[1] - xy2[1]/2);
+			var lng = xy1[1] - (xy1[1] - xy2[1])/2;
 			plotMarker(type,checked, id,lat,lng); //forwards data from row to be plotted
 			})
 		}
