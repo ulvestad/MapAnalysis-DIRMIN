@@ -1,3 +1,5 @@
+//THIS FILE IS NOT USED ANYMORE
+
 //Path to folder, is "none" if it hasn't been set yet
 var folderPath = null;
 
