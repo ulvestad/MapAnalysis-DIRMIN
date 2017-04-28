@@ -35,12 +35,14 @@ function preProcessing() {
 	console.log(path);
 	getAllxml(path);
 	console.log("Starting image slicing on " + path);
-	var spawn = require("child_process").spawn;
-	var child = spawn('python',["userInterface/py/map_slicer.py", path]);
-
-	child.stdout.on('data', function(data) {
-		if (data.toString().trim() === "slicing done") {
-			document.getElementById("textOutput").value += "Image slicing complete!\n";
+	var child = require('child_process').execFile;
+	var executablePath = "userInterface/py/map_slicer.exe";
+	parameters = [path];
+	child(executablePath, parameters, function(err, data) {
+		if(err){
+			console.error(err);
+			return;
 		}
+		console.log(data.toString());
 	});
 }
