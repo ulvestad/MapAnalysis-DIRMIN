@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<!-- Navbar-code -->
+<!-- NAVBAR-CODE -->
 	<nav class="navbar navbar-inverse" id="navbar">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -33,45 +33,72 @@
       </div>
     </div>
   </nav>
-  <!-- End Navbar-code -->
+  <!-- END NAVBAR-CODE -->
 
-  <!-- Document body -->
+
+
+  <!-- BODY -->
+  <div id="infoBar">
+    <p> Result page - Select quarries and decide if you want to keep them or delete them from the database. Bla bla bla bla user manual shit .. </p>
+  </div>
+
   <div class="flex-container">
-    <!-- Google maps map -->
-		<div class="flex-item column1">
-			<div class="flex-item map" id="map"></div>
-		</div>
-
-    <!-- Results -->
+    
+    <!-- BOX 1: Quarry data_____________________________________________________-->
     <div class="flex-item potentialQuarries">
-      <form>
-  		 	<input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
-  		 	<input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
-  		 	<input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations"> Possible Locations<br>
-      </form> 
-			<p style="float:left">Quarries</p>
-			<br>
-			<textarea id="editArea" rows="12" cols="45" readonly style= "text-align: left; ">
-			</textarea>
-
+      <input type="range" min="0" max="100" value="50" step="1" />
+      <p>70</p>
+      <button>Vis quarries (1047)</button>
+      <div id="listContainer">
+        <ul>
+          <!-- Generate list items from DB here, some test list items displayed below -->
+          <li>List item 1</li>
+          <li>List item 2</li>
+          <li>List item 3</li>
+        </ul>
+        <button>Next quarry</button>
+      </div>
+      <!-- BUTTONS -->
       <div id="mapButtons" id="left">
-		<!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
-		
+        <!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
         <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
         <button onclick="deleteMarker()" id="Delete" disabled style="font-family:Open Sans Condensed;">Confirm Quary</button>
         <button onclick="deleteMarker()" id="Delete" disabled style="font-family:Open Sans Condensed;">Delete quarry</button>
-        <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button>
-        <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button>
+        <!-- <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button> -->
+        <!-- <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button> -->
       </div>
     </div>
-    
-    <!-- Image for selected potential quarry -->
+
+
+    <!-- BOX 2: image for selected quarry ______________________________________ -->
     <div class="flex-item column1">
-      <img id="quarryImage" src="" style="width:350px;height:350px;">
+      <img id="quarryImage" src="" style="width:400px;height:400px;">
     </div>
+
+
+    <!--BOX 3: Google Maps Map (for displaying quary positions) _______________-->
+    <div class="flex-item column1">
+      <!-- GoogleMaps map -->
+      <div class="flex-item map" id="map"></div>
+      <!-- CHECKBOXES -->
+      <form>
+        <input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
+        <input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
+        <input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations"> Possible Locations<br>
+      </form> 
+    </div>
+    <!-- END GOOGLE MAPS -->
   </div>
 
 
+  <!-- This textarea is only here to prevent a current bug -->
+  <textarea id="editArea" rows="12" cols="45" readonly></textarea>
+
+
+
+
+
+<!-- SCRIPTS ETC. -->
 <!-- Needed to solve jquery issue  -->
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 
@@ -85,7 +112,6 @@
 
 
 <!-- Javascript files -->
-<script src="js/staticAPIDownload.js"></script>
 <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
 </script>

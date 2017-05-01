@@ -5,11 +5,14 @@ var executablePath = "dist/label_image/label_image.exe";
 
 //Launches a .EXE file --------------------------------
 function launchProgram(){
+	//Parameter is the folder path
 	parameters = [getFolderPath()];
+	//Checks if a folder is selected
 	if (parameters[0] == null){
 		console.log("Please select folder");
 		document.getElementById("textOutput").value += "Please select a folder to scan first.\n";
 	}else{
+		
 		document.getElementById("textOutput").value += "----------- Process ----------\nStarting quarry recognition, this may take some time.\n";
 		child(executablePath, parameters, function(err, data) {
 			if(err){
