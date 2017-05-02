@@ -2,7 +2,8 @@ import tensorflow as tf, sys, os
 import sqlite3
 import sys
 
-image_dir = sys.argv[1]
+image_dir = "maps/"
+#image_dir = sys.argv[1]
 #log_filename = "log.txt"
 #log = open(log_filename, 'w')
 conn = sqlite3.connect('db/QuarryLocations.db')
@@ -50,7 +51,12 @@ with tf.Session() as sess:
                         #long_data = cordinates[1]
                         scr = float(score)
                         scr = format(scr, ".5g")
-                        conn.execute("UPDATE PossibleLocations SET Score = "+scr+" WHERE FileName = "+filename+"")
+                        fileName = filename.split("/")
+                        fileName = fileName[1] #remove /maps
+                        #fileName = fileName.replace("-","_") #Escaping special characters for FTS query search on DB
+                        #fileName = fileName.split(".")[0]
+                        print(fileName, scr)
+                        conn.execute("UPDATE PossibleLocations SET Score = ? WHERE FileName = ?",(scr,fileName))
                         conn.commit()
                 #log.write('\n')
                 continue
