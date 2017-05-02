@@ -48,22 +48,24 @@
     <div class="flex-item potentialQuarries">
       <input type="range" min="0" max="100" value="50" step="1" />
       <p>70</p>
-      <button>Vis quarries (1047)</button>
+      <button onclick="getThresholdQuarries(0, 1)">Vis quarries (1047)</button>
       <div id="listContainer">
-        <ul>
-          <!-- Generate list items from DB here, some test list items displayed below -->
-          <li>List item 1</li>
-          <li>List item 2</li>
-          <li>List item 3</li>
-        </ul>
+
+        <!--HTML-->
+        <div id="scrollArea" class="clusterize-scroll">
+          <ul id="contentArea" class="clusterize-content">
+            <li class="clusterize-no-data">Loading data…</li>
+          </ul>
+        </div>
+
         <button>Next quarry</button>
       </div>
       <!-- BUTTONS -->
       <div id="mapButtons" id="left">
         <!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
         <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
-        <button onclick="deleteMarker()" id="Delete" disabled style="font-family:Open Sans Condensed;">Confirm Quary</button>
-        <button onclick="deleteMarker()" id="Delete" disabled style="font-family:Open Sans Condensed;">Delete quarry</button>
+        <button onclick="confirmQuarry()" id="Confirm" disabled style="font-family:Open Sans Condensed;">Confirm Quary</button>
+        <button onclick="deleteQuarry()" id="Delete" disabled style="font-family:Open Sans Condensed;">Delete quarry</button>
         <!-- <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button> -->
         <!-- <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button> -->
       </div>
@@ -122,6 +124,7 @@
 <script src="js/result.js"></script>
 <script src="js/displayImage.js"></script>
 <script src="js/moveFiles.js"></script>
+<script src="js/displayQuarryList.js"></script>
 
 </body>
 </html>
