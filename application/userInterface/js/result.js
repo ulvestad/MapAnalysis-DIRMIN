@@ -54,6 +54,7 @@ function initDb(type, checked) {
 	var sql = require('sql.js')
 	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
 	var db = new sql.Database(bfr);
+	//Checks which radio button that's checked, and iteratively displays the markers of the selected
 	if (type === "KnownLocations") {
 		db.each('SELECT ID as idy, UTMNorth as lat, UTMEast as lng FROM '+type+'', function (row) {
 			str = JSON.stringify(row);

@@ -18,6 +18,7 @@
 
 
 <body>
+  <!-- The top-navbar for the application, this is the same for all .html pages -->
   <nav class="navbar navbar-inverse" id="navbar">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -37,7 +38,7 @@
     </div>
   </nav>
 
-
+    <!-- The content of the index.html page -->
 		<div class="flex-container">
 
 			<div class="flex-item description">
@@ -61,6 +62,7 @@
 					</div>
 				</form> -->
 
+        <!-- BUTTONS for the page -->
 				<div class="flex-item scanButtons" id="scanButtons">
 					<!--<button onclick="scanArea(1)" style="font-family:Open Sans Condensed;">Download maps (Start, End)</button> -->
           <textarea rows="1" cols="30" readonly id="folderPathSelected" style = "height:20px; overflow:hidden; font-size: 11px ">
@@ -75,6 +77,9 @@
 					<p id="showCoordinates"></p>
 					<p id="showMessage"></p>
 				</div>
+        <!-- END BUTTONS -->
+
+        <!-- Old code, remove? -->
 				<div class="flex-item mapbuttons" id="mapButtons" id="left"> <!-- Buttons for selecting area to scan, not needed anymore -->
 					<!--<button onclick="scanArea(2)" style="font-family:Open Sans Condensed;">Get images from selected area</button>-->
 					<!--<button onclick="removeMarkers()" style="font-family:Open Sans Condensed;">Remove markers </button>-->
@@ -82,6 +87,8 @@
 				<!-- Removed Google Maps map-box -->
 				<!-- <div class="flex-item map" id="map"></div> -->
 			</div>
+      
+      <!-- Text field (output field) for the page -->
       <div class="flex-item quarryLocation">
         <p style="float:left">Quarry Locations</p>
         <button style="margin-top:15px; margin-left:90px"><img src="icons/refresh.png" width="12px" heigth="12px" alt="refresh" style="margin-top:3px; overflow:hidden"></button>
@@ -91,6 +98,7 @@
       </div>
 		</div>
 
+<!-- EVERYTHING SCRIPT-RELATED -->
 <!-- Needed to select folders or some shit -->
 <input style="display:none;" id="fileDialog" type="file" webkitdirectory />
 <input style="display:none;" id="csvFile" type="file"  />
@@ -112,6 +120,7 @@
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
 </script> -->
 
+<!-- All javascript file inclusions -->
 <script src="js/launchEXE.js"></script>
 <script src="js/navbar.js"></script>
 <script src="js/updateDBSelectFile.js"></script>
@@ -120,7 +129,6 @@
 <script src="js/moveFiles.js"></script>
 <script src="js/xmlReader.js"></script>
 <script src="js/resetDB.js"></script>
-
 
 </body>
 </html>

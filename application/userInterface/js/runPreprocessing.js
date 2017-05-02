@@ -49,6 +49,7 @@ function preProcessing() {
 	getAllxml(path);
 	console.log("Starting image slicing on " + path);
 	var child = require('child_process').execFile;
+
 	var executablePath = "userInterface/py/dist/map_slicer/map_slicer.exe";
 	parameters = [path];
 	child(executablePath, parameters, function(err, data) {
