@@ -2,7 +2,8 @@ import tensorflow as tf, sys, os
 import sqlite3
 import sys
 
-image_dir = sys.argv[1]
+image_dir = "maps/"
+#image_dir = sys.argv[1]
 #log_filename = "log.txt"
 #log = open(log_filename, 'w')
 conn = sqlite3.connect('db/QuarryLocations.db')
