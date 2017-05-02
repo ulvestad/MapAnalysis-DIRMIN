@@ -50,7 +50,12 @@ with tf.Session() as sess:
                         #long_data = cordinates[1]
                         scr = float(score)
                         scr = format(scr, ".5g")
-                        conn.execute("UPDATE PossibleLocations SET Score = "+scr+" WHERE FileName = "+filename+"")
+                        fileName = filename.split("/")
+                        fileName = fileName[1] #remove /maps
+                        #fileName = fileName.replace("-","_") #Escaping special characters for FTS query search on DB
+                        #fileName = fileName.split(".")[0]
+                        print(fileName, scr)
+                        conn.execute("UPDATE PossibleLocations SET Score = ? WHERE FileName = ?",(scr,fileName))
                         conn.commit()
                 #log.write('\n')
                 continue

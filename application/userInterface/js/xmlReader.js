@@ -75,6 +75,7 @@ function xmlParserAndWriter(xml) {
       var spawn  = require("child_process").spawn; //spawns a childs proc.
       var child = spawn('python',["userInterface/py/XMLupdateDB.py", finalFilename, 33, west + ((j+1) * X1), north - (i * Y1), north - ((i+1) * Y1), west + (j * X1)]);
       //var child = spawn('python',["userInterface/py/XMLupdateDB.py", filename, 33, east, north, south, west]);
+      
     }
   }
 
