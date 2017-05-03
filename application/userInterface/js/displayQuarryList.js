@@ -86,7 +86,9 @@ function deleteQuarry(){
 
 
 
-
+function getQuarryListLength(){
+	return quarryList.length;
+}
 function disableButtons(disable){
 	document.getElementById("Confirm").disabled = disable;
 	document.getElementById("Delete").disabled = disable;
