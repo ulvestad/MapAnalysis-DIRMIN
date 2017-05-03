@@ -87,7 +87,6 @@ function deleteQuarry(){
 
 
 function getQuarryListLength(){
-	console.log(quarryList.length)
 	return quarryList.length;
 }
 function disableButtons(disable){
