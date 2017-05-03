@@ -14,7 +14,7 @@ var new_lng;
 var numPlottedMarkers = 0;
 var numMarkerTreshhold = 10000; //number of markers allowed on map, due to performance number
 var treshholdSelectedByUser = 100 //getQuarryListLength();
-var low = 0.6; //lower bound for score in sql query
+var low = 0.0; //lower bound for score in sql query
 var high = 1.0; //upper bund for score in sql query
 
 //GOOGLE MAPS FUNCTIONS----------------------------------------------------------------------------------------------------
@@ -175,6 +175,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		};
 	//user has checked box -> plot marker
 	if (checked){
+		console.log("sasdadasdsadsa!!!!!"+ stack)
 		//create new marker
 		var marker = new google.maps.Marker({
 	        position: new google.maps.LatLng(lat, lng),
@@ -221,7 +222,6 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		        	}
 		        	//exit edit ->  disable buttons for editing and set varaibles/textarea to "not editing"
 		        	setTextToArea("", false);
-		        	disableButtons();
 		        	changeMarkerIcon(false);
 		        	editing = false;
 		        }
@@ -233,11 +233,6 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		    };
 		})(marker,content,infowindow));
 		//push markers to array
-		/*markers[stack].push(marker);
-		if (markers[stack].length > 500){
-			markers[stack].length = 500;
-		}*/
-		
 		markers[stack].push(marker);
 		//init listener for infowwindow close click
 		google.maps.event.addListener(infowindow,'closeclick',function(){
@@ -245,7 +240,6 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		        		return;
 		        }
 		        //various tasks for infowindow close
-		   		disableButtons();
 		   		setTextToArea("",false);
 		   		changeMarkerIcon(false);
 		   		editing = false;
@@ -263,7 +257,6 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		markers[stack].forEach(function(x){
 			mrk = markers[stack].pop();
 			mrk.setMap(null);
-	       	disableButtons();
 	       	setTextToArea("",false);
 	       	changeMarkerIcon(false);
 	       	editing = false;
@@ -307,13 +300,7 @@ function finishEdit(){
 		return;
     }
 }
-//DISABLE BUTTONS USED FOR EDITING ACTIONS -----------------------------------------------------------------------------
-//diables buttons 
-function disableButtons(){
-		//document.getElementById("Edit").disabled = true;
-	    //document.getElementById("Delete").disabled = true;
-	    //document.getElementById("Finish").disabled = true;
-}
+
 //SET TEXT ON TEXTAREA TO ARGUMENT 1 -----------------------------------------------------------------------------------
 //appending or overwites
 function setTextToArea(text,append){
@@ -382,4 +369,14 @@ function markerPos(){
         }
 	}
 	return pos;
+}
+function updateMarkers(){
+		console.log(markers[1].length)
+		console.log(markers[2].length)
+		
+		//TODO: pop all markers and from both lists and init them again
+
+
+		//initDb("PossbileLocations", true);
+		//initDb("NewLocations", true);
 }
