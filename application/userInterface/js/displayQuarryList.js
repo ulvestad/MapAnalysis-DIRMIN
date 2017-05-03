@@ -1,29 +1,28 @@
-// JavaScript
 var Clusterize = require('Clusterize.js');
-var threshLow = 0;
-var threshHigh = 1;
+//Vars
 var clickedID = 0;
+//List of data from DB with html-info wrapped around it (for displaying in a list)
 var data = [];
+//List of indexes for the data list
 var quarryList = [];
+//List of filenames for the data items
 var filenames = [];
 
-
-//If sentence/code for fetching wanted data from DB
-
+//Run when user refresh list (refresh from DB, show Quarries button)
 function getThresholdQuarries(low, high){
-	//List of data from DB with html-info wrapped around it (for displaying in a list)
+	//reset lists
 	data = [];
-	//List of indexes for the data list
 	quarryList = [];
-	//List of filenames for the data items
 	filenames = [];
 
+	//Initiates DB-stuff, has to be done every time to close it properly
 	var fs = require('fs')
 	var sql = require('sql.js')
 	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
 	var db = new sql.Database(bfr);
 	//Query to select x number of rows from the DB based on low and high threshold
 	db.each('SELECT ID as idy, Score as score, FileName as filename FROM PossibleLocations WHERE Score BETWEEN '+low+' AND '+high+'', function (row) {
+		//Get all vars from each DB row
 		str = JSON.stringify(row);
 		var id = row.idy;
 		var score = row.score;
@@ -33,11 +32,12 @@ function getThresholdQuarries(low, high){
 		quarryList.push(id);
 	})
 	db.close();	
-	//Creates a new scroll list with data from the "data" list
+	//Creates the actual visible list
 	updateList();
 }
 
-//Creates the list of db-quarries
+
+//Creates the actual visible list
 function updateList(){
 	var clusterize = new Clusterize({
 	  rows: data,
@@ -45,33 +45,54 @@ function updateList(){
 	  contentId: 'contentArea'
 	});
 }
-
-
-function getClickedID(){
-	return clickedID;
-}
 //On list item click, gets the id of that item and saves it.
 //Also displays the connected quarry image and enables buttons if disabled.
 function setClickedID (id){
 	//Enables add/delete buttons
-	document.getElementById("Confirm").disabled = false;
-	document.getElementById("Delete").disabled = false;
-	document.getElementById("nextQuarry").disabled = false;
+	disableButtons(false);
 	clickedID = id;
-	try{
-		//Try to display image, if it doesn't exist, return error
-		getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
-	}catch(err){
-		console.log("There is no image for this quarry");
-	}
+	//Try to display image, if it doesn't exist, return error
+	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
+	console.log("Selected quarry ID: " + clickedID)
+}
+function confirmQuarry(){
+	//Updates list
+	console.log("Selected quarry ID: " + clickedID + ". Removed from index ", quarryList.indexOf(clickedID));
+	filenames.splice(quarryList.indexOf(clickedID), 1);
+	data.splice(quarryList.indexOf(clickedID), 1);
+	quarryList.splice(quarryList.indexOf(clickedID), 1);
 	
-	console.log("ClickedID: " + clickedID)
+	//Updates DB
+	addDBRow();
+	removeDBRow();
+	//A user can't remove/add quarries without selecting row from the list
+	disableButtons(true);
+	updateList();
+}
+//Removes list item from list, and deletes row from DB
+function deleteQuarry(){
+	///Updates list
+	console.log("Selected quarry ID: " + clickedID + ". Removed from index ", quarryList.indexOf(clickedID));
+	filenames.splice(quarryList.indexOf(clickedID), 1);
+	data.splice(quarryList.indexOf(clickedID), 1);
+	quarryList.splice(quarryList.indexOf(clickedID), 1);
+	
+	//Updates DB
+	removeDBRow();
+	//A user can't remove/add quarries without selecting row from the list
+	disableButtons(true);
+	updateList();
 }
 
-function confirmQuarry(){
-	//Move row from db table to db table, and remove from list
-	updateList();
 
+
+
+function disableButtons(disable){
+	document.getElementById("Confirm").disabled = disable;
+	document.getElementById("Delete").disabled = disable;
+	document.getElementById("nextQuarry").disabled = disable;
+}
+function addDBRow(){
 	//DB Row deletion + Row add (DB row move)
 	//Have to get all data from DB row in order to add it to another table
 	var fs = require('fs')
@@ -87,10 +108,9 @@ function confirmQuarry(){
 	var south;
 	var west;
 	var score;
-
+	//Get additional row-info frmo DB
 	db.each('SELECT ID as idy, FileName as filename, UTMZone as zone, UTMEast as east, UTMNorth as north, UTMSouth as south, UTMWest as west, Score as score FROM PossibleLocations WHERE ID = '+clickedID+'', function (row) {
 		str = JSON.stringify(row);
-		console.log(str);
 		id = row.idy;
 		filename = row.filename;
 		zone = row.zone;
@@ -104,38 +124,9 @@ function confirmQuarry(){
 	//add
 	var spawn = require("child_process").spawn; //spawns a childs proc.
 	var child = spawn('python',["userInterface/py/insertRowDB.py", filename, zone, east, north, south, west, score]); //calls a python script with parameters
-	child.stdout.on('data', function(data) {
-	    console.log('stdout: ' + data);
-	    //Here is where the output goes
-	});
-	//Remove
-	var spawn = require("child_process").spawn; //spawns a childs proc.
-	var child = spawn('python',["userInterface/py/deleteRowDB.py", "PossibleLocations", clickedID]); //calls a python script with parameters
-	child.stdout.on('data', function(data) {
-	    console.log('stdout: ' + data);
-	    //Here is where the output goes
-	});
 }
-
-
-//Removes list item from list, and deletes row from DB
-function deleteQuarry(){
-	//Remove from db AND list
-	//List removal: 
-	console.log("ClickedID: ", clickedID, "removedID: ", quarryList.indexOf(clickedID));
-	filenames.splice(quarryList.indexOf(clickedID), 1);
-	data.splice(quarryList.indexOf(clickedID), 1);
-	quarryList.splice(quarryList.indexOf(clickedID), 1);
-	
-
-	//DB row deletion
+function removeDBRow(){
+	//delete
 	var spawn = require("child_process").spawn; //spawns a childs proc.
 	var child = spawn('python',["userInterface/py/deleteRowDB.py", "PossibleLocations", clickedID]); //calls a python script with parameters
-	child.stdout.on('data', function(data) {
-	    console.log('stdout: ' + data);
-	    //Here is where the output goes
-	});
-
-	clickedID += 1;
-	updateList();
 }
