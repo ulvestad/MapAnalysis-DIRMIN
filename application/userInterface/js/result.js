@@ -3,7 +3,7 @@
 
 //VARIOUS VARBIALES DECLARATIONS--------------------------------------------------------------------------------------------
 var map;
-var marker_icon = ["icons/mapMarker.png", "icons/mapMarkerStandard.png"]
+var marker_icon = ["icons/mapMarker.png", "icons/mapMarkerStandard.png","icons/mapMarkerPossbile.png"]
 var markers = [[],[],[]]; //2d array consitiong of knowquarry-markers[0], newquarry-markers[1] and PossibleLocations[2]
 var markerSelected;
 var prev_infowindow = false;
@@ -11,6 +11,11 @@ var editing = false;
 var old_latlng;
 var new_lat;
 var new_lng;
+var numPlottedMarkers = 0;
+var numMarkerTreshhold = 10000;
+var treshholdSelectedByUser = 100 //getQuarryListLength();
+var low = 0.6;
+var high = 1.0;
 
 //GOOGLE MAPS FUNCTIONS----------------------------------------------------------------------------------------------------
 //Init for map and listener
@@ -56,34 +61,88 @@ function initDb(type, checked) {
 	var db = new sql.Database(bfr);
 	//Checks which radio button that's checked, and iteratively displays the markers of the selected
 	if (type === "KnownLocations") {
+		var countPlottedMarkers = numPlottedMarkers
+		var alertUser = false;
 		db.each('SELECT ID as idy, UTMNorth as lat, UTMEast as lng FROM '+type+'', function (row) {
 			str = JSON.stringify(row);
 			var id = row.idy;
 			var xy = toGeographic(row.lng, row.lat);
 			var lat = xy[0];
 			var lng = xy[1];
-			//var scr = row.scr.toFixed(3);
-			plotMarker(type,checked, id,lat,lng); //forwards data from row to be plotted
+			var scr = 1.0
+			if(treshholdSelectedByUser < numMarkerTreshhold){
+				if(countPlottedMarkers < numMarkerTreshhold){
+					plotMarker(type,checked, id,lat,lng,scr.toFixed(1)); //forwards data from row to be plotted
+					countPlottedMarkers +=1;
+					return;
+				}else{
+					return;
+				}
+			}else{	
+				if(!alertUser){
+					alert("Warning: Threshold contains too many markers to be plotted. \nPlease choose a % threshold with a lower amount.");
+					alertUser = true;
+				}else{
+					return;
+				}
+			}
+			
 		}) 
 	} else if (type === "NewLocations") {
-			db.each('SELECT ID as idy, UTMNorth as lat1, UTMSouth as lat2, UTMEast as lng1, UTMWest as lng2 FROM '+type+'', function (row) {
+			var countPlottedMarkers = numPlottedMarkers
+			var alertUser = false;
+			db.each('SELECT ID as idy, UTMNorth as lat1, UTMSouth as lat2, UTMEast as lng1, UTMWest as lng2, Score as scr FROM '+type+' WHERE Score BETWEEN '+low+' AND '+high+'', function (row) {
 			str = JSON.stringify(row);
 			var id = row.idy;
 			var xy1 = toGeographic(row.lng1, row.lat1);
 			var xy2 = toGeographic(row.lng2, row.lat2);
 			var lat = xy1[0] - (xy1[0]-xy2[0])/2;
 			var lng = xy1[1] - (xy1[1] - xy2[1])/2;
-			plotMarker(type,checked, id,lat,lng); //forwards data from row to be plotted
+			var scr = row.scr;
+			if(treshholdSelectedByUser < numMarkerTreshhold){
+				if(countPlottedMarkers < numMarkerTreshhold){
+					plotMarker(type,checked, id,lat,lng, scr); //forwards data from row to be plotted
+					countPlottedMarkers +=1;
+					return;
+				}else{
+					return;
+				}
+			}else{	
+				if(!alertUser){
+					alert("Warning: Threshold contains too many markers to be plotted. \nPlease choose a % threshold with a lower amount.");
+					alertUser = true;
+				}else{
+					return;
+				}
+			}
 			})
 		} else if (type === "PossibleLocations"){
-			db.each('SELECT ID as idy, UTMNorth as lat1, UTMSouth as lat2, UTMEast as lng1, UTMWest as lng2 FROM '+type+'', function (row) {
+			var countPlottedMarkers = numPlottedMarkers
+			var alertUser = false;
+			db.each('SELECT ID as idy, UTMNorth as lat1, UTMSouth as lat2, UTMEast as lng1, UTMWest as lng2, Score as scr FROM '+type+' WHERE Score BETWEEN '+low+' AND '+high+'', function (row)  {
 			str = JSON.stringify(row);
 			var id = row.idy;
 			var xy1 = toGeographic(row.lng1, row.lat1);
 			var xy2 = toGeographic(row.lng2, row.lat2);
 			var lat = xy1[0] - (xy1[0]-xy2[0])/2;
 			var lng = xy1[1] - (xy1[1] - xy2[1])/2;
-			plotMarker(type,checked, id,lat,lng); //forwards data from row to be plotted
+			var scr = row.scr;
+			if(treshholdSelectedByUser < numMarkerTreshhold){
+				if(countPlottedMarkers < numMarkerTreshhold){
+					plotMarker(type,checked, id,lat,lng, scr); //forwards data from row to be plotted
+					countPlottedMarkers +=1;
+					return;
+				}else{
+					return;
+				}
+			}else{	
+				if(!alertUser){
+					alert("Warning: Threshold contains too many markers to be plotted. \nPlease choose a % threshold with a lower amount.");
+					alertUser = true;
+				}else{
+					return;
+				}
+			}
 			})
 		}
 		db.close();
@@ -101,17 +160,17 @@ function writeToDB() {
 //plots the marker on the map
 //adds infowindow with info of marker 
 //adds eventlistener to marker for 'click on marker' and 'closeclick of infowindow' 
-function plotMarker(type, checked, id, lat, lng){
+function plotMarker(type, checked, id, lat, lng, scr){
 	var stack; //which stack in markers array (eg. knowquarries[0] or newquarries[1])
 	var micon; //array for diffrent marker icons depending on known/new
 		if(type == "KnownLocations"){
 			micon = marker_icon[0]
 			stack = 0;
 		}else if (type == "NewLocations"){
-			micon = marker_icon[1]
+			micon = marker_icon[2]
 			stack = 1;
 		} else if (type == "PossibleLocations") {
-			micon = marker_icon[2]
+			micon = marker_icon[1]
 			stack = 2;
 		};
 	//user has checked box -> plot marker
@@ -124,7 +183,7 @@ function plotMarker(type, checked, id, lat, lng){
 	    });
 		//create content of marker
 	    var content = '<div>' +
-							'<b>'+type+'</b><br><br><b>ID: </b>'+id+'<br><b>Latitude: </b>'+lat+'<br><b>Longitude: </b>'+lng+
+							'<b>'+type+'</b><br><br><b>ID: </b>'+id+'<br><b>Latitude: </b>'+lat+'<br><b>Longitude: </b>'+lng+'<br><b>Score: </b>'+scr+''
 						'</div>';
 	    var infowindow = new google.maps.InfoWindow();
 	    //init listener for 'click on marker'
@@ -145,9 +204,9 @@ function plotMarker(type, checked, id, lat, lng){
 		        			return;
 		        		}
 		        	}
-		        	document.getElementById("Edit").disabled = false;
-		        	document.getElementById("Delete").disabled = false;
-		        	document.getElementById("Finish").disabled = false;
+		        	//document.getElementById("Edit").disabled = false;
+		        	//document.getElementById("Delete").disabled = false;
+		        	//document.getElementById("Finish").disabled = false;
 		        	markerSelected = marker;
 		        	setTextToArea("Now you can edit the marker selected. To do so, click the \"Edit button\" and select a new position on the map.", false);
 		        	changeMarkerIcon(false);
@@ -227,9 +286,7 @@ function deleteMarker(){
 	if(confirm('Are you sure you want to delete the marker? \nNB: Changes will be done to the database.')){
 		var pos = markerPos(); //return pos of marker in the markers array
 		var spawn  = require("child_process").spawn; //spawns a childs proc.
-		console.log('start')
 		var child = spawn('python', ["userInterface/py/deleteRowDB.py", pos]); //calls a python script 
-		console.log('mellom')
 	} else{
 		return;
 	}
