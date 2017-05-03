@@ -12,10 +12,10 @@ var old_latlng;
 var new_lat;
 var new_lng;
 var numPlottedMarkers = 0;
-var numMarkerTreshhold = 10000;
+var numMarkerTreshhold = 10000; //number of markers allowed on map, due to performance number
 var treshholdSelectedByUser = 100 //getQuarryListLength();
-var low = 0.6;
-var high = 1.0;
+var low = 0.6; //lower bound for score in sql query
+var high = 1.0; //upper bund for score in sql query
 
 //GOOGLE MAPS FUNCTIONS----------------------------------------------------------------------------------------------------
 //Init for map and listener
