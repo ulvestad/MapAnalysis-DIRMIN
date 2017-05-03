@@ -2,10 +2,12 @@
 var Clusterize = require('Clusterize.js');
 var threshLow = 0;
 var threshHigh = 1;
-var clickedID;
+var clickedID = 0;
 var data = [];
 var quarryList = [];
 var filenames = [];
+
+
 //If sentence/code for fetching wanted data from DB
 
 function getThresholdQuarries(low, high){
@@ -15,6 +17,7 @@ function getThresholdQuarries(low, high){
 	quarryList = [];
 	//List of filenames for the data items
 	filenames = [];
+
 	var fs = require('fs')
 	var sql = require('sql.js')
 	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
@@ -64,6 +67,57 @@ function setClickedID (id){
 	
 	console.log("ClickedID: " + clickedID)
 }
+
+function confirmQuarry(){
+	//Move row from db table to db table, and remove from list
+	updateList();
+
+	//DB Row deletion + Row add (DB row move)
+	//Have to get all data from DB row in order to add it to another table
+	var fs = require('fs')
+	var sql = require('sql.js')
+	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
+	var db = new sql.Database(bfr);
+
+	var id;
+	var filename;
+	var zone;
+	var east;
+	var north;
+	var south;
+	var west;
+	var score;
+
+	db.each('SELECT ID as idy, FileName as filename, UTMZone as zone, UTMEast as east, UTMNorth as north, UTMSouth as south, UTMWest as west, Score as score FROM PossibleLocations WHERE ID = '+clickedID+'', function (row) {
+		str = JSON.stringify(row);
+		console.log(str);
+		id = row.idy;
+		filename = row.filename;
+		zone = row.zone;
+		east = row.east;
+		north = row.north;
+		south = row.south;
+		west = row.west;
+		score = row.score;
+	})
+	db.close();
+	//add
+	var spawn = require("child_process").spawn; //spawns a childs proc.
+	var child = spawn('python',["userInterface/py/insertRowDB.py", filename, zone, east, north, south, west, score]); //calls a python script with parameters
+	child.stdout.on('data', function(data) {
+	    console.log('stdout: ' + data);
+	    //Here is where the output goes
+	});
+	//Remove
+	var spawn = require("child_process").spawn; //spawns a childs proc.
+	var child = spawn('python',["userInterface/py/deleteRowDB.py", "PossibleLocations", clickedID]); //calls a python script with parameters
+	child.stdout.on('data', function(data) {
+	    console.log('stdout: ' + data);
+	    //Here is where the output goes
+	});
+}
+
+
 //Removes list item from list, and deletes row from DB
 function deleteQuarry(){
 	//Remove from db AND list
@@ -72,11 +126,16 @@ function deleteQuarry(){
 	filenames.splice(quarryList.indexOf(clickedID), 1);
 	data.splice(quarryList.indexOf(clickedID), 1);
 	quarryList.splice(quarryList.indexOf(clickedID), 1);
+	
+
+	//DB row deletion
+	var spawn = require("child_process").spawn; //spawns a childs proc.
+	var child = spawn('python',["userInterface/py/deleteRowDB.py", "PossibleLocations", clickedID]); //calls a python script with parameters
+	child.stdout.on('data', function(data) {
+	    console.log('stdout: ' + data);
+	    //Here is where the output goes
+	});
+
 	clickedID += 1;
-	updateList();
-}
-function confirmQuarry(){
-	console.log("Finish this function plz")
-	//Move row from db table to db table, and remove from list
 	updateList();
 }
