@@ -55,10 +55,10 @@
         
         <div id="scrollArea" class="clusterize-scroll">
           <ul id="contentArea" class="clusterize-content">
-            <li class="clusterize-no-data">Loading data…</li>
+            
           </ul>
         </div>
-        <button>Next quarry</button>
+        <button onclick="nextQuarry()" id="nextQuarry" disabled>Next quarry</button>
       </div>
       <!-- _____________________________________ -->
 
@@ -67,8 +67,8 @@
       <div id="mapButtons" id="left">
         <!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
         <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
-        <button onclick="confirmQuarry()" id="Confirm" disabled style="font-family:Open Sans Condensed;">Confirm Quary</button>
-        <button onclick="deleteQuarry()" id="Delete" disabled style="font-family:Open Sans Condensed;">Delete quarry</button>
+        <button onclick="confirmQuarry()" id="Confirm" disabled>Confirm Quary</button>
+        <button onclick="deleteQuarry()" id="Delete" disabled>Delete quarry</button>
         <!-- <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button> -->
         <!-- <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button> -->
       </div>
