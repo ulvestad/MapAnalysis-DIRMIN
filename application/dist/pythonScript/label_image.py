@@ -1,8 +1,10 @@
 import tensorflow as tf, sys, os
 import sqlite3
 import sys
+import shutil
 
 image_dir = "maps/"
+scanned_img_dir = "scannedMaps/"
 #image_dir = sys.argv[1]
 #log_filename = "log.txt"
 #log = open(log_filename, 'w')
@@ -27,7 +29,8 @@ with tf.Session() as sess:
     try:
         for filename in os.listdir(image_dir):
             #counter += 1
-            if filename.endswith(".jpg"): 
+            if filename.endswith(".jpg"):
+                img_name = filename
                 filename = os.path.join(image_dir, filename)
                 image_data = tf.gfile.FastGFile(filename, 'rb').read()
                 predictions = sess.run(softmax_tensor, \
@@ -59,6 +62,7 @@ with tf.Session() as sess:
                         conn.execute("UPDATE PossibleLocations SET Score = ? WHERE FileName = ?",(scr,fileName))
                         conn.commit()
                 #log.write('\n')
+                shutil.move(filename, os.path.join(scanned_img_dir, img_name))
                 continue
             else:
                 continue

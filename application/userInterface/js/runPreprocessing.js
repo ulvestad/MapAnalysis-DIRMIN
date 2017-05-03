@@ -58,6 +58,7 @@ function preProcessing() {
 			return;
 		}
 		console.log(data.toString());
+		document.getElementById("textOutput").value += "Pre-processing completed!\n";
 	});
 	//child.stdout.on('data', function(data) {
 	//	if (data.toString().trim() === "slicing done") {
