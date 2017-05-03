@@ -85,9 +85,24 @@ function deleteQuarry(){
 }
 
 
-
+//Gets the length of an alreadt fetched quarry list
 function getQuarryListLength(){
 	return quarryList.length;
+}
+//Checks the DB and returns the length between the threshold
+function checkQuarryLength(low, high){
+	var i = 0;
+	var fs = require('fs')
+	var sql = require('sql.js')
+	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
+	var db = new sql.Database(bfr);
+	//Query to select x number of rows from the DB based on low and high threshold
+	db.each('SELECT COUNT(Score) AS numQuarries FROM PossibleLocations WHERE Score BETWEEN '+low+' AND '+high+'', function (row) {
+		str = JSON.stringify(row);
+		i = row.numQuarries;
+	})
+	db.close();
+	return i;
 }
 function disableButtons(disable){
 	document.getElementById("Confirm").disabled = disable;

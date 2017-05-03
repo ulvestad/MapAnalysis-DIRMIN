@@ -7,7 +7,7 @@
 
     <title>Analysis of Map and Satellite Images</title>
     <link rel="stylesheet" href="css/styles.css">
-
+    <link href="css/nouislider.min.css" rel="stylesheet"> <!-- Stylesheet for the slider, don't remove -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 </head>
@@ -46,9 +46,9 @@
     
     <!-- BOX 1: Quarry data_____________________________________________________-->
     <div class="flex-item potentialQuarries">
-      <input type="range" min="0" max="100" value="50" step="1" />
-      <p>70</p>
-      <button onclick="getThresholdQuarries(0, 1)">Vis quarries (1047)</button>
+      <div id="slider"></div>
+      <p id="bothThreshold"></p>
+      <button onclick="getThresholdQuarries(lowGlobalThreshold, highGlobalThreshold)" id="showQuarries">Vis quarries (1047)</button>
       
       <!-- List view for quarries, plz no remove -->
       <div id="listContainer">
@@ -128,6 +128,9 @@
 <script src="js/displayImage.js"></script>
 <script src="js/moveFiles.js"></script>
 <script src="js/displayQuarryList.js"></script>
+
+<script src="js/nouislider.min.js"></script>
+<script src="js/slider.js"></script>
 
 </body>
 </html>
