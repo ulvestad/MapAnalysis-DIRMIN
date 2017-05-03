@@ -7,6 +7,7 @@
 
     <title>Analysis of Map and Satellite Images</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/index.css">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -14,25 +15,45 @@
 <body>
 
 <!-- Navbar-code -->
-	<nav class="navbar navbar-inverse" id="navbar">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
-
         </button>
         <a class="navbar-brand" href="index.html">Map Analysis</a>
       </div>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav">
-          <li><a href="index.html" onclick="navbar_open">Scan Areas</a></li>
-          <li><a href="resultPage.html" onclick="navbar_open">View Results</a></li>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="index.html" onclick="navbar_open">Home</a></li>
+          <li><a href="resultPage.html" onclick="navbar_open">Confimation</a></li>
+          <li><a href="#">Profile</a></li>
+          <li><a href="#">Help</a></li>
         </ul>
+        <form class="navbar-form navbar-right">
+          <input type="text" class="form-control" placeholder="Search...">
+        </form>
       </div>
     </div>
   </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+          <li class="active"><a href="index.html">Overview <span class="sr-only">(current)</span></a></li>
+          <li><a href="#"></a></li>
+          <li><a href="#">Analytics</a></li>
+          <li><a href="#">Export</a></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><a href="">Nav item</a></li>
+          <li><a href="">Nav item again</a></li>
+        </ul>
+      </div>
   <!-- End Navbar-code -->
 
   <!-- Document body -->
@@ -48,7 +69,7 @@
   		 	<input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
   		 	<input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
   		 	<input onclick="" type="checkbox" id="table3"> Placeholder<br>
-      </form> 
+      </form>
 			<p style="float:left">Quarries</p>
 			<br>
 			<textarea id="editArea" rows="12" cols="45" readonly style= "text-align: left; ">
@@ -56,7 +77,7 @@
 
       <div id="mapButtons" id="left">
 		<!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
-		
+
         <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
         <button onclick="deleteMarker()" id="Delete" disabled style="font-family:Open Sans Condensed;">Confirm Quary</button>
         <button onclick="deleteMarker()" id="Delete" disabled style="font-family:Open Sans Condensed;">Delete quarry</button>
@@ -64,7 +85,7 @@
         <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button>
       </div>
     </div>
-    
+
     <!-- Image for selected potential quarry -->
     <div class="flex-item column1">
       <img id="quarryImage" src="" style="width:350px;height:350px;">
