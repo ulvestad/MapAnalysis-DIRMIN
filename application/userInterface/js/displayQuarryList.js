@@ -68,6 +68,7 @@ function confirmQuarry(){
 	//A user can't remove/add quarries without selecting row from the list
 	disableButtons(true);
 	updateList();
+	updateLocationsInThreshold(-1);
 }
 //Removes list item from list, and deletes row from DB
 function deleteQuarry(){
@@ -82,6 +83,7 @@ function deleteQuarry(){
 	//A user can't remove/add quarries without selecting row from the list
 	disableButtons(true);
 	updateList();
+	updateLocationsInThreshold(-1);
 }
 
 

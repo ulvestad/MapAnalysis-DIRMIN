@@ -1,8 +1,10 @@
 var slider = document.getElementById('slider');
 //The threshold values that are used by several files in the application
-var lowGlobalThreshold ;
-var highGlobalThreshold;
-
+var lowGlobalThreshold = 0.9;
+var highGlobalThreshold = 1;
+//Runs once to check amount of quarries within threshold and display on button
+var locationsInThreshold = checkQuarryLength(lowGlobalThreshold, highGlobalThreshold);
+document.getElementById("showQuarries").innerHTML = ("Show quarries (" + locationsInThreshold + ")");
 //Creates a new slider with some parameters
 noUiSlider.create(slider, {
 	start: [0.9, 1],
@@ -23,5 +25,11 @@ slider.noUiSlider.on('update', function(){
 })
 //Changes the label on the show quarries button ever time the slider value has changed
 slider.noUiSlider.on('set', function(){
-	document.getElementById("showQuarries").innerHTML = ("Show Quarries (" + checkQuarryLength(lowGlobalThreshold, highGlobalThreshold) + ")");
+	locationsInThreshold = checkQuarryLength(lowGlobalThreshold, highGlobalThreshold);
+	document.getElementById("showQuarries").innerHTML = ("Show quarries (" + locationsInThreshold + ")");
 })
+
+function updateLocationsInThreshold(change){
+	locationsInThreshold += change;
+	document.getElementById("showQuarries").innerHTML = ("Show quarries (" + locationsInThreshold + ")");
+}
