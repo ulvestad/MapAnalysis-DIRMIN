@@ -33,6 +33,7 @@ function openFolder(){
 	chooseFile('#fileDialog');
 }
 
+// Returns the currently selected folder
 function getFolderPath(){
 	if (folderPath == null){
 		return null;
@@ -41,15 +42,22 @@ function getFolderPath(){
 	}
 }
 
-
+// This function is run after a folder has been selected.
+// Gets the selected folder path and launches the map_slicer.py python script
+// that slices the images into 12 new ones, as well as reading all metadata and
+// adding the data to the database
 function preProcessing() {
+	// Gets the selected folder
 	path = getFolderPath();
 	path = path.split("\\").join("/");
 	console.log(path);
+
+	// Reads metadata and add to database
 	getAllxml(path);
+
+	// Begins the process of slicing images
 	console.log("Starting image slicing on " + path);
 	var child = require('child_process').execFile;
-
 	var executablePath = "userInterface/py/dist/map_slicer/map_slicer.exe";
 	parameters = [path];
 	child(executablePath, parameters, function(err, data) {
