@@ -28,13 +28,13 @@ slider.noUiSlider.on('update', function(){
 	locationsInThreshold = checkQuarryLength(lowGlobalThreshold, highGlobalThreshold);
 	document.getElementById("showQuarries").innerHTML = ("Show quarries (" + locationsInThreshold + ")");
 
-	getThresholdQuarries(lowGlobalThreshold, highGlobalThreshold);
+	
 })
 
 //Changes the label on the show quarries button ever time the slider value has changed
-//slider.noUiSlider.on('set', function(){
-	
-//})
+slider.noUiSlider.on('set', function(){
+	getThresholdQuarries(lowGlobalThreshold, highGlobalThreshold);
+})
 
 function updateLocationsInThreshold(change){
 	locationsInThreshold += change;
