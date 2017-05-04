@@ -389,15 +389,16 @@ function updateMarkers(){
 		}, 40);	
 }
 function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
-	var obj = "PossibleLocations"
-	if(obj.checked){
+	var obj = document.getElementById("PossibleLocations"); 
+	if(!obj.checked){
+		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
+	}else{
+		//TODO: change this 
+		
 		google.maps.event.trigger(markers[2][id], 'click', {
 		  	//pretended click trigger event for selected marker 
 		});
 		map.setZoom(13);
-	}else{
-		//TODO: change this 
-		alert("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
 	}
 	
 	
