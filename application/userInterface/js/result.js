@@ -4,7 +4,7 @@
 //VARIOUS VARBIALES DECLARATIONS--------------------------------------------------------------------------------------------
 var map;
 var marker_icon = ["icons/mapMarker.png", "icons/mapMarkerStandard.png","icons/mapMarkerPossbile.png"]
-var markers = [[],[],[]]; //2d array consitiong of knowquarry-markers[0], newquarry-markers[1] and PossibleLocations[2
+var markers = [[],[],[]]; //2d array consitiong of knowquarry-markers[0], newquarry-markers[1] and possible-locations[2]
 var markerSelected;
 var prev_infowindow = false;
 var editing = false;
@@ -14,8 +14,7 @@ var new_lng;
 var numPlottedMarkers = 0;
 var numMarkerTreshhold = 10000; //number of markers allowed on map, due to performance number
 var treshholdSelectedByUser = 100 //getQuarryListLength();
-var low = 0.0; //lower bound for score in sql query
-var high = 1.0; //upper bund for score in sql query
+
 
 //GOOGLE MAPS FUNCTIONS----------------------------------------------------------------------------------------------------
 //Init for map and listener
@@ -91,7 +90,7 @@ function initDb(type, checked) {
 	} else if (type === "NewLocations") {
 			var countPlottedMarkers = numPlottedMarkers
 			var alertUser = false;
-			db.each('SELECT ID as idy, UTMNorth as lat1, UTMSouth as lat2, UTMEast as lng1, UTMWest as lng2, Score as scr FROM '+type+' WHERE Score BETWEEN '+low+' AND '+high+'', function (row) {
+			db.each('SELECT ID as idy, UTMNorth as lat1, UTMSouth as lat2, UTMEast as lng1, UTMWest as lng2, Score as scr FROM '+type+'', function (row) {
 			str = JSON.stringify(row);
 			var id = row.idy;
 			var xy1 = toGeographic(row.lng1, row.lat1);
@@ -119,7 +118,7 @@ function initDb(type, checked) {
 		} else if (type === "PossibleLocations"){
 			var countPlottedMarkers = numPlottedMarkers
 			var alertUser = false;
-			db.each('SELECT ID as idy, UTMNorth as lat1, UTMSouth as lat2, UTMEast as lng1, UTMWest as lng2, Score as scr FROM '+type+' WHERE Score BETWEEN '+low+' AND '+high+'', function (row)  {
+			db.each('SELECT ID as idy, UTMNorth as lat1, UTMSouth as lat2, UTMEast as lng1, UTMWest as lng2, Score as scr FROM '+type+' WHERE Score BETWEEN '+lowGlobalThreshold+' AND '+highGlobalThreshold+' ORDER BY Score DESC', function (row)  {
 			str = JSON.stringify(row);
 			var id = row.idy;
 			var xy1 = toGeographic(row.lng1, row.lat1);
@@ -372,7 +371,10 @@ function markerPos(){
 	return pos;
 }
 function updateMarkers(){
-
+	var obj = document.getElementById("PossibleLocations"); 
+	if(!obj.checked){
+		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
+	}else{
 		//pop all markers and from both possbile and new
 		while(markers[1].length > 0) {
     		var mrk = markers[1].pop();
@@ -387,18 +389,20 @@ function updateMarkers(){
     		initDb("PossibleLocations", true);
 			initDb("NewLocations", true);
 		}, 40);	
+	}
 }
 function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
+
 	var obj = document.getElementById("PossibleLocations"); 
 	if(!obj.checked){
 		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
 	}else{
-		//TODO: change this 
 		
 		google.maps.event.trigger(markers[2][id], 'click', {
 		  	//pretended click trigger event for selected marker 
 		});
 		map.setZoom(13);
+		map.setCenter(markers[2][id].getPosition())
 	}
 	
 	
