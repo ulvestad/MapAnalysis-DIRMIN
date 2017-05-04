@@ -23,9 +23,12 @@ slider.noUiSlider.on('update', function(){
 	highGlobalThreshold = slider.noUiSlider.get()[1];
 	document.getElementById("bothThreshold").innerHTML = slider.noUiSlider.get()[0] + ", " + slider.noUiSlider.get()[1];
 
-	//Looks through the PossibleLocations-table continuously while the slider is dragged. If slow, put these lines into the function below instead
+	//Looks through the PossibleLocations-table continuously while the slider is dragged and updates the list and number
+	//If slow, put these lines into the "set" function below instead
 	locationsInThreshold = checkQuarryLength(lowGlobalThreshold, highGlobalThreshold);
 	document.getElementById("showQuarries").innerHTML = ("Show quarries (" + locationsInThreshold + ")");
+
+	getThresholdQuarries(lowGlobalThreshold, highGlobalThreshold);
 })
 
 //Changes the label on the show quarries button ever time the slider value has changed
