@@ -377,11 +377,9 @@ function updateMarkers(){
 		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
 	}else{
 		//pop all markers and from both possbile and new
-		if(obj2.checked){
 			while(markers[1].length > 0) {
-	    		var mrk = markers[1].pop();
-	    		mrk.setMap(null);
-			}
+	    	var mrk = markers[1].pop();
+	    	mrk.setMap(null);
 		}
 		while(markers[2].length > 0) {
     		var mrk = markers[2].pop();
@@ -390,14 +388,13 @@ function updateMarkers(){
 		//init the markers again with short delay allowing for DB writings to complete
 		setTimeout(function(){
     		initDb("PossibleLocations", true);
-			initDb("NewLocations", true);
+    		if(obj2.checked){
+				initDb("NewLocations", true);
+			}
 		}, 100);
-
-
 	}
 }
 function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
-
 	var obj = document.getElementById("PossibleLocations"); 
 	if(!obj.checked){
 		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
@@ -408,10 +405,7 @@ function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 			google.maps.event.trigger(markers[2][id], 'click', {
 			  	//pretended click trigger event for selected marker 
 			});
-			map.setZoom(13);
-			map.setCenter(markers[2][id].getPosition())
-		
-	}
-	
-	
+			map.setZoom(12);
+			map.setCenter(markers[2][id].getPosition())	
+	}	
 }
