@@ -388,7 +388,9 @@ function updateMarkers(){
 		setTimeout(function(){
     		initDb("PossibleLocations", true);
 			initDb("NewLocations", true);
-		}, 40);	
+		}, 40);
+
+
 	}
 }
 function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
@@ -397,12 +399,15 @@ function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 	if(!obj.checked){
 		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
 	}else{
+			if(markers[2].length == 0){
+				return;
+			}
+			google.maps.event.trigger(markers[2][id], 'click', {
+			  	//pretended click trigger event for selected marker 
+			});
+			map.setZoom(13);
+			map.setCenter(markers[2][id].getPosition())
 		
-		google.maps.event.trigger(markers[2][id], 'click', {
-		  	//pretended click trigger event for selected marker 
-		});
-		map.setZoom(13);
-		map.setCenter(markers[2][id].getPosition())
 	}
 	
 	
