@@ -56,11 +56,11 @@ function updateList(){
 //Also displays the connected quarry image and enables buttons if disabled.
 function setClickedID (id){
 	//If the last item in the list is removed, no more actions. 
+	disableButtons(false);
 	if (quarryList.length == 0){
 		disableButtons(true);
 		return;
 	}
-	disableButtons(false);
 	clickedID = id;
 	//temporarily changes a paragraph to make testing easier
 	document.getElementById("selectedListItemDisplay").innerHTML = "Selected list-item: " + clickedID

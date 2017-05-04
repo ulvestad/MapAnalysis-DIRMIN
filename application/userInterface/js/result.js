@@ -164,15 +164,18 @@ function writeToDB() {
 function plotMarker(type, checked, id, lat, lng, scr){
 	var stack; //which stack in markers array (eg. knowquarries[0] or newquarries[1])
 	var micon; //array for diffrent marker icons depending on known/new
+	var zindex;//zindex of markers, from know->new->pos
 		if(type == "KnownLocations"){
 			micon = marker_icon[0]
 			stack = 0;
 		}else if (type == "NewLocations"){
 			micon = marker_icon[2]
 			stack = 1;
+			zindex = 400;
 		} else if (type == "PossibleLocations") {
 			micon = marker_icon[1]
 			stack = 2;
+			zindex = 500;
 		};
 	//user has checked box -> plot marker
 	if (checked){
@@ -180,7 +183,8 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		var marker = new google.maps.Marker({
 	        position: new google.maps.LatLng(lat, lng),
 	        map: map,
-	        icon: micon
+	        icon: micon,
+	        zIndex: zindex
 	    });
 		//create content of marker
 	    var content = '<div>' +
