@@ -23,7 +23,7 @@ function getThresholdQuarries(low, high){
 	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
 	var db = new sql.Database(bfr);
 	//Query to select x number of rows from the DB based on low and high threshold
-	db.each('SELECT ID as idy, Score as score, FileName as filename FROM PossibleLocations WHERE Score BETWEEN '+low+' AND '+high+' ORDER BY Score', function (row) {
+	db.each('SELECT ID as idy, Score as score, FileName as filename FROM PossibleLocations WHERE Score BETWEEN '+low+' AND '+high+' ORDER BY Score DESC', function (row) {
 		//Get all vars from each DB row
 		str = JSON.stringify(row);
 		var id = row.idy;
