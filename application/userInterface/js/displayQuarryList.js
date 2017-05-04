@@ -8,6 +8,7 @@ var quarryList = [];
 //List of filenames for the data items
 var filenames = [];
 
+
 //Run when user refresh list (refresh from DB, show Quarries button)
 function getThresholdQuarries(low, high){
 	//reset lists
@@ -54,6 +55,8 @@ function setClickedID (id){
 	//Try to display image, if it doesn't exist, return error
 	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
 	console.log("Selected quarry ID: " + clickedID)
+	whenMarkerClickedInListShowInfoWindowOnThatMarker(id);
+	
 }
 function confirmQuarry(){
 	//Updates list

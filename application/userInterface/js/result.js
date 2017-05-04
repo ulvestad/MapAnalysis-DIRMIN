@@ -386,3 +386,11 @@ function updateMarkers(){
 			initDb("NewLocations", true);
 		}, 40);	
 }
+function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
+
+	var pos = 0;
+	for(var i = 0, len = markers[2].length; i < len; i++) {
+        console.log(markers[2][i])
+        console.log(markers[2][i])
+	}
+}
