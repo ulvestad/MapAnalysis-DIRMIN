@@ -391,7 +391,7 @@ function updateMarkers(){
 		setTimeout(function(){
     		initDb("PossibleLocations", true);
 			initDb("NewLocations", true);
-		}, 80);
+		}, 100);
 
 
 	}
