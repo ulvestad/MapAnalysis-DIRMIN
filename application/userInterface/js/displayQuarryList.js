@@ -23,7 +23,7 @@ function getThresholdQuarries(low, high){
 	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
 	var db = new sql.Database(bfr);
 	//Query to select x number of rows from the DB based on low and high threshold
-	db.each('SELECT ID as idy, Score as score, FileName as filename FROM PossibleLocations WHERE Score BETWEEN '+low+' AND '+high+'', function (row) {
+	db.each('SELECT ID as idy, Score as score, FileName as filename FROM PossibleLocations WHERE Score BETWEEN '+low+' AND '+high+' ORDER BY Score', function (row) {
 		//Get all vars from each DB row
 		str = JSON.stringify(row);
 		var id = row.idy;
@@ -39,6 +39,7 @@ function getThresholdQuarries(low, high){
 	//Enables add/delete buttons
 	disableButtons(false);
 	setClickedID(quarryList[0]);
+	updateMarkers();
 }
 //Creates the actual visible list
 function updateList(){
@@ -49,7 +50,6 @@ function updateList(){
 	  rows_in_block: 50
 	});
 }
-
 
 
 //On list item click, gets the id of that item and saves it.
@@ -66,7 +66,7 @@ function setClickedID (id){
 	document.getElementById("selectedListItemDisplay").innerHTML = "Selected list-item: " + clickedID
 	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
 	console.log("Selected quarry ID: " + clickedID)
-	whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID));
+	whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID), quarryList);
 	
 
 }
