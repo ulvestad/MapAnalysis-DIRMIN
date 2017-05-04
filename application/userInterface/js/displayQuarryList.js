@@ -37,8 +37,8 @@ function getThresholdQuarries(low, high){
 	//Creates the actual visible list
 	updateList();
 	//Enables add/delete buttons
-	disableButtons(false);
-	setClickedID(quarryList[0]);
+	disableButtons(true);
+	//setClickedID(quarryList[0]);
 	updateMarkers();
 }
 //Creates the actual visible list
@@ -60,13 +60,13 @@ function setClickedID (id){
 		disableButtons(true);
 		return;
 	}
-
+	disableButtons(false);
 	clickedID = id;
 	//temporarily changes a paragraph to make testing easier
 	document.getElementById("selectedListItemDisplay").innerHTML = "Selected list-item: " + clickedID
 	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
 	console.log("Selected quarry ID: " + clickedID)
-	whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID), quarryList);
+	whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID));
 	
 
 }
