@@ -372,7 +372,7 @@ function markerPos(){
 }
 function updateMarkers(){
 	var obj = document.getElementById("PossibleLocations");
-	var obj2 = document.getElementById("PossibleLocations");  
+	var obj2 = document.getElementById("NewLocations");  
 	if(!obj.checked){
 		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
 	}else{
@@ -389,6 +389,7 @@ function updateMarkers(){
 		setTimeout(function(){
     		initDb("PossibleLocations", true);
     		if(obj2.checked){
+    			console.log("sdsd")
 				initDb("NewLocations", true);
 			}
 		}, 100);
@@ -400,12 +401,15 @@ function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
 	}else{
 			if(markers[2].length == 0){
+				console.log(markers[2])
 				return;
 			}
+
 			google.maps.event.trigger(markers[2][id], 'click', {
 			  	//pretended click trigger event for selected marker 
 			});
-			map.setZoom(12);
+			map.setZoom(11);
 			map.setCenter(markers[2][id].getPosition())	
+
 	}	
 }
