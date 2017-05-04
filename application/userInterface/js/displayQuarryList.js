@@ -55,7 +55,8 @@ function setClickedID (id){
 	//Try to display image, if it doesn't exist, return error
 	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
 	console.log("Selected quarry ID: " + clickedID)
-	whenMarkerClickedInListShowInfoWindowOnThatMarker(id);
+
+	whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID));
 	
 }
 function confirmQuarry(){

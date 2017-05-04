@@ -4,7 +4,7 @@
 //VARIOUS VARBIALES DECLARATIONS--------------------------------------------------------------------------------------------
 var map;
 var marker_icon = ["icons/mapMarker.png", "icons/mapMarkerStandard.png","icons/mapMarkerPossbile.png"]
-var markers = [[],[],[]]; //2d array consitiong of knowquarry-markers[0], newquarry-markers[1] and PossibleLocations[2]
+var markers = [[],[],[]]; //2d array consitiong of knowquarry-markers[0], newquarry-markers[1] and PossibleLocations[2
 var markerSelected;
 var prev_infowindow = false;
 var editing = false;
@@ -145,7 +145,9 @@ function initDb(type, checked) {
 			}
 			})
 		}
+		
 		db.close();
+
 	};
 
 //WRITE/UPDATE DATA ON SPECIFIED ROW IN 'NEWLOCATIONS' TABLE--------------------------------------------------------------
@@ -387,10 +389,16 @@ function updateMarkers(){
 		}, 40);	
 }
 function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
-
-	var pos = 0;
-	for(var i = 0, len = markers[2].length; i < len; i++) {
-        console.log(markers[2][i])
-        console.log(markers[2][i])
+	var obj = "PossibleLocations"
+	if(obj.checked){
+		google.maps.event.trigger(markers[2][id], 'click', {
+		  	//pretended click trigger event for selected marker 
+		});
+		map.setZoom(13);
+	}else{
+		//TODO: change this 
+		alert("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
 	}
+	
+	
 }
