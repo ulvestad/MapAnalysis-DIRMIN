@@ -371,14 +371,17 @@ function markerPos(){
 	return pos;
 }
 function updateMarkers(){
-	var obj = document.getElementById("PossibleLocations"); 
+	var obj = document.getElementById("PossibleLocations");
+	var obj2 = document.getElementById("PossibleLocations");  
 	if(!obj.checked){
 		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
 	}else{
 		//pop all markers and from both possbile and new
-		while(markers[1].length > 0) {
-    		var mrk = markers[1].pop();
-    		mrk.setMap(null);
+		if(obj2.checked){
+			while(markers[1].length > 0) {
+	    		var mrk = markers[1].pop();
+	    		mrk.setMap(null);
+			}
 		}
 		while(markers[2].length > 0) {
     		var mrk = markers[2].pop();
@@ -388,7 +391,7 @@ function updateMarkers(){
 		setTimeout(function(){
     		initDb("PossibleLocations", true);
 			initDb("NewLocations", true);
-		}, 40);
+		}, 100);
 
 
 	}
