@@ -7,95 +7,103 @@
 
     <title>Analysis of Map and Satellite Images</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/index.css">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 </head>
 <body>
 
-<!-- Navbar-code -->
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+<!-- NAVBAR-CODE -->
+	<nav class="navbar navbar-inverse" id="navbar">
     <div class="container-fluid">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
+
         </button>
         <a class="navbar-brand" href="index.html">Map Analysis</a>
       </div>
-      <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="index.html" onclick="navbar_open">Home</a></li>
-          <li><a href="resultPage.html" onclick="navbar_open">Confimation</a></li>
-          <li><a href="#">Profile</a></li>
-          <li><a href="#">Help</a></li>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="index.html" onclick="navbar_open">Scan Areas</a></li>
+          <li><a href="resultPage.html" onclick="navbar_open">View Results</a></li>
         </ul>
-        <form class="navbar-form navbar-right">
-          <input type="text" class="form-control" placeholder="Search...">
-        </form>
       </div>
     </div>
   </nav>
+  <!-- END NAVBAR-CODE -->
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-3 col-md-2 sidebar">
-        <ul class="nav nav-sidebar">
-          <li class="active"><a href="index.html">Overview <span class="sr-only">(current)</span></a></li>
-          <li><a href="#"></a></li>
-          <li><a href="#">Analytics</a></li>
-          <li><a href="#">Export</a></li>
-        </ul>
-        <ul class="nav nav-sidebar">
-          <li><a href="">Nav item</a></li>
-          <li><a href="">Nav item again</a></li>
-        </ul>
-      </div>
-  <!-- End Navbar-code -->
 
-  <!-- Document body -->
+
+  <!-- BODY -->
+  <div id="infoBar">
+    <p> Result page - Select quarries and decide if you want to keep them or delete them from the database. Bla bla bla bla user manual shit .. </p>
+  </div>
+
   <div class="flex-container">
-    <!-- Google maps map -->
-		<div class="flex-item column1">
-			<div class="flex-item map" id="map"></div>
-		</div>
 
-    <!-- Results -->
+    <!-- BOX 1: Quarry data_____________________________________________________-->
     <div class="flex-item potentialQuarries">
-      <form>
-  		 	<input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
-  		 	<input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
-  		 	<input onclick="" type="checkbox" id="table3"> Placeholder<br>
-      </form>
-  		 	<input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations"> Possible Locations<br>
-      </form>
+      <input type="range" min="0" max="100" value="50" step="1" />
+      <p>70</p>
+      <button onclick="getThresholdQuarries(0, 1)">Vis quarries (1047)</button>
 
-			<p style="float:left">Quarries</p>
-			<br>
-			<textarea id="editArea" rows="12" cols="45" readonly style= "text-align: left; ">
-			</textarea>
+      <!-- List view for quarries, plz no remove -->
+      <div id="listContainer">
 
+        <div id="scrollArea" class="clusterize-scroll">
+          <ul id="contentArea" class="clusterize-content">
+
+          </ul>
+        </div>
+        <button onclick="nextQuarry()" id="nextQuarry" disabled>Next quarry</button>
+      </div>
+      <!-- _____________________________________ -->
+
+
+      <!-- BUTTONS -->
       <div id="mapButtons" id="left">
-		<!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
-
+        <!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
         <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
-        <button onclick="deleteMarker()" id="Delete" disabled style="font-family:Open Sans Condensed;">Confirm Quary</button>
-        <button onclick="deleteMarker()" id="Delete" disabled style="font-family:Open Sans Condensed;">Delete quarry</button>
-        <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button>
-        <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button>
+        <button onclick="confirmQuarry()" id="Confirm" disabled>Confirm Quary</button>
+        <button onclick="deleteQuarry()" id="Delete" disabled>Delete quarry</button>
+        <!-- <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button> -->
+        <!-- <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button> -->
       </div>
     </div>
 
-    <!-- Image for selected potential quarry -->
+
+    <!-- BOX 2: image for selected quarry ______________________________________ -->
     <div class="flex-item column1">
-      <img id="quarryImage" src="" style="width:350px;height:350px;">
+      <img id="quarryImage" src="" style="width:400px;height:400px;">
     </div>
+
+
+    <!--BOX 3: Google Maps Map (for displaying quary positions) _______________-->
+    <div class="flex-item column1">
+      <!-- GoogleMaps map -->
+      <div class="flex-item map" id="map"></div>
+      <!-- CHECKBOXES -->
+      <form>
+        <input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
+        <input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
+        <input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations"> Possible Locations<br>
+      </form>
+    </div>
+    <!-- END GOOGLE MAPS -->
   </div>
 
 
+  <!-- This textarea is only here to prevent a current bug -->
+  <textarea id="editArea" rows="12" cols="45" readonly></textarea>
+
+
+
+
+
+<!-- SCRIPTS ETC. -->
 <!-- Needed to solve jquery issue  -->
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 
@@ -109,7 +117,6 @@
 
 
 <!-- Javascript files -->
-<script src="js/staticAPIDownload.js"></script>
 <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
 </script>
@@ -120,6 +127,7 @@
 <script src="js/result.js"></script>
 <script src="js/displayImage.js"></script>
 <script src="js/moveFiles.js"></script>
+<script src="js/displayQuarryList.js"></script>
 
 </body>
 </html>
