@@ -175,7 +175,6 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		};
 	//user has checked box -> plot marker
 	if (checked){
-		console.log("sasdadasdsadsa!!!!!"+ stack)
 		//create new marker
 		var marker = new google.maps.Marker({
 	        position: new google.maps.LatLng(lat, lng),
@@ -371,12 +370,19 @@ function markerPos(){
 	return pos;
 }
 function updateMarkers(){
-		console.log(markers[1].length)
-		console.log(markers[2].length)
-		
-		//TODO: pop all markers and from both lists and init them again
 
-
-		//initDb("PossbileLocations", true);
-		//initDb("NewLocations", true);
+		//pop all markers and from both possbile and new
+		while(markers[1].length > 0) {
+    		var mrk = markers[1].pop();
+    		mrk.setMap(null);
+		}
+		while(markers[2].length > 0) {
+    		var mrk = markers[2].pop();
+    		mrk.setMap(null);
+		}
+		//init the markers again with short delay allowing for DB writings to complete
+		setTimeout(function(){
+    		initDb("PossibleLocations", true);
+			initDb("NewLocations", true);
+		}, 40);	
 }
