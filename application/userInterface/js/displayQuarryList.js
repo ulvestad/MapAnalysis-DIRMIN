@@ -9,6 +9,7 @@ var quarryList = [];
 //List of filenames for the data items
 var filenames = [];
 
+
 //Run when user refresh list (refresh from DB, show Quarries button)
 function getThresholdQuarries(low, high){
 	//reset lists
@@ -64,6 +65,10 @@ function setClickedID (id){
 	//temporarily changes a paragraph to make testing easier
 	document.getElementById("selectedListItemDisplay").innerHTML = "Selected list-item: " + clickedID
 	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
+	console.log("Selected quarry ID: " + clickedID)
+	whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID));
+	
+
 }
 //Removes list item from list, and moves row from one DB table to another
 function confirmQuarry(){
@@ -77,6 +82,7 @@ function confirmQuarry(){
 	addDBRow();
 	removeDBRow();	
 	updateList();
+	updateMarkers();
 	//Decreases number of locations in threshhold by 1 (only the display num)
 	updateLocationsInThreshold(-1);
 	//Sets the nextClickedID to the one assigned at the start of the function
@@ -90,6 +96,7 @@ function deleteQuarry(){
 	quarryList.splice(quarryList.indexOf(clickedID), 1);
 	removeDBRow();
 	updateList();
+	updateMarkers();
 	updateLocationsInThreshold(-1);
 	setClickedID(nextClickedID);
 }

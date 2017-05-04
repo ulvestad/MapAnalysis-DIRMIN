@@ -4,7 +4,7 @@
 //VARIOUS VARBIALES DECLARATIONS--------------------------------------------------------------------------------------------
 var map;
 var marker_icon = ["icons/mapMarker.png", "icons/mapMarkerStandard.png","icons/mapMarkerPossbile.png"]
-var markers = [[],[],[]]; //2d array consitiong of knowquarry-markers[0], newquarry-markers[1] and PossibleLocations[2]
+var markers = [[],[],[]]; //2d array consitiong of knowquarry-markers[0], newquarry-markers[1] and PossibleLocations[2
 var markerSelected;
 var prev_infowindow = false;
 var editing = false;
@@ -14,7 +14,7 @@ var new_lng;
 var numPlottedMarkers = 0;
 var numMarkerTreshhold = 10000; //number of markers allowed on map, due to performance number
 var treshholdSelectedByUser = 100 //getQuarryListLength();
-var low = 0.6; //lower bound for score in sql query
+var low = 0.0; //lower bound for score in sql query
 var high = 1.0; //upper bund for score in sql query
 
 //GOOGLE MAPS FUNCTIONS----------------------------------------------------------------------------------------------------
@@ -145,7 +145,9 @@ function initDb(type, checked) {
 			}
 			})
 		}
+		
 		db.close();
+
 	};
 
 //WRITE/UPDATE DATA ON SPECIFIED ROW IN 'NEWLOCATIONS' TABLE--------------------------------------------------------------
@@ -221,7 +223,6 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		        	}
 		        	//exit edit ->  disable buttons for editing and set varaibles/textarea to "not editing"
 		        	setTextToArea("", false);
-		        	disableButtons();
 		        	changeMarkerIcon(false);
 		        	editing = false;
 		        }
@@ -233,11 +234,6 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		    };
 		})(marker,content,infowindow));
 		//push markers to array
-		/*markers[stack].push(marker);
-		if (markers[stack].length > 500){
-			markers[stack].length = 500;
-		}*/
-		
 		markers[stack].push(marker);
 		//init listener for infowwindow close click
 		google.maps.event.addListener(infowindow,'closeclick',function(){
@@ -245,7 +241,6 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		        		return;
 		        }
 		        //various tasks for infowindow close
-		   		disableButtons();
 		   		setTextToArea("",false);
 		   		changeMarkerIcon(false);
 		   		editing = false;
@@ -263,7 +258,6 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		markers[stack].forEach(function(x){
 			mrk = markers[stack].pop();
 			mrk.setMap(null);
-	       	disableButtons();
 	       	setTextToArea("",false);
 	       	changeMarkerIcon(false);
 	       	editing = false;
@@ -307,13 +301,7 @@ function finishEdit(){
 		return;
     }
 }
-//DISABLE BUTTONS USED FOR EDITING ACTIONS -----------------------------------------------------------------------------
-//diables buttons 
-function disableButtons(){
-		//document.getElementById("Edit").disabled = true;
-	    //document.getElementById("Delete").disabled = true;
-	    //document.getElementById("Finish").disabled = true;
-}
+
 //SET TEXT ON TEXTAREA TO ARGUMENT 1 -----------------------------------------------------------------------------------
 //appending or overwites
 function setTextToArea(text,append){
@@ -382,4 +370,35 @@ function markerPos(){
         }
 	}
 	return pos;
+}
+function updateMarkers(){
+
+		//pop all markers and from both possbile and new
+		while(markers[1].length > 0) {
+    		var mrk = markers[1].pop();
+    		mrk.setMap(null);
+		}
+		while(markers[2].length > 0) {
+    		var mrk = markers[2].pop();
+    		mrk.setMap(null);
+		}
+		//init the markers again with short delay allowing for DB writings to complete
+		setTimeout(function(){
+    		initDb("PossibleLocations", true);
+			initDb("NewLocations", true);
+		}, 40);	
+}
+function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
+	var obj = "PossibleLocations"
+	if(obj.checked){
+		google.maps.event.trigger(markers[2][id], 'click', {
+		  	//pretended click trigger event for selected marker 
+		});
+		map.setZoom(13);
+	}else{
+		//TODO: change this 
+		alert("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
+	}
+	
+	
 }
