@@ -205,7 +205,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		       	//console.log("converted :" + quarryList[pos-1])
 		       	//console.log("quarrlist :" + quarryList)
 		       	//console.log("markers :" + markers[2].toString())
-		       	if(!clickedOnList){
+		       	if(!clickedOnList && type == "PossibleLocations"){
 		       		setClickedIDWhenPretendTriggered(quarryList[pos-1])
 		       	}
 		       	clickedOnList = false;
@@ -411,10 +411,10 @@ function updateMarkers(){
 		setTimeout(function(){
     		initDb("PossibleLocations", true);
     		if(obj2.checked){
-    			console.log("sdsd")
 				initDb("NewLocations", true);
 			}
-		}, 100);
+			if (clickedID != 0){ whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID)) }
+		}, 130);
 	}
 }
 
@@ -426,7 +426,6 @@ function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
 	}else{
 			if(markers[2].length == 0){
-				console.log(markers[2])
 				return;
 			}
 
