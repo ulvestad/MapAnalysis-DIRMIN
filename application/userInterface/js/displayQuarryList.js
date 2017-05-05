@@ -11,6 +11,7 @@ var filenames = [];
 //boolean for clicked on list
 var clickedOnList = false;
 
+//-------------------------------------INIT ON SLIDER CHANGE--------------------------------------------
 //Run when user refresh list (refresh from DB, show Quarries button)
 function getThresholdQuarries(low, high){
 	//reset lists
@@ -52,7 +53,7 @@ function updateList(){
 	});
 }
 
-
+//-----------------------------SET CLICKED ID ON LIST/MARKER SELECT------------------------------------
 //On list item click, gets the id of that item and saves it.
 //Also displays the connected quarry image and enables buttons if disabled.
 function setClickedID (id){
@@ -69,9 +70,8 @@ function setClickedID (id){
 	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
 	console.log("Selected quarry ID: " + clickedID)
 	whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID));
-	
-
 }
+//-----------------------------------------------------------------------------------------------------
 
 function setClickedIDWhenPretendTriggered (id){
 	//If the last item in the list is removed, no more actions. 
@@ -85,12 +85,11 @@ function setClickedIDWhenPretendTriggered (id){
 	document.getElementById("selectedListItemDisplay").innerHTML = "Selected list-item: " + clickedID
 	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
 	console.log("Selected quarry ID: " + clickedID)
-	
 }
 
+//---------------------------------------DELETE/CONFIRM QUARRY-------------------------------------------------
 //Removes list item from list, and moves row from one DB table to another
 function confirmQuarry(){
-
 	//Saves the id for the next iteration
 	assignNextClickedID();
 	//Removes the clicked list item from the list
@@ -107,6 +106,7 @@ function confirmQuarry(){
 	//Sets the nextClickedID to the one assigned at the start of the function
 	setClickedID(nextClickedID);
 }
+
 //Just like confirmQuarry, but deletes instead of moving the DB row
 function deleteQuarry(){
 	assignNextClickedID();
@@ -119,6 +119,8 @@ function deleteQuarry(){
 	updateLocationsInThreshold(-1);
 	setClickedID(nextClickedID);
 }
+//------------------------------------------------------------------------------------------------------
+
 //Run when a line is deleted. This automatically assigns a new line
 function assignNextClickedID(){
 	//If not at end of list
@@ -169,6 +171,8 @@ function disableButtons(disable){
 	document.getElementById("nextQuarry").disabled = disable;
 	document.getElementById("prevQuarry").disabled = disable;
 }
+
+//--------------------------------------DELETE/ADD DB ROWS------------------------------------------
 function addDBRow(){
 	//DB Row deletion + Row add (DB row move)
 	//Have to get all data from DB row in order to add it to another table
@@ -207,6 +211,7 @@ function removeDBRow(){
 	var spawn = require("child_process").spawn; //spawns a childs proc.
 	var child = spawn('python',["userInterface/py/deleteRowDB.py", "PossibleLocations", clickedID]); //calls a python script with parameters
 }
+//----------------------------------------------------------------------------------------------------
 
 function getID(){
 	return clickedID;
