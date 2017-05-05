@@ -6,10 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Analysis of Map and Satellite Images</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/navbar.css">
+    <!--<link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navbar.css">-->
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/index.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../js/ie-emulation-modes-warning.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"></script>
+
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
 
     <!-- Needed to select folders n' shit -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
@@ -18,49 +31,88 @@
 
 
 <body>
-  <nav class="navbar navbar-inverse" id="navbar">
+  <!-- The top-navbar for the application, this is the same for all .html pages -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">Map Analysis</a>
+        <a class="navbar-brand" href="index.html">Map Analysis DIRMIN</a>
       </div>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav">
-          <li><a href="index.html" onclick="navbar_open">Scan Areas</a></li>
-          <li><a href="resultPage.html" onclick="navbar_open">View Results</a></li>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">User guide lines</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+          <li class="active"><a href="index.html">Initializing<span class="sr-only">(current)</span></a></li>
+          <li><a href="resultPage.html">Quarry confirmation</a></li>
+          <li><a href="pages/tables.html">Tables</a></li>
+          <li><a href="#">Statistics</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1 class="page-header">Dashboard</h1>
+        <div class="row placeholders">
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <button onclick="openFolder()" class="button img-responsive"></button>
+            <h4>Preprocessing</h4>
+            <span class="text-muted">Select a folder to start preprocessing</span>
+          </div>
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <button onclick="launchProgram()" class="button img-responsive"></button>
+            <h4>Scan folder</h4>
+            <span class="text-muted">Scan the content of the folder to search for new quarries</span>
+          </div>
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <button onclick="openCSVFile()" class="button img-responsive"></button>
+            <h4>Update .csv file</h4>
+            <span class="text-muted">Update the .csv file with the new quarry locations</span>
+          </div>
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <button onclick="exportNewLocaitonsToCSV()" class="button img-responsive"></button>
+            <h4>Export new results</h4>
+            <span class="text-muted"></span>
+          </div>
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <button onclick="wipeDbAndMaps()" class="button button 5 img-responsive"></button>
+            <h4>Reset database</h4>
+            <span class="text-muted"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+    <!-- The content of the index.html page -->
 		<div class="flex-container">
-
-			<div class="flex-item description">
-			<p>Select the area to scan for image colllection, using two markers,
-        by clicking on the map. A box wil appear once both markers are placed showing the seleced area.
-        (NB! First markes should always be to the top left).</p>
-			</div>
 			<div class="flex-item column1">
 				<!-- <form>
 					<div id="startXY">
-
 						<p>Start (X,Y)</p>
 						Latitude start: <input style="font-family:Open Sans Condensed;" type="number" id= "xPos1" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="63.431925518951694"><br>
 						Longitude start: <input style="font-family:Open Sans Condensed;" type="number" id= "yPos1" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="10.367145538330078"><br>
 					</div>
 					<div id="endXY">
-
 						<p>End (X,Y)</p>
 						Latitude end: <input  style="font-family:Open Sans Condensed;" type="number" id= "xPos2" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="63.41748773087018"><br>
 						Longitude end: <input style="font-family:Open Sans Condensed;" type="number" id= "yPos2" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="10.413494110107422"><br>
 					</div>
 				</form> -->
 
+        <!-- BUTTONS for the page -->
 				<div class="flex-item scanButtons" id="scanButtons">
 					<!--<button onclick="scanArea(1)" style="font-family:Open Sans Condensed;">Download maps (Start, End)</button> -->
           <textarea rows="1" cols="30" readonly id="folderPathSelected" style = "height:20px; overflow:hidden; font-size: 11px ">
@@ -75,13 +127,13 @@
 					<p id="showCoordinates"></p>
 					<p id="showMessage"></p>
 				</div>
-				<div class="flex-item mapbuttons" id="mapButtons" id="left"> <!-- Buttons for selecting area to scan, not needed anymore -->
-					<!--<button onclick="scanArea(2)" style="font-family:Open Sans Condensed;">Get images from selected area</button>-->
-					<!--<button onclick="removeMarkers()" style="font-family:Open Sans Condensed;">Remove markers </button>-->
-				</div>
+        <!-- END BUTTONS -->
+
 				<!-- Removed Google Maps map-box -->
 				<!-- <div class="flex-item map" id="map"></div> -->
 			</div>
+
+      <!-- Text field (output field) for the page -->
       <div class="flex-item quarryLocation">
         <p style="float:left">Quarry Locations</p>
         <button style="margin-top:15px; margin-left:90px"><img src="icons/refresh.png" width="12px" heigth="12px" alt="refresh" style="margin-top:3px; overflow:hidden"></button>
@@ -91,6 +143,7 @@
       </div>
 		</div>
 
+<!-- EVERYTHING SCRIPT-RELATED -->
 <!-- Needed to select folders or some shit -->
 <input style="display:none;" id="fileDialog" type="file" webkitdirectory />
 <input style="display:none;" id="csvFile" type="file"  />
@@ -112,6 +165,20 @@
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
 </script> -->
 
+
+<script src="js/sortTable.js"></script>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+<script src="js/stylejs/sortTable.js"></script>
+<script src="js/stylejs/searchInTable.js"></script>
+<script src="js/stylejs/initializeTable.js"></script>
+
+<!-- All javascript file inclusions -->
 <script src="js/launchEXE.js"></script>
 <script src="js/navbar.js"></script>
 <script src="js/updateDBSelectFile.js"></script>
@@ -120,7 +187,6 @@
 <script src="js/moveFiles.js"></script>
 <script src="js/xmlReader.js"></script>
 <script src="js/resetDB.js"></script>
-
 
 </body>
 </html>
