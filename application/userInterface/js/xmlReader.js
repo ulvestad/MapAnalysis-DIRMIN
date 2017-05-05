@@ -5,30 +5,25 @@ var path = require('path');
 // In newer Node.js versions where process is already global this isn't necessary.
 var process = require( "process" );
 var allQuarryNames = [];
+var folderPath = "";
+var xmlFileIndexes = [];
+var scannedXmlNum = 0;
 
 // ----------------------- INIT -------------------------
 //Function to create file objects from the metadata directory, xmlNum = the xml file to be read
-function metadataFile(files, xmlNum, folderPath) {
-
-  //creating all files in the metadata folder
-  var file = new File([""], files[0,xmlNum], {path: folderPath + '/' + files[0,xmlNum]});
-  //console.log(file);
-  url = folderPath + '/' + file.name;
-  //console.log(url);
-
-  //Creating HttpRequest for the specified file
-  files = new XMLHttpRequest();
-  //console.log(files);
-  files.open("GET", url, true);
-  //Checking if request is good, and sending xml file to xmlparser to parse the file
-  files.onreadystatechange = function () {
-    //console.log("onreadystatechange is run")
-    if (files.readyState == 4 && files.status == 200) {
-      //console.log("if sentence completed")
-      xmlParserAndWriter(files);
+function metadataFile(xmlNum) {
+  //Url to next XML-file
+  url = folderPath + '\\' + files[xmlNum];
+  //HttpRequest for file
+  tempfiles = new XMLHttpRequest();
+  tempfiles.open("GET", url, true);
+  //request good?, send xml file to xmlparser
+  tempfiles.onreadystatechange = function () {
+    if (tempfiles.readyState == 4 && tempfiles.status == 200) {
+      xmlParserAndWriter(tempfiles);
     }
   }
-  files.send();
+  tempfiles.send();
 }
 
 
@@ -36,7 +31,6 @@ function metadataFile(files, xmlNum, folderPath) {
 {
     document.body.removeChild(event.target);
 }*/
-
 
 //function to fetch coordinates and filename, parameter is xmlfile. Also runs py-file which writes to DB
 function xmlParserAndWriter(xml) {
@@ -46,7 +40,7 @@ function xmlParserAndWriter(xml) {
   var breakFunc = false;
   xmlDoc = xml.responseXML;
 
-  //Coordiantes for the original unsliced image
+  //Coordiantes for xml-unsliced image
   east = parseInt(xmlDoc.getElementsByTagName("eastBP")[0].childNodes[0].nodeValue);
   north = parseInt(xmlDoc.getElementsByTagName("northBP")[0].childNodes[0].nodeValue);
   south = parseInt(xmlDoc.getElementsByTagName("southBP")[0].childNodes[0].nodeValue);
@@ -61,9 +55,7 @@ function xmlParserAndWriter(xml) {
   Y1 = height/3;
   //Filename without file ending (needed to add slice-num to end of filename)
   tempFilename = filename.split('.jpg')
-  console.log("XML-filename: " , filename)
-  console.log("E:", east, "N:", north, "S:", south, "W:", west )
-  console.log("--------------SLICING IMAGE--------------")  
+  console.log(filename, ", E:", east, "N:", north, "S:", south, "W:", west )
   
   //Loops through each image-coordinate 12 times and creates correct coordinates+filename for each sliced image
   for (i=0; i<3; i++) {
@@ -83,18 +75,22 @@ function xmlParserAndWriter(xml) {
           return;
         }
       });
-      //Breaks the entire function if there's a duplicate
       if (breakFunc){
-        return;
+        return; //Breaks the entire function if there's a duplicate
       }
       //------------------------------------PYTHON FILE EXECUTION (SQL)------------------------------------------
       //Creates childProcess of pythonfile which saves this to potentialQuarries
-      var spawn  = require("child_process").spawn; //spawns a childs proc.
-      var child = spawn('python',["userInterface/py/XMLupdateDB.py", finalFilename, 33, west + ((j+1) * X1), north - (i * Y1), north - ((i+1) * Y1), west + (j * X1)]);
+      var spawnSync  = require("child_process").spawnSync; //spawns a childs proc.
+      var child = spawnSync('python',["userInterface/py/XMLupdateDB.py", finalFilename, 33, west + ((j+1) * X1), north - (i * Y1), north - ((i+1) * Y1), west + (j * X1)]);
       //var child = spawn('python',["userInterface/py/XMLupdateDB.py", filename, 33, east, north, south, west]);
-      
     }
   }
+//Run this inside an event listener which waits for the 12 python processes to finish, unless you want 1400 python processes running at once
+scannedXmlNum += 1;
+if (scannedXmlNum < xmlFileIndexes.length) {
+  metadataFile(xmlFileIndexes[scannedXmlNum]);
+}
+
 
   /*var textToSave = xmlData;
   var textToSaveAsBlob = new Blob([textToSave], {type:"text/plain"});
@@ -114,24 +110,24 @@ function xmlParserAndWriter(xml) {
 // -------------------------------------XML FILE ITERATION LOOP-------------------------------------------------
 //Runs a getXMLfile-function once for each XML-file in the specified folder
 function getAllxml(folderPath){
-  var files = fs.readdirSync(folderPath);
+  xmlFileIndexes = [];
+  files = fs.readdirSync(folderPath);
+  folderPath = folderPath;
+  
   fs.readdir( folderPath, function( err, files ) {
     if( err ) {
       console.error( "Could not list the directory.", err );
       process.exit( 1 );
     } 
-    //For each file in the folder:
-    files.forEach( function( file, index ) {
-      extension = file.split(".")
-      //if (path.extname(file) != '.xml'){
-      if (extension[extension.length - 1] != "xml") {
-        //console.log('Not a xml');
-        return;
-      }
-      //runs the getXML-function
-      metadataFile(files, index, folderPath);
-     });
   });
+  //For each file in the folder:
+  for(x=0; x<files.length; x++){
+    extension = files[x].split(".")
+    if (extension[extension.length - 1] === "xml") {
+      xmlFileIndexes.push(x);
+    }
+  };
+  metadataFile(xmlFileIndexes[0]);
 }
 
 function getAllPQNames(){
