@@ -21,7 +21,7 @@ function initMap() {
 	//Load 'map' utilizing google map api
 	var middle_norway = {lat: 65.14611484756372, lng: 13.18359375};
 	map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 4,
+		zoom: 12,
 		center: middle_norway,
 		streetViewControl: false,
 		clickableIcons: false
@@ -413,7 +413,11 @@ function updateMarkers(){
     		if(obj2.checked){
 				initDb("NewLocations", true);
 			}
-			if (clickedID != 0){ whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID)) }
+			if (clickedID != 0){
+				whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID));
+			}if(){
+				map.setZoom(11);
+			}
 		}, 130);
 	}
 }
@@ -432,7 +436,7 @@ function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 			google.maps.event.trigger(markers[2][id], 'click', {
 		  	//pretended click trigger event for selected marker 
 			});
-			map.setZoom(11);
+			//map.setZoom(11);
 			map.setCenter(markers[2][id].getPosition())	
 
 	}	
