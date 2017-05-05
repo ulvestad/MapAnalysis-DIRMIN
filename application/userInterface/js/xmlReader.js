@@ -4,7 +4,9 @@ var mv = require('mv');
 var path = require('path');
 // In newer Node.js versions where process is already global this isn't necessary.
 var process = require( "process" );
+var allQuarryNames = [];
 
+// ----------------------- INIT -------------------------
 //Function to create file objects from the metadata directory, xmlNum = the xml file to be read
 function metadataFile(files, xmlNum, folderPath) {
 
@@ -38,7 +40,10 @@ function metadataFile(files, xmlNum, folderPath) {
 
 //function to fetch coordinates and filename, parameter is xmlfile. Also runs py-file which writes to DB
 function xmlParserAndWriter(xml) {
+  //Fetches all rows from PossibleQuarries, so the program can loop through it later
+  getAllPQNames();
   var east, west, north, south, i, xmlDoc;
+  var breakFunc = false;
   xmlDoc = xml.responseXML;
 
   //Coordiantes for the original unsliced image
@@ -60,7 +65,7 @@ function xmlParserAndWriter(xml) {
   console.log("E:", east, "N:", north, "S:", south, "W:", west )
   console.log("--------------SLICING IMAGE--------------")  
   
-  //Loops through each image 12 times and creates correct coordinates+filename for each sliced image
+  //Loops through each image-coordinate 12 times and creates correct coordinates+filename for each sliced image
   for (i=0; i<3; i++) {
     for(j=0; j<4; j++) {
       if ((j+4*i) < 10){
@@ -71,6 +76,19 @@ function xmlParserAndWriter(xml) {
       }
       console.log("E:", west + ((j+1) * X1), "N:", north - (i * Y1), "S:", north - ((i+1) * Y1), "W:", west + (j * X1));
 
+      //checks if current image already is in DB
+      allQuarryNames.forEach(function(x){
+        if (finalFilename === x){
+          console.log("Dupliace found, these 12 coordinates will not be saved.");
+          breakFunc = true;
+          return;
+        }
+      });
+      //Breaks the entire function if there's a duplicate
+      if (breakFunc){
+        return;
+      }
+      //------------------------------------PYTHON FILE EXECUTION (SQL)------------------------------------------
       //Creates childProcess of pythonfile which saves this to potentialQuarries
       var spawn  = require("child_process").spawn; //spawns a childs proc.
       var child = spawn('python',["userInterface/py/XMLupdateDB.py", finalFilename, 33, west + ((j+1) * X1), north - (i * Y1), north - ((i+1) * Y1), west + (j * X1)]);
@@ -94,6 +112,7 @@ function xmlParserAndWriter(xml) {
 
   downloadLink.click();*/
 }
+// -------------------------------------XML FILE ITERATION LOOP-------------------------------------------------
 //Runs a getXMLfile-function once for each XML-file in the specified folder
 function getAllxml(folderPath){
   var files = fs.readdirSync(folderPath);
@@ -114,4 +133,20 @@ function getAllxml(folderPath){
       metadataFile(files, index, folderPath);
      });
   });
+}
+
+function getAllPQNames(){
+  var fs = require('fs')
+  var sql = require('sql.js')
+  var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
+  var db = new sql.Database(bfr);
+  allQuarryNames = [];
+
+  //Query to select x number of rows from the DB based on low and high threshold
+  db.each('SELECT FileName as fn FROM PossibleLocations', function (row) {
+    str = JSON.stringify(row);
+    var fn = row.fn;
+    allQuarryNames.push(fn);
+  })
+  db.close();
 }
