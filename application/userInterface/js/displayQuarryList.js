@@ -8,7 +8,8 @@ var data = [];
 var quarryList = [];
 //List of filenames for the data items
 var filenames = [];
-
+//boolean for clicked on list
+var clickedOnList = false;
 
 //Run when user refresh list (refresh from DB, show Quarries button)
 function getThresholdQuarries(low, high){
@@ -56,6 +57,7 @@ function updateList(){
 //Also displays the connected quarry image and enables buttons if disabled.
 function setClickedID (id){
 	//If the last item in the list is removed, no more actions. 
+	clickedOnList = true;
 	disableButtons(false);
 	if (quarryList.length == 0){
 		disableButtons(true);
@@ -70,8 +72,25 @@ function setClickedID (id){
 	
 
 }
+
+function setClickedIDWhenPretendTriggered (id){
+	//If the last item in the list is removed, no more actions. 
+	disableButtons(false);
+	if (quarryList.length == 0){
+		disableButtons(true);
+		return;
+	}
+	clickedID = id;
+	//temporarily changes a paragraph to make testing easier
+	document.getElementById("selectedListItemDisplay").innerHTML = "Selected list-item: " + clickedID
+	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
+	console.log("Selected quarry ID: " + clickedID)
+	
+}
+
 //Removes list item from list, and moves row from one DB table to another
 function confirmQuarry(){
+
 	//Saves the id for the next iteration
 	assignNextClickedID();
 	//Removes the clicked list item from the list
@@ -109,6 +128,7 @@ function assignNextClickedID(){
 		//If at end of list, assign next id as previous line in list instead of next
 		nextClickedID = quarryList[quarryList.indexOf(clickedID)-1];
 	}
+	
 }
 //Only used to navigate down on the list (with the button)
 function nextQuarry(){
@@ -186,4 +206,8 @@ function removeDBRow(){
 	//delete
 	var spawn = require("child_process").spawn; //spawns a childs proc.
 	var child = spawn('python',["userInterface/py/deleteRowDB.py", "PossibleLocations", clickedID]); //calls a python script with parameters
+}
+
+function getID(){
+	return clickedID;
 }
