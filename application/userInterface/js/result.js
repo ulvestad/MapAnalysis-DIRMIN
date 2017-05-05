@@ -15,7 +15,6 @@ var numPlottedMarkers = 0;
 var numMarkerTreshhold = 10000; //number of markers allowed on map, due to performance number
 var treshholdSelectedByUser = 100 //getQuarryListLength();
 
-
 //GOOGLE MAPS FUNCTIONS----------------------------------------------------------------------------------------------------
 //Init for map and listener
 function initMap() {
@@ -196,6 +195,21 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		    return function() {
 		    	//diplays infowindow to current marker
 		        infowindow.setContent(content);
+		        var pos;
+		       	for(var i = 0, len = markers[2].length; i < len; i++) {
+			        if (markers[2][i] === marker){
+			        	pos = i+1;
+			        }
+				}
+		       	//console.log("marker selectd :" +pos)
+		       	//console.log("converted :" + quarryList[pos-1])
+		       	//console.log("quarrlist :" + quarryList)
+		       	//console.log("markers :" + markers[2].toString())
+		       	if(!clickedOnList){
+		       		setClickedIDWhenPretendTriggered(quarryList[pos-1])
+		       	}
+		       	clickedOnList = false;
+
 		        if(editing){
 		        	infowindow.open(map,markerSelected);
 		        }else{
@@ -411,7 +425,7 @@ function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 			}
 
 			google.maps.event.trigger(markers[2][id], 'click', {
-			  	//pretended click trigger event for selected marker 
+		  	//pretended click trigger event for selected marker 
 			});
 			map.setZoom(11);
 			map.setCenter(markers[2][id].getPosition())	
