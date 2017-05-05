@@ -389,6 +389,9 @@ function markerPos(){
 	}
 	return pos;
 }
+
+//UPDATE POSSIBLE AND NEW MARKERS---------------------------------------------------------------------------------------------------
+//update the possbile and new markers based on actions of the user, eg. delete quarry, confirm etc.
 function updateMarkers(){
 	var obj = document.getElementById("PossibleLocations");
 	var obj2 = document.getElementById("NewLocations");  
@@ -414,6 +417,9 @@ function updateMarkers(){
 		}, 100);
 	}
 }
+
+//WHEN A ITEM IN QUARRY-LIST IS CLICKED GO TO THAT MARKER ---------------------------------------------------------------------------------------------------
+//when a user clicks on a item/possbilequarries is the list, go to that marker by pretending a 'click' event and show infowindow
 function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 	var obj = document.getElementById("PossibleLocations"); 
 	if(!obj.checked){
