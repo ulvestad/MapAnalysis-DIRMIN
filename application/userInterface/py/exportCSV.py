@@ -10,11 +10,13 @@ result_set = cursor.fetchall()
 conn.commit()
 conn.close()
 
-filename = "exportedCSV/NewLocations(" +time.strftime("%d.%m.%Y-%H.%M")+ ").csv"
+path = sys.argv[1] + "/"
+#filename = "exportedCSV/NewLocations(" +time.strftime("%d.%m.%Y-%H.%M")+ ").csv"
+filename = path + "NewLocations(" +time.strftime("%d.%m.%Y-%H.%M")+ ").csv"
 
-dire = os.path.dirname(filename)
-if not os.path.exists(dire):
-    os.makedirs(dire)
+#dire = os.path.dirname(filename)
+#if not os.path.exists(dire):
+#    os.makedirs(dire)
 with open(filename, "wb") as f:
 	csv.excel.delimiter=';'
 	writer = csv.writer(f, dialect=csv.excel)
