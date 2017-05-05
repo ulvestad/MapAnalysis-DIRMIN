@@ -74,7 +74,6 @@ function xmlParserAndWriter(xml) {
       }else{
         finalFilename = tempFilename[0] + "-" + (j+4*i) + ".jpg";
       }
-      console.log("E:", west + ((j+1) * X1), "N:", north - (i * Y1), "S:", north - ((i+1) * Y1), "W:", west + (j * X1));
 
       //checks if current image already is in DB
       allQuarryNames.forEach(function(x){
