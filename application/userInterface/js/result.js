@@ -34,7 +34,7 @@ function initMap() {
     		markerSelected.setPosition(new_LatLng);
     		new_lat = markerSelected.getPosition().lat();
 			new_lng = markerSelected.getPosition().lng();
-    		setTextToArea("\nNew position for selected marker: " +new_LatLng, true);
+    		//setTextToArea("\nNew position for selected marker: " +new_LatLng, true);
 		}
 		else{
 			return;
@@ -213,7 +213,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		        	//document.getElementById("Delete").disabled = false;
 		        	//document.getElementById("Finish").disabled = false;
 		        	markerSelected = marker;
-		        	setTextToArea("Now you can edit the marker selected. To do so, click the \"Edit button\" and select a new position on the map.", false);
+		        	//setTextToArea("Now you can edit the marker selected. To do so, click the \"Edit button\" and select a new position on the map.", false);
 		        	changeMarkerIcon(false);
 		        	editing = false;
 		        }
@@ -225,7 +225,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		        		}
 		        	}
 		        	//exit edit ->  disable buttons for editing and set varaibles/textarea to "not editing"
-		        	setTextToArea("", false);
+		        	//setTextToArea("", false);
 		        	changeMarkerIcon(false);
 		        	editing = false;
 		        }
@@ -244,7 +244,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		        		return;
 		        }
 		        //various tasks for infowindow close
-		   		setTextToArea("",false);
+		   		//setTextToArea("",false);
 		   		changeMarkerIcon(false);
 		   		editing = false;
 		});
@@ -261,7 +261,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		markers[stack].forEach(function(x){
 			mrk = markers[stack].pop();
 			mrk.setMap(null);
-	       	setTextToArea("",false);
+	       	//setTextToArea("",false);
 	       	changeMarkerIcon(false);
 	       	editing = false;
 		});
@@ -273,7 +273,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 function editMarker(){
 	changeMarkerIcon(true); //set all other markers opactity down to ~0.35	
 	editing = true; //set boolean editing to true
-	setTextToArea("Editing marker...",false); //writes to textare with edit info
+	//setTextToArea("Editing marker...",false); //writes to textare with edit info
 	old_latlng = markerSelected.getPosition(); //stores old pos of marker
 }
 //BUTTON 'delete marker' ONCLICK FUNCTION  CALL ------------------------------------------------------------------------
@@ -297,7 +297,7 @@ function finishEdit(){
 		writeToDB(); //store new pos to db
 		updateInfowindow(); //updates infowindow to new pos
 		editing = false; //edit boolean to false
-		setTextToArea('Finished edit of marker. Changes stored to database.', false); //text info to textarea
+		//setTextToArea('Finished edit of marker. Changes stored to database.', false); //text info to textarea
 		//TODO: exit edit of marker and reset to allow for new edit
 	} else {
 		//user does not want to finish -> continue
@@ -308,7 +308,7 @@ function finishEdit(){
 //SET TEXT ON TEXTAREA TO ARGUMENT 1 -----------------------------------------------------------------------------------
 //appending or overwites
 function setTextToArea(text,append){
-	var obj = document.getElementById("editArea");
+	/*var obj = document.getElementById("editArea");
 	if(append){ //red text used for mainly edit info
 		obj.style.color= "#ff0000";
 		obj.value += "\n"+text;
@@ -317,6 +317,7 @@ function setTextToArea(text,append){
 		obj.value = text;
 	}
 	obj.scrollTop = obj.scrollHeight; //always scroled at button
+	*/
 }	
 
 //CHANGE MARKER OPACITY -------------------------------------------------------------------------------------------------
@@ -355,7 +356,7 @@ function confirmExitEdit(){
 	//no exit, continue edit
 	else {
 		console.log("not exit");
-		setTextToArea("Now you can edit the marker selected. To do so, click the \"Edit button\" and select a new position on the map.",false)
+		//setTextToArea("Now you can edit the marker selected. To do so, click the \"Edit button\" and select a new position on the map.",false)
 		return false;
     }
 }
