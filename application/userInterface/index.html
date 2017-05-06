@@ -31,8 +31,8 @@
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li><a href="index.html" onclick="navbar_open">Scan Areas</a></li>
-          <li><a href="resultPage.html" onclick="navbar_open">View Results</a></li>
+          <li><a href="index.html" onclick="navbar_open" id="btnNavIndex">Scan Areas</a></li>
+          <li><a href="resultPage.html" onclick="navbar_open" id="btnNavResults">View Results</a></li>
         </ul>
       </div>
     </div>
@@ -62,40 +62,44 @@
 					</div>
 				</form> -->
 
-        <!-- BUTTONS for the page -->
+        		<!-- BUTTONS for the page -->
 				<div class="flex-item scanButtons" id="scanButtons">
 					<!--<button onclick="scanArea(1)" style="font-family:Open Sans Condensed;">Download maps (Start, End)</button> -->
-          <textarea rows="1" cols="30" readonly id="folderPathSelected" style = "height:20px; overflow:hidden; font-size: 11px ">
-          </textarea><br>
-					<button onclick="openFolder()" style="font-family:Open Sans Condensed;">Start preprocessing</button> <br><br>
-          <button onclick="launchProgram()" style="font-family:Open Sans Condensed;">Scan selected folder(s)</button> <br><br>
-          <button onclick="openCSVFile()" style="font-family:Open Sans Condensed;">Update known quarries with .csv</button> <br><br>
-          <button onclick="openFolderCSV()" style="font-family:Open Sans Condensed;">Export new results</button> <br><br>
-          <button onclick="wipeDbAndMaps()" style="font-family:Open Sans Condensed;">Resest database</button> <br><br>
-
+					<p>Selected folders: </p>
+					<textarea rows="6" cols="40" readonly id="folderPathSelected" style = "height:120px; overflow:hidden; font-size: 11px; overflow:hidden; overflow-y:scroll;">
+					</textarea><br>
+					<button onclick="openFolder()" 		id="btnOpenFolder" style="font-family:Open Sans Condensed;">Select a folder</button>
+					<button onclick="clearFolderList()" id="btnClearFolderList" style="font-family:Open Sans Condensed;">Remove</button> <br><br>
+					<button onclick="preProcessing()" 	id="btnPreProcessing" style="font-family:Open Sans Condensed;">Preprocess selected folders</button>
+					<p id="pFolderProgress"></p><br>
+					<button onclick="launchProgram()" 	id="btnLaunchProgram" style="font-family:Open Sans Condensed;">Scan all preprocessed data</button> <br><br>
+					<button onclick="openCSVFile()" 	id="btnOpenCSVFile" style="font-family:Open Sans Condensed;">Update known quarries with .csv</button> <br><br>
+					<button onclick="openFolderCSV()" 	id="btnOpenFolderCSV" style="font-family:Open Sans Condensed;">Export new results</button> <br><br>
+					<button onclick="wipeDbAndMaps()" 	id="btnWipeDBAndMaps" style="font-family:Open Sans Condensed;">Resest database</button> <br><br>
 
 					<p id="showCoordinates"></p>
 					<p id="showMessage"></p>
-				</div>
-        <!-- END BUTTONS -->
 
-        <!-- Old code, remove? -->
-				<div class="flex-item mapbuttons" id="mapButtons" id="left"> <!-- Buttons for selecting area to scan, not needed anymore -->
+				</div>
+		        <!-- END BUTTONS -->
+
+		        <!-- Old code, remove? -->
+				<!-- <div class="flex-item mapbuttons" id="mapButtons" id="left"> Buttons for selecting area to scan, not needed anymore -->
 					<!--<button onclick="scanArea(2)" style="font-family:Open Sans Condensed;">Get images from selected area</button>-->
 					<!--<button onclick="removeMarkers()" style="font-family:Open Sans Condensed;">Remove markers </button>-->
-				</div>
+				<!-- </div> -->
 				<!-- Removed Google Maps map-box -->
 				<!-- <div class="flex-item map" id="map"></div> -->
 			</div>
       
-      <!-- Text field (output field) for the page -->
-      <div class="flex-item quarryLocation">
-        <p style="float:left">Quarry Locations</p>
-        <button style="margin-top:15px; margin-left:90px"><img src="icons/refresh.png" width="12px" heigth="12px" alt="refresh" style="margin-top:3px; overflow:hidden"></button>
-        <br>
-        <textarea rows="24" cols="30" readonly id="textOutput">
-        </textarea>
-      </div>
+      		<!-- Text field (output field) for the page -->
+			<div class="flex-item quarryLocation">
+				<p style="float:left">Quarry Locations</p>
+				<button style="margin-top:15px; margin-left:90px"><img src="icons/refresh.png" width="12px" heigth="12px" alt="refresh" style="margin-top:3px; overflow:hidden"></button>
+				<br>
+				<textarea rows="24" cols="30" readonly id="textOutput">
+				</textarea>
+			</div>	
 		</div>
 
 <!-- EVERYTHING SCRIPT-RELATED -->
