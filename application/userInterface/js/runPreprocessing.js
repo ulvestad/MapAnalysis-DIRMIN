@@ -27,18 +27,20 @@ function openFolder(){
 				partial_path = split_path[split_path.length -2 ] +"/" +split_path[split_path.length -1] + "/";
 				document.getElementById("folderPathSelected").value =  "  ✔ "+partial_path;
 				
+				// Gets new selected folder path
 				var newPath = getFolderPath();
 				var exists = false;
-				console.log(folderQueue.length)
+				// Checks if path is already selected
 				if (folderQueue.length > 0) {
 					for (var i = 0; i < folderQueue.length; i++) {
-						console.log("checking: " + folderQueue[i])
 						if (newPath === folderQueue[i]) {
 							exists = true;
 							break;
 						}
 					}
 				}
+				
+				// If path is not selected, add to que
 				if (!exists) {
 					//List of selected folders
 					folderQueue.push(getFolderPath());	
@@ -47,6 +49,7 @@ function openFolder(){
 					exists = false;
 					document.getElementById("textOutput").value += "Folder already selected.\n";
 				}
+
 				//All selected folders shown in textfield
 				document.getElementById("folderPathSelected").value = '';
 				for (x=0; x<folderQueue.length; x++){
