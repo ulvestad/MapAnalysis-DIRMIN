@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "electron userInterface/main.js",
-    "package": "electron-packager ./ MapScanner --win32 --out C:\\Users\\Simen\\Desktop\\MapScannerApplication --version 0.35.2 --overwrite"
+    "package": "electron-packager ./ MapScanner --darwin --out C:\\Users\\Simen\\Desktop\\MapScannerApplication --version 0.35.2 --overwrite"
   },
   "author": "",
   "license": "ISC"
