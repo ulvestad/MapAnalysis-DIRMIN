@@ -19,7 +19,6 @@ function openFolder(){
 				try{
 					folderPath = document.getElementById("fileDialog").files[0].path;
 				}catch(err){
-					console.log("Pleas select a folder")
 					return;
 				}
 				//document.getElementById("textOutput").value += "Directory '" + folderPath + "' selected.\n";
@@ -44,7 +43,6 @@ function openFolder(){
 				if (!exists) {
 					//List of selected folders
 					folderQueue.push(getFolderPath());	
-					document.getElementById("textOutput").value += "Folder Selected.\n";
 				} else {
 					exists = false;
 					document.getElementById("textOutput").value += "Folder already selected.\n";
@@ -82,15 +80,16 @@ function clearFolderList(){
 // adding the data to the database
 
 function preProcessing() {
+	document.getElementById("textOutput").value += "Pre-processing started...\n";
 	var x= 0;
 	document.getElementById("pFolderProgress").innerHTML  = "Folders pre-processed: (" + 0 + "/" + folderQueue.length + ")";
 	disableButtons(true);
 	function preProcessingLoop(){
 		if (folderQueue.length <= x){
 			document.getElementById("pFolderProgress").innerHTML  = "Folders pre-processed: " + "(" + x + "/" + x + ") Done";
+			document.getElementById("textOutput").value += "Pre-processing completed. You may now scan the pre-processed data.\n";
 			x = 0;
 			clearFolderList();
-			console.log("Completed!");
 			disableButtons(false);
 			
 			return;
@@ -111,8 +110,7 @@ function preProcessing() {
 				console.error(err);
 				return;
 			}
-			console.log(data.toString());
-			document.getElementById("textOutput").value += "Pre-processing completed!\n";
+			
 			if (x < folderQueue.length){
 				x += 1;
 				document.getElementById("pFolderProgress").innerHTML  = "Folders pre-processed: (" + x + "/" + folderQueue.length + ")";
@@ -134,11 +132,9 @@ function disableButtons(disable){
 	if(disable){
 		btnNavIndex.href = "#";
 		btnNavResults.href = "#";
-		console.log("All buttons disabled");
 	}else{
 		//Note: These paths of the nav-links are static, so may have to change it later
 		btnNavIndex.href = "index.html";
 		btnNavResults.href = "resultPage.html";
-		console.log("All buttons enabled");
 	}
 }

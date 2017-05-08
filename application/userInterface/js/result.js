@@ -195,7 +195,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
 		    return function() {
 		    	//If user clicks on NewLocations marker, a blank image will be shown
-		    	if(markers[1].indexOf(marker) >= 0 || markers[0].indexOf(marker) ){
+		    	if(markers[1].indexOf(marker) >= 0 || markers[0].indexOf(marker) >= 0 ){
 					disableButtons(true);
 					getCurrentImage("");
 				}else{

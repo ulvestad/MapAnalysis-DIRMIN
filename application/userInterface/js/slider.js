@@ -23,7 +23,7 @@ slider.noUiSlider.on('update', function(){
 	highGlobalThreshold = slider.noUiSlider.get()[1];
 
 	locationsInThreshold = checkQuarryLength(lowGlobalThreshold, highGlobalThreshold);
-	document.getElementById("bothThreshold").innerHTML = slider.noUiSlider.get()[0] + ", " + slider.noUiSlider.get()[1];
+	document.getElementById("bothThreshold").innerHTML = parseInt((slider.noUiSlider.get()[0])*100) + "-" + parseInt((slider.noUiSlider.get()[1])*100);
 	
 
 	//Looks through the PossibleLocations-table continuously while the slider is dragged and updates the list and number
@@ -38,7 +38,7 @@ slider.noUiSlider.on('set', function(){
 	highGlobalThreshold = slider.noUiSlider.get()[1];
 	getThresholdQuarries(lowGlobalThreshold, highGlobalThreshold);
 
-	document.getElementById("bothThreshold").innerHTML = slider.noUiSlider.get()[0] + ", " + slider.noUiSlider.get()[1];
+	document.getElementById("bothThreshold").innerHTML = parseInt((slider.noUiSlider.get()[0])*100) + "-" + parseInt((slider.noUiSlider.get()[1])*100);
 })
 
 function updateLocationsInThreshold(change){

@@ -8,6 +8,7 @@ function wipeDbAndMaps(){
 		//Cleans these maps
 		rmDir("maps")
 		rmDir("scannedMaps")
+		document.getElementById("textOutput").value += "Known Locations, New Locations and all Images have been removed from the system.\n";
 	} else{
 		return;
 	}
