@@ -37,11 +37,18 @@ function getThresholdQuarries(low, high){
 	})
 	db.close();	
 	//Creates the actual visible list
-	updateList();
+	
 	//Enables add/delete buttons
 	disableButtons(true);
 	//setClickedID(quarryList[0]);
 	updateMarkers();
+	updateList();
+
+	if (quarryList.length > 0 ){
+		if(quarryList.indexOf(clickedID) < 0){
+			setClickedID(quarryList[0]);
+		}
+	}
 }
 //Creates the actual visible list
 function updateList(){

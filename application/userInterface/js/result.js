@@ -14,6 +14,7 @@ var new_lng;
 var numPlottedMarkers = 0;
 var numMarkerTreshhold = 10000; //number of markers allowed on map, due to performance number
 var treshholdSelectedByUser = 100 //getQuarryListLength();
+var firstTimeAUserClickedOnAMarkerOnTheGoogleMapsMap = true;
 
 //GOOGLE MAPS FUNCTIONS----------------------------------------------------------------------------------------------------
 //Init for map and listener
@@ -193,11 +194,10 @@ function plotMarker(type, checked, id, lat, lng, scr){
 	    //init listener for 'click on marker'
 		google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
 		    return function() {
-
+		    	//If user clicks on NewLocations marker, a blank image will be shown
 		    	if(markers[1].indexOf(marker) >= 0){
 					disableButtons(true);
 					getCurrentImage("");
-
 				}else{
 					disableButtons(false);
 				}
@@ -435,14 +435,17 @@ function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 	if(!obj.checked){
 		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
 	}else{
-			if(markers[2].length == 0){
-				return;
-			}
+		if(markers[2].length == 0){
+			return;
+		}
 
-			google.maps.event.trigger(markers[2][id], 'click', {
-		  	//pretended click trigger event for selected marker 
-			});
+		google.maps.event.trigger(markers[2][id], 'click', {
+	  	//pretended click trigger event for selected marker 
+		});
+		if(firstTimeAUserClickedOnAMarkerOnTheGoogleMapsMap){
 			map.setZoom(11);
-			map.setCenter(markers[2][id].getPosition());
+			firstTimeAUserClickedOnAMarkerOnTheGoogleMapsMap = false;
+		}
+		map.setCenter(markers[2][id].getPosition());
 	}	
 }

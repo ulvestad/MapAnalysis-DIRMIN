@@ -15,15 +15,18 @@ function launchProgram(){
 	}else{*/
 		
 		document.getElementById("textOutput").value += "----------- Process ----------\nStarting quarry recognition, this may take some time.\n";
+		disableButtons(true);
 		child(executablePath, parameters, function(err, data) {
 			if(err){
 				console.error(err);
 				document.getElementById("textOutput").value += "Some error occured.\n";
 				return;
 			}
-			console.log(data.toString());
+			//console.log(data.toString());
 			document.getElementById("textOutput").value += "Scan completed!\n";
+			disableButtons(false);
 		});
+
 	//}
 }
 //----------------------------------------------------
