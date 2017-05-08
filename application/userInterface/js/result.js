@@ -193,6 +193,14 @@ function plotMarker(type, checked, id, lat, lng, scr){
 	    //init listener for 'click on marker'
 		google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
 		    return function() {
+
+		    	if(markers[1].indexOf(marker) >= 0){
+					disableButtons(true);
+					getCurrentImage("");
+
+				}else{
+					disableButtons(false);
+				}
 		    	//diplays infowindow to current marker
 		        infowindow.setContent(content);
 		        var pos;
@@ -435,7 +443,6 @@ function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 		  	//pretended click trigger event for selected marker 
 			});
 			map.setZoom(11);
-			map.setCenter(markers[2][id].getPosition())	
-
+			map.setCenter(markers[2][id].getPosition());
 	}	
 }
