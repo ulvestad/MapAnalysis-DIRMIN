@@ -99,13 +99,14 @@ function confirmQuarry(){
 	//Updates DB
 	addDBRow();
 	removeDBRow();	
-	updateList();
+	setTimeout(function(){ updateList(); }, 20 );
 	updateMarkers();
 	//Decreases number of locations in threshhold by 1 (only the display num)
 	updateLocationsInThreshold(-1);
 	//Sets the nextClickedID to the one assigned at the start of the function
-	setClickedID(nextClickedID);
-	updateMarkers();
+	setClickedID(nextClickedID)
+	setTimeout(function(){ updateMarkers(); }, 50 );
+
 }
 
 //Just like confirmQuarry, but deletes instead of moving the DB row
@@ -115,11 +116,11 @@ function deleteQuarry(){
 	data.splice(quarryList.indexOf(clickedID), 1);
 	quarryList.splice(quarryList.indexOf(clickedID), 1);
 	removeDBRow();
-	updateList();
+	setTimeout(function(){ updateList(); }, 20 );
 	updateMarkers();
 	updateLocationsInThreshold(-1);
 	setClickedID(nextClickedID);
-	updateMarkers();
+	setTimeout(function(){ updateMarkers(); }, 50 );
 }
 //------------------------------------------------------------------------------------------------------
 
