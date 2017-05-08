@@ -27,8 +27,8 @@
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li><a href="index.html" onclick="navbar_open">Scan Areas</a></li>
-          <li><a href="resultPage.html" onclick="navbar_open">View Results</a></li>
+          <li><a href="index.html" onclick="navbar_open">Main Page</a></li>
+          <li><a href="resultPage.html" onclick="navbar_open">Result Page</a></li>
         </ul>
       </div>
     </div>
@@ -38,8 +38,8 @@
 
 
   <!-- BODY -->
-  <div id="infoBar">
-    <p> Result page - Select quarries and decide if you want to keep them or delete them from the database. Bla bla bla bla user manual shit .. </p>
+  <div class="flex-item description">
+    <p>This page displays the results from previous scans. Use the slider to display all potential locations within a certainty-threshold in the list below and the google maps window. Select an item in the list or on the map to get the option of adding it as a new confirmed location, or denying it and removing it from the potential locations. </p>
   </div>
 
   <div class="flex-container">
@@ -47,9 +47,8 @@
     <!-- BOX 1: Quarry data_____________________________________________________-->
     <div class="flex-item potentialQuarries">
       <div id="slider"></div>
-      <span id="bothThreshold"></span><br>
-      <span id="quarriesInThreshold">In threshold: </span><br>
-      <p id="selectedListItemDisplay"></p>
+      <span id="bothThreshold"></span> <span>. </span> <span id="quarriesInThreshold">In threshold: </span><br>
+      <span id="selectedListItemDisplay"></span>
       
       
       <!-- List view for quarries, plz no remove -->
@@ -60,8 +59,8 @@
             
           </ul>
         </div>
-        <button onclick="prevQuarry()" id="prevQuarry" disabled>Prev quarry</button>
-        <button onclick="nextQuarry()" id="nextQuarry" disabled>Next quarry</button>
+        <button onclick="prevQuarry()" id="prevQuarry" disabled>Previous</button>
+        <button onclick="nextQuarry()" id="nextQuarry" disabled>Next</button>
       </div>
       <!-- _____________________________________ -->
 
@@ -70,8 +69,9 @@
       <div id="mapButtons" id="left">
         <!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
         <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
-        <button onclick="deleteQuarry()" id="Delete" disabled>Delete quarry</button>
-        <button onclick="confirmQuarry()" id="Confirm" disabled>Confirm Quary</button>
+        <button onclick="deleteQuarry()" id="Delete" disabled>Remove</button>
+        <button onclick="confirmQuarry()" id="Confirm" disabled>Confirm</button><br>
+        <span id="deleteFeedback"> Deleted ID: 21</span>
         <!-- <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button> -->
         <!-- <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button> -->
       </div>
@@ -90,9 +90,9 @@
       <div class="flex-item map" id="map"></div>
       <!-- CHECKBOXES -->
       <form>
-        <input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
-        <input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
         <input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations" checked> Possible Locations<br>
+        <input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> Confirmed location<br>
+        <input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known locations<br>
       </form> 
     </div>
     <!-- END GOOGLE MAPS -->

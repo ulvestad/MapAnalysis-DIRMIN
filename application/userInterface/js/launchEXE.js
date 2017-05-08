@@ -14,7 +14,7 @@ function launchProgram(){
 		document.getElementById("textOutput").value += "Please select a folder to scan first.\n";
 	}else{*/
 		
-		document.getElementById("textOutput").value += "----------- Process ----------\nStarting quarry recognition, this may take some time.\n";
+		document.getElementById("textOutput").value += "Quarry recognition started, this may take some time...\n";
 		disableButtons(true);
 		child(executablePath, parameters, function(err, data) {
 			if(err){
@@ -23,7 +23,7 @@ function launchProgram(){
 				return;
 			}
 			//console.log(data.toString());
-			document.getElementById("textOutput").value += "Scan completed!\n";
+			document.getElementById("textOutput").value += "Scan completed. You may now view the results on the Result Page.\n";
 			disableButtons(false);
 		});
 

@@ -99,6 +99,7 @@ function setClickedIDWhenPretendTriggered (id){
 //---------------------------------------DELETE/CONFIRM QUARRY-------------------------------------------------
 //Removes list item from list, and moves row from one DB table to another
 function confirmQuarry(){
+	document.getElementById("deleteFeedback").innerHTML = "Added ID: " + clickedID;
 	//Saves the id for the next iteration
 	assignNextClickedID();
 	//Removes the clicked list item from the list
@@ -118,6 +119,7 @@ function confirmQuarry(){
 
 //Just like confirmQuarry, but deletes instead of moving the DB row
 function deleteQuarry(){
+	document.getElementById("deleteFeedback").innerHTML = "Removed ID: " + clickedID;
 	assignNextClickedID();
 	filenames.splice(quarryList.indexOf(clickedID), 1);
 	data.splice(quarryList.indexOf(clickedID), 1);
