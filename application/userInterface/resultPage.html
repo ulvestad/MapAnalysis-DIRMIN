@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Analysis of Map and Satellite Images</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <!--<link rel="stylesheet" href="css/styles.css">-->
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -18,14 +18,12 @@
     <link href="css/index.css" rel="stylesheet">
 
     <link href="css/nouislider.min.css" rel="stylesheet"> <!-- Stylesheet for the slider, don't remove -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="../js/ie-emulation-modes-warning.js"></script>
     <script src="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"></script>
-
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
 
     <!-- Needed to select folders n' shit -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
@@ -55,149 +53,81 @@
       </div>
     </div>
   </nav>
-<<<<<<< HEAD
 
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
-          <li class="active"><a href="index.html">Initializing<span class="sr-only">(current)</span></a></li>
-          <li><a href="resultPage.html">Quarry confirmation</a></li>
-          <li><a href="pages/tables.html">Tables</a></li>
-          <li><a href="#">Statistics</a></li>
+          <li onclick="active"><a href="index.html">Initializing<span class="sr-only">(current)</span></a></li>
+          <li onclick="active"><a href="resultPage.html">Quarry confirmation<span class="sr-only">(current)</span></a></li>
+          <li onclick="active"><a href="pages/tables.html">Tables<span class="sr-only">(current)</span></a></li>
+          <li onclick="active"><a href="#">Statistics<span class="sr-only">(current)</span></a></li>
         </ul>
       </div>
     </div>
   <!-- END NAVBAR-CODE -->
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-      <h1 class="page-header">Quarry confirmation</h1>
-      <div id="infoBar">
-        <p> Result page - Select quarries and decide if you want to keep them or delete them from the database. Bla bla bla bla user manual shit .. </p>
-      </div>
-      <!-- BOX 1: Quarry data_____________________________________________________-->
-      <div class="row placeholders">
-        <div class="col-xs-6 col-sm-4 placeholder">
-          <button onclick="getThresholdQuarries(0, 1)" class="button img-responsive" style="horizontal-align: center;"></button>
-          <input type="range" min="0" max="100" value="50" step="1" />
-          <p>70</p>
-        </div>
-      </div>
-      <div class="row placeholders">
-        <!-- CHECKBOXES -->
-        <div class="col-xs-6 col-sm-4 placeholder">
-          <div class="col-xs-6 col-sm-4 placeholder">
-            <input onclick="checkboxMarked('KnownLocations')" class="button button7 img-responsive" type="checkbox" id="KnownLocations" ></input>
-            <h4>Known Quarries</h4>
-            <span class="text-muted"></span>
-          </div>
-          <div class="col-xs-6 col-sm-4 placeholder">
-            <input onclick="checkboxMarked('NewLocations')" class="button button7 img-responsive" type="checkbox" id="NewLocations"></input>
-            <h4>New locations</h4>
-            <span class="text-muted"></span>
-          </div>
-          <div class="col-xs-6 col-sm-4 placeholder">
-            <input onclick="checkboxMarked('PossibleLocations')" class="button button7 img-responsive" type="checkbox" id="PossibleLocations"></input>
-            <h4>Possible locations</h4>
-            <span class="text-muted"></span>
-          </div>
-          <!-- GoogleMaps map -->
-          <div class="col-xs-6 col-sm-4 placeholder img-responsive" id="map">
-          </div>
-        </div>
-        <div class="col-xs-6 col-sm-10 placeholder">
-          <div class="col-xs-6 col-sm-3 placeholder">
-            <button onclick="nextQuarry()" class="button button6 img-responsive" id="nextQuarry" disabled ></button>
-            <h4>Next quarry</h4>
-            <span class="text-muted"></span>
-          </div>
-          <div class="col-xs-6 col-sm-3 placeholder">
-            <button onclick="confirmQuarry()" class="button button6 img-responsive" id="Confirm" disabled></button>
-            <h4>Confirm quarry</h4>
-            <span class="text-muted"></span>
-          </div>
-          <div class="col-xs-6 col-sm-3 placeholder">
-            <button onclick="deleteQuarry()" class="button button6 img-responsive" id="Delete" disabled></button>
-            <h4>Delete quarry</h4>
-            <span class="text-muted"></span>
-          </div>
-          <!-- BOX 2: image for selected quarry ______________________________________ -->
-          <div class="col-xs-6 col-sm-10 placeholder">
-            <img id="quarryImage" src="" class="img-responsive">
-          </div>
-        </div>
-        <div class="col-xs-6 col-sm-8 placeholder">
 
+  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <!-- BODY -->
+    <h1 class="page-header">Quarry confirmation</h1>
+    <div id="infoBar">
+      <p> Result page - Select quarries and decide if you want to keep them or delete them from the database. Bla bla bla bla user manual shit .. </p>
+    </div>
+    <div class="row placeholders">
+      <!-- BOX 1: Quarry data_____________________________________________________-->
+      <div class="col-xs-6 col-sm-12 placeholder potentialQuarries">
+        <div class="col-xs-6 col-sm-12 placeholder">
+          <div id="slider">
+          </div>
+          <p id="bothThreshold"></p>
+          <p id="selectedListItemDisplay"></p>
+          <button onclick="getThresholdQuarries(lowGlobalThreshold, highGlobalThreshold)" class="button" id="showQuarries">Show Quarries</button>
         </div>
       </div>
-      <div class="row placeholders">
+    </div>
+    <div class="row placeholders">
         <!-- List view for quarries, plz no remove -->
-        <div id="listContainer" class="col-xs-6 col-sm-3 placeholder">
-          <div id="scrollArea" class="clusterize-scroll col-xs-6 col-sm-3 placeholder">
-            <ul id="contentArea" class="clusterize-content img-responsive">
+        <div class="col-xs-6 col-sm-4 placeholder" id="listContainer" style="height: 400px;">
+
+          <div id="scrollArea" class="clusterize-scroll" style="height: 400px; width: 400px; overflow:hidden; overflow-y:scroll;">
+            <ul id="contentArea" class="clusterize-content">
+
             </ul>
           </div>
+          <button onclick="prevQuarry()" class="button" id="prevQuarry" disabled>Prev Quarry</button>
+          <button onclick="nextQuarry()" class="button" id="nextQuarry" disabled>Next Quarry</button>
+        </div>
+        <!-- BUTTONS -->
+        <div class="col-xs-6 col-sm-5 placeholder" id="mapButtons" id="left">
+          <!-- BOX 2: image for selected quarry ______________________________________ -->
+          <div class="col-xs-6 col-sm-12 placeholder">
+            <img id="quarryImage" src="" style="width:400px;height:380px;">
+          </div>
+          <!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
+          <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
+          <button onclick="confirmQuarry()" class="button" id="Confirm" disabled>Confirm Quarry</button>
+          <button onclick="deleteQuarry()" class="button" id="Delete" disabled>Delete Quarry</button>
+          <!-- <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button> -->
+          <!-- <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button> -->
+        </div>
+        <!-- _____________________________________ -->
+    </div>
+    <div class="row placeholders">
+      <!--BOX 3: Google Maps Map (for displaying quary positions) _______________-->
+      <div class="col-xs-6 col-sm-12 placeholder">
+        <!-- GoogleMaps map -->
+        <div id="map"></div>
+        <div class="col-xs-6 col-sm-12 placeholder">
+          <!-- CHECKBOXES -->
+          <input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries</input>
+          <input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries</input>
+          <input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations"> Possible Locations</input>
         </div>
       </div>
-
-  <!-- BODY -->
-  <div id="infoBar">
-    <p> Result page - Select quarries and decide if you want to keep them or delete them from the database. Bla bla bla bla user manual shit .. </p>
+      <!-- END GOOGLE MAPS -->
+    </div>
   </div>
-
-  <div class="flex-container">
-
-    <!-- BOX 1: Quarry data_____________________________________________________-->
-    <div class="flex-item potentialQuarries">
-      <div id="slider"></div>
-      <p id="bothThreshold"></p>
-      <p id="selectedListItemDisplay"></p>
-      <button onclick="getThresholdQuarries(lowGlobalThreshold, highGlobalThreshold)" id="showQuarries">Show quarries</button>
-
-      <!-- List view for quarries, plz no remove -->
-      <div id="listContainer" style="height: 280px;">
-
-        <div id="scrollArea" class="clusterize-scroll" style="height: 250px; width: 250px; overflow:hidden; overflow-y:scroll;">
-          <ul id="contentArea" class="clusterize-content">
-
-          </ul>
-        </div>
-        <button onclick="prevQuarry()" id="prevQuarry" disabled>Prev quarry</button>
-        <button onclick="nextQuarry()" id="nextQuarry" disabled>Next quarry</button>
-      </div>
-      <!-- _____________________________________ -->
-
-
-      <!-- BUTTONS -->
-      <div id="mapButtons" id="left">
-        <!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
-        <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
-        <button onclick="confirmQuarry()" id="Confirm" disabled>Confirm Quary</button>
-        <button onclick="deleteQuarry()" id="Delete" disabled>Delete quarry</button>
-        <!-- <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button> -->
-        <!-- <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button> -->
-      </div>
-    </div>
-
-
-    <!-- BOX 2: image for selected quarry ______________________________________ -->
-    <div class="flex-item column1">
-      <img id="quarryImage" src="" style="width:400px;height:400px;">
-    </div>
-
-
-    <!--BOX 3: Google Maps Map (for displaying quary positions) _______________-->
-    <div class="flex-item column1">
-      <!-- GoogleMaps map -->
-      <div class="flex-item map" id="map"></div>
-      <!-- CHECKBOXES -->
-      <form>
-        <input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
-        <input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
-        <input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations"> Possible Locations<br>
-      </form>
-    </div>
-    <!-- END GOOGLE MAPS -->
-  </div>
+</div>
 
 <!-- SCRIPTS ETC. -->
 <!-- Needed to solve jquery issue  -->

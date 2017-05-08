@@ -25,7 +25,7 @@ li a:active { color: #4f91a3; }
 #editArea{
 	width: 25px;
 	height: 25px;
-	text-align: left; 
+	text-align: left;
 }
 #infoBar{
 	width: 100%;
@@ -113,7 +113,7 @@ textarea {
    text-align-last: left;
 }
 button[disabled=disabled], button:disabled {
-    border: 1px solid #999999;
+  border: 1px solid #999999;
  	background-color: #cccccc;
 	color: #666666;
 }

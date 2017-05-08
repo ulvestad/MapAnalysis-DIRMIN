@@ -101,15 +101,11 @@ body {
 }
 
 .button {
-  background-color: #D3D3D3; /* Green */
+  background-color: lightgreen;
   border: none;
-  color: white;
-  padding: 15px 32px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: ;
-  margin: 4px 2px;
   width: 100px;
   height: 100px;
   cursor: pointer;
@@ -121,11 +117,13 @@ body {
 }
 
 .button5 {
+  background-color: lightgreen;
   position: relative;
   text-align: center;
 }
 
 .button6 {
+  background-color: lightgreen;
   position: relative;
   width: 60px;
   height: 60px;
@@ -135,6 +133,18 @@ body {
 .button7 {
   width: 25px;
   height: 25px;
+}
+.button[disabled=disabled], button:disabled {
+  border: 1px solid #999999;
+ 	background-color: #cccccc;
+	color: #666666;
+}
+
+#listContainer{
+	height: 300px;
+	border-style: solid;
+	border-width: 1px;
+  margin-left: 150px;
 }
 
 #myInput {
@@ -151,6 +161,8 @@ body {
 #map{
 	width: 500px;
 	height: 330px;
+  align-self: center;
+  margin-left: 325px;
 }
 
 #quarryImage {
