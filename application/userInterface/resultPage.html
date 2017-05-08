@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Analysis of Map and Satellite Images</title>
-    <!--<link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/navbar.css">-->
+    <link rel="stylesheet" href="css/styles.css">
+
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
 
@@ -71,80 +71,74 @@
       </div>
       <!-- BOX 1: Quarry data_____________________________________________________-->
       <div class="row placeholders">
-        <div class="col-xs-6 col-sm-3 placeholder">
+        <div class="col-xs-6 col-sm-4 placeholder">
+          <button onclick="getThresholdQuarries(0, 1)" class="button img-responsive" style="horizontal-align: center;"></button>
           <input type="range" min="0" max="100" value="50" step="1" />
           <p>70</p>
-          <button onclick="getThresholdQuarries(0, 1)">Vis quarries (1047)</button>
         </div>
       </div>
       <div class="row placeholders">
-        <div class="col-xs-6 col-sm-3 placeholder">
-          <button onclick="nextQuarry()" id="nextQuarry" disabled></button>
-          <h4>Next quarry</h4>
-          <span class="text-muted">Go to next quarry</span>
+        <!-- CHECKBOXES -->
+        <div class="col-xs-6 col-sm-4 placeholder">
+          <div class="col-xs-6 col-sm-4 placeholder">
+            <input onclick="checkboxMarked('KnownLocations')" class="button button7 img-responsive" type="checkbox" id="KnownLocations" ></input>
+            <h4>Known Quarries</h4>
+            <span class="text-muted"></span>
+          </div>
+          <div class="col-xs-6 col-sm-4 placeholder">
+            <input onclick="checkboxMarked('NewLocations')" class="button button7 img-responsive" type="checkbox" id="NewLocations"></input>
+            <h4>New locations</h4>
+            <span class="text-muted"></span>
+          </div>
+          <div class="col-xs-6 col-sm-4 placeholder">
+            <input onclick="checkboxMarked('PossibleLocations')" class="button button7 img-responsive" type="checkbox" id="PossibleLocations"></input>
+            <h4>Possible locations</h4>
+            <span class="text-muted"></span>
+          </div>
+          <!-- GoogleMaps map -->
+          <div class="col-xs-6 col-sm-4 placeholder img-responsive" id="map">
+          </div>
         </div>
-        <div class="col-xs-6 col-sm-3 placeholder">
-          <button onclick="confirmQuarry()" id="Confirm" disabled></button>
-          <h4>Confirm quarry</h4>
-          <span class="text-muted">Confirm selected quarry</span>
+        <div class="col-xs-6 col-sm-10 placeholder">
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <button onclick="nextQuarry()" class="button button6 img-responsive" id="nextQuarry" disabled ></button>
+            <h4>Next quarry</h4>
+            <span class="text-muted"></span>
+          </div>
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <button onclick="confirmQuarry()" class="button button6 img-responsive" id="Confirm" disabled></button>
+            <h4>Confirm quarry</h4>
+            <span class="text-muted"></span>
+          </div>
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <button onclick="deleteQuarry()" class="button button6 img-responsive" id="Delete" disabled></button>
+            <h4>Delete quarry</h4>
+            <span class="text-muted"></span>
+          </div>
+          <!-- BOX 2: image for selected quarry ______________________________________ -->
+          <div class="col-xs-6 col-sm-10 placeholder">
+            <img id="quarryImage" src="" class="img-responsive">
+          </div>
         </div>
-        <div class="col-xs-6 col-sm-3 placeholder">
-          <button onclick="deleteQuarry()" id="Delete" disabled></button>
-          <h4>Delete quarry</h4>
-          <span class="text-muted">Delete selected quarry</span>
+        <div class="col-xs-6 col-sm-8 placeholder">
+
         </div>
       </div>
       <div class="row placeholders">
         <!-- List view for quarries, plz no remove -->
         <div id="listContainer" class="col-xs-6 col-sm-3 placeholder">
-
-          <div id="scrollArea" class="clusterize-scroll">
-            <ul id="contentArea" class="clusterize-content">
+          <div id="scrollArea" class="clusterize-scroll col-xs-6 col-sm-3 placeholder">
+            <ul id="contentArea" class="clusterize-content img-responsive">
             </ul>
           </div>
-        </div>
-      </div>
-      <div class="row placeholders">
-        <!-- BOX 2: image for selected quarry ______________________________________ -->
-        <div class="col-xs-6 col-sm-3 placeholder" style="width:200px; height:200px">
-          <img id="quarryImage" src="">
-        </div>
-        <!-- GoogleMaps map -->
-        <div class="col-xs-6 col-sm-3 placeholder" id="map" style="position:left;">
-        </div>
-        <!-- CHECKBOXES -->
-      </div>
-      <div class="row placeholders">
-        <div class="col-xs-6 col-sm-3 placeholder">
-          <input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" ></input>
-          <h4>Known Quarries</h4>
-          <span class="text-muted">Checkbox to show all known quarries</span>
-        </div>
-        <div class="col-xs-6 col-sm-3 placeholder">
-          <input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"></input>
-          <h4>New locations</h4>
-          <span class="text-muted">Checkbox to show all known quarries</span>
-        </div>
-        <div class="col-xs-6 col-sm-3 placeholder">
-          <input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations"></input>
-          <h4>Possible locations</h4>
-          <span class="text-muted">Checkbox to show all known quarries</span>
         </div>
       </div>
     </div>
   </div>
 
 
-
-
-    <!--BOX 3: Google Maps Map (for displaying quary positions) _______________-->
-
-    <!-- END GOOGLE MAPS -->
-  </div>
-
-
-  <!-- This textarea is only here to prevent a current bug -->
-  <textarea id="editArea" rows="12" cols="45" readonly></textarea>
+  <!-- This textarea is only here to prevent a current bug
+  <textarea id="editArea" rows="12" cols="45" readonly></textarea>-->
 
 
 <!-- SCRIPTS ETC. -->

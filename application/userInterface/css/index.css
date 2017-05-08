@@ -108,7 +108,7 @@ body {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: ;
   margin: 4px 2px;
   width: 100px;
   height: 100px;
@@ -122,7 +122,19 @@ body {
 
 .button5 {
   position: relative;
-  text: center;
+  text-align: center;
+}
+
+.button6 {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+}
+
+.button7 {
+  width: 25px;
+  height: 25px;
 }
 
 #myInput {
@@ -137,8 +149,11 @@ body {
 }
 
 #map{
-	margin-top: 20px;
 	width: 500px;
 	height: 330px;
-	position: relative;
+}
+
+#quarryImage {
+  width: 500px;
+  height: 330px;
 }
