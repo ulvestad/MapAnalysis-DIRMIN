@@ -100,6 +100,7 @@ function confirmQuarry(){
 	quarryList.splice(quarryList.indexOf(clickedID), 1);
 	//Updates DB
 	addDBRow();
+	removeDBRow();
 	setTimeout(function(){ updateList(); }, 20 );
 	//Decreases number of locations in threshhold by 1 (only the display num)
 	updateLocationsInThreshold(-1);
@@ -206,9 +207,7 @@ function addDBRow(){
 	//add
 	var spawn = require("child_process").spawn; //spawns a childs proc.
 	var child = spawn('python',["userInterface/py/insertRowDB.py", filename, zone, east, north, south, west, score]); //calls a python script with parameters
-	child.on('exit', function(){
-		removeDBRow();
-	});
+	
 }
 function removeDBRow(){
 	//delete
