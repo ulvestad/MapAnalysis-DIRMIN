@@ -70,7 +70,7 @@ function setClickedID (id){
 	//temporarily changes a paragraph to make testing easier
 	document.getElementById("selectedListItemDisplay").innerHTML = "Selected list-item: " + clickedID
 	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
-	console.log("Selected quarry ID: " + clickedID)
+	//console.log("Selected quarry ID: " + clickedID)
 	whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID));
 }
 //-----------------------------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ function setClickedIDWhenPretendTriggered (id){
 	//temporarily changes a paragraph to make testing easier
 	document.getElementById("selectedListItemDisplay").innerHTML = "Selected list-item: " + clickedID
 	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
-	console.log("Selected quarry ID: " + clickedID)
+	//console.log("Selected quarry ID: " + clickedID)
 }
 
 //---------------------------------------DELETE/CONFIRM QUARRY-------------------------------------------------
