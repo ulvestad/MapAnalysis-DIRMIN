@@ -416,7 +416,7 @@ function updateMarkers(){
 			if (clickedID != 0){
 				whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID));
 			}
-		}, 130);
+		}, 100);
 	}
 }
 
