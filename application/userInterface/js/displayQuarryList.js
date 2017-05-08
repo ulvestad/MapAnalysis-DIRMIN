@@ -51,6 +51,7 @@ function updateList(){
 	  contentId: 'contentArea',
 	  rows_in_block: 50
 	});
+	updateMarkers();
 }
 
 //-----------------------------SET CLICKED ID ON LIST/MARKER SELECT------------------------------------
@@ -105,7 +106,6 @@ function confirmQuarry(){
 	updateLocationsInThreshold(-1);
 	//Sets the nextClickedID to the one assigned at the start of the function
 	setClickedID(nextClickedID)
-	setTimeout(function(){ updateMarkers(); }, 50 );
 
 }
 
@@ -120,7 +120,7 @@ function deleteQuarry(){
 	updateMarkers();
 	updateLocationsInThreshold(-1);
 	setClickedID(nextClickedID);
-	setTimeout(function(){ updateMarkers(); }, 50 );
+
 }
 //------------------------------------------------------------------------------------------------------
 
