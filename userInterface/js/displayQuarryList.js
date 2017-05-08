@@ -22,7 +22,7 @@ function getThresholdQuarries(low, high){
 	//Initiates DB-stuff, has to be done every time to close it properly
 	var fs = require('fs')
 	var sql = require('sql.js')
-	var bfr = fs.readFileSync(__dirname.replace('/userInterface', '') + '/db/QuarryLocations.db')
+	var bfr = fs.readFileSync(__dirname.replace('\\userInterface', '') + '/db/QuarryLocations.db')
 	var db = new sql.Database(bfr);
 	//Query to select x number of rows from the DB based on low and high threshold
 	db.each('SELECT ID as idy, Score as score, FileName as filename FROM PossibleLocations WHERE Score BETWEEN '+low+' AND '+high+' ORDER BY Score DESC', function (row) {
@@ -157,7 +157,8 @@ function checkQuarryLength(low, high){
 	var i = 0;
 	var fs = require('fs')
 	var sql = require('sql.js')
-	var bfr = fs.readFileSync(__dirname.replace('/userInterface', '') + '/db/QuarryLocations.db')
+	console.log()
+	var bfr = fs.readFileSync(__dirname.replace('\\userInterface', '') + '/db/QuarryLocations.db')
 	var db = new sql.Database(bfr);
 	//Query to select x number of rows from the DB based on low and high threshold
 	db.each('SELECT COUNT(Score) AS numQuarries FROM PossibleLocations WHERE Score BETWEEN '+low+' AND '+high+'', function (row) {
@@ -180,7 +181,7 @@ function addDBRow(){
 	//Have to get all data from DB row in order to add it to another table
 	var fs = require('fs')
 	var sql = require('sql.js')
-	var bfr = fs.readFileSync(__dirname.replace('/userInterface', '') + '/db/QuarryLocations.db')
+	var bfr = fs.readFileSync(__dirname.replace('\\userInterface', '') + '/db/QuarryLocations.db')
 	var db = new sql.Database(bfr);
 
 	var id;
@@ -206,13 +207,13 @@ function addDBRow(){
 	db.close();
 	//add
 	var spawn = require("child_process").spawn; //spawns a childs proc.
-	var child = spawn('python',["userInterface/py/insertRowDB.py", filename, zone, east, north, south, west, score]); //calls a python script with parameters
+	var child = spawn('python',[__dirname +"/py/insertRowDB.py", filename, zone, east, north, south, west, score]); //calls a python script with parameters
 
 }
 function removeDBRow(){
 	//delete
 	var spawn = require("child_process").spawn; //spawns a childs proc.
-	var child = spawn('python',["userInterface/py/deleteRowDB.py", "PossibleLocations", clickedID]); //calls a python script with parameters
+	var child = spawn('python',[__dirname +"\\py\\deleteRowDB.py", "PossibleLocations", clickedID]); //calls a python script with parameters
 	child.on('exit', function(){
 		runUpdateMarkers();
 	});

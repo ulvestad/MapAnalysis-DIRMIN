@@ -55,7 +55,7 @@ function checkboxMarked(table){
 function initDb(type, checked) {
 	var fs = require('fs')
 	var sql = require('sql.js')
-	var bfr = fs.readFileSync(__dirname.replace('/userInterface', '') + '/db/QuarryLocations.db')
+	var bfr = fs.readFileSync(__dirname.replace('\\userInterface', '') + '/db/QuarryLocations.db')
 	var db = new sql.Database(bfr);
 	//Checks which radio button that's checked, and iteratively displays the markers of the selected
 	if (type === "KnownLocations") {

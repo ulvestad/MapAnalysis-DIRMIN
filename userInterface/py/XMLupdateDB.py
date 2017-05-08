@@ -1,7 +1,8 @@
 import sqlite3
 import sys
 
-conn = sqlite3.connect('db/QuarryLocations.db')
+
+conn = sqlite3.connect('resources/app/db/QuarryLocations.db')
 filename = sys.argv[1];
 utmZone = sys.argv[2]
 utmEast = sys.argv[3]

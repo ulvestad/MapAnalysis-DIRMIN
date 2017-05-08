@@ -127,7 +127,7 @@ function getAllxml(folderPath){ //Runs a getXMLfile-function once for each XML-f
 function getAllPQNames(){ //Get all rows(filenames) in PossibleLocations from db and save in allQuarryNames[]
   var fs = require('fs')
   var sql = require('sql.js')
-  var bfr = fs.readFileSync(__dirname.replace('/userInterface', '') + '/db/QuarryLocations.db')
+  var bfr = fs.readFileSync(__dirname.replace('\\userInterface', '') + '/db/QuarryLocations.db')
   var db = new sql.Database(bfr);
   allQuarryNames = [];
   //Query to select x number of rows from the DB based on low and high threshold
