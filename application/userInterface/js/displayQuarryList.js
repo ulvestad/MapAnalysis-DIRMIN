@@ -105,6 +105,7 @@ function confirmQuarry(){
 	updateLocationsInThreshold(-1);
 	//Sets the nextClickedID to the one assigned at the start of the function
 	setClickedID(nextClickedID);
+	updateMarkers();
 }
 
 //Just like confirmQuarry, but deletes instead of moving the DB row
@@ -118,6 +119,7 @@ function deleteQuarry(){
 	updateMarkers();
 	updateLocationsInThreshold(-1);
 	setClickedID(nextClickedID);
+	updateMarkers();
 }
 //------------------------------------------------------------------------------------------------------
 
