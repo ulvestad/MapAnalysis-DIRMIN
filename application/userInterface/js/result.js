@@ -407,26 +407,16 @@ function updateMarkers(){
     		var mrk = markers[2].pop();
     		mrk.setMap(null);
 		}
-		var fs = require('fs')
-		var sql = require('sql.js')
-		var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
-		var db = new sql.Database(bfr);
 		//init the markers again with short delay allowing for DB writings to complete
-		db.onReady(function(e){
-			if(e){
-				if(e.target.error){
-					console.log(e.target.error.name)
-				}
-				throw e;
-			}
-			initDb("PossibleLocations", true);
+		setTimeout(function(){
+    		initDb("PossibleLocations", true);
     		if(obj2.checked){
 				initDb("NewLocations", true);
 			}
 			if (clickedID != 0){
 				whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID));
 			}
-		});
+		}, 100);
 	}
 }
 
