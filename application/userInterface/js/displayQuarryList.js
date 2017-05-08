@@ -45,7 +45,6 @@ function getThresholdQuarries(low, high){
 }
 //Creates the actual visible list
 function updateList(){
-	var done = false;
 	var clusterize = new Clusterize({
 	  rows: data,
 	  scrollId: 'scrollArea',
@@ -53,9 +52,7 @@ function updateList(){
 	  rows_in_block: 50
 	});
 	done = true;
-	if(done){
-		updateMarkers();
-	}
+
 }
 
 //-----------------------------SET CLICKED ID ON LIST/MARKER SELECT------------------------------------
