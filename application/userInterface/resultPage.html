@@ -17,6 +17,9 @@
     <!-- Custom styles for this template -->
     <link href="css/index.css" rel="stylesheet">
 
+    <link href="css/nouislider.min.css" rel="stylesheet"> <!-- Stylesheet for the slider, don't remove -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="../js/ie-emulation-modes-warning.js"></script>
@@ -29,7 +32,8 @@
 
 </head>
 <body>
-<!-- NAVBAR-CODE -->
+
+  <!-- NAVBAR-CODE -->
   <!-- The top-navbar for the application, this is the same for all .html pages -->
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
@@ -51,6 +55,7 @@
       </div>
     </div>
   </nav>
+<<<<<<< HEAD
 
   <div class="container-fluid">
     <div class="row">
@@ -133,13 +138,66 @@
           </div>
         </div>
       </div>
-    </div>
+
+  <!-- BODY -->
+  <div id="infoBar">
+    <p> Result page - Select quarries and decide if you want to keep them or delete them from the database. Bla bla bla bla user manual shit .. </p>
   </div>
 
+  <div class="flex-container">
 
-  <!-- This textarea is only here to prevent a current bug
-  <textarea id="editArea" rows="12" cols="45" readonly></textarea>-->
+    <!-- BOX 1: Quarry data_____________________________________________________-->
+    <div class="flex-item potentialQuarries">
+      <div id="slider"></div>
+      <p id="bothThreshold"></p>
+      <p id="selectedListItemDisplay"></p>
+      <button onclick="getThresholdQuarries(lowGlobalThreshold, highGlobalThreshold)" id="showQuarries">Show quarries</button>
 
+      <!-- List view for quarries, plz no remove -->
+      <div id="listContainer" style="height: 280px;">
+
+        <div id="scrollArea" class="clusterize-scroll" style="height: 250px; width: 250px; overflow:hidden; overflow-y:scroll;">
+          <ul id="contentArea" class="clusterize-content">
+
+          </ul>
+        </div>
+        <button onclick="prevQuarry()" id="prevQuarry" disabled>Prev quarry</button>
+        <button onclick="nextQuarry()" id="nextQuarry" disabled>Next quarry</button>
+      </div>
+      <!-- _____________________________________ -->
+
+
+      <!-- BUTTONS -->
+      <div id="mapButtons" id="left">
+        <!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
+        <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
+        <button onclick="confirmQuarry()" id="Confirm" disabled>Confirm Quary</button>
+        <button onclick="deleteQuarry()" id="Delete" disabled>Delete quarry</button>
+        <!-- <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button> -->
+        <!-- <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button> -->
+      </div>
+    </div>
+
+
+    <!-- BOX 2: image for selected quarry ______________________________________ -->
+    <div class="flex-item column1">
+      <img id="quarryImage" src="" style="width:400px;height:400px;">
+    </div>
+
+
+    <!--BOX 3: Google Maps Map (for displaying quary positions) _______________-->
+    <div class="flex-item column1">
+      <!-- GoogleMaps map -->
+      <div class="flex-item map" id="map"></div>
+      <!-- CHECKBOXES -->
+      <form>
+        <input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known Quarries<br>
+        <input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> New Quarries<br>
+        <input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations"> Possible Locations<br>
+      </form>
+    </div>
+    <!-- END GOOGLE MAPS -->
+  </div>
 
 <!-- SCRIPTS ETC. -->
 <!-- Needed to solve jquery issue  -->
@@ -170,6 +228,9 @@
 <script src="js/displayImage.js"></script>
 <script src="js/moveFiles.js"></script>
 <script src="js/displayQuarryList.js"></script>
+
+<script src="js/nouislider.min.js"></script>
+<script src="js/slider.js"></script>
 
 
 </body>

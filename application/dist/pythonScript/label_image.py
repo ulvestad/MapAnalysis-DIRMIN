@@ -1,13 +1,16 @@
 import tensorflow as tf, sys, os
 import sqlite3
 import sys
+import shutil
 
-image_dir = sys.argv[1]
-log_filename = "log.txt"
-log = open(log_filename, 'w')
+image_dir = "maps/"
+scanned_img_dir = "scannedMaps/"
+#image_dir = sys.argv[1]
+#log_filename = "log.txt"
+#log = open(log_filename, 'w')
 conn = sqlite3.connect('db/QuarryLocations.db')
-counter = 0
-threshold = 0.65
+#counter = 0
+#threshold = 0.65
 
 # Loads label file, strips off carriage return
 label_lines = [line.rstrip() for line 
@@ -25,8 +28,9 @@ with tf.Session() as sess:
     softmax_tensor = sess.graph.get_tensor_by_name('final_result:0')
     try:
         for filename in os.listdir(image_dir):
-            counter += 1
-            if filename.endswith(".jpg"): 
+            #counter += 1
+            if filename.endswith(".jpg"):
+                img_name = filename
                 filename = os.path.join(image_dir, filename)
                 image_data = tf.gfile.FastGFile(filename, 'rb').read()
                 predictions = sess.run(softmax_tensor, \
@@ -35,29 +39,35 @@ with tf.Session() as sess:
                 top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
                 print ("\n")
                 print (filename)
-                log.write(filename +'\t')
+                #log.write(filename +'\t')
                 for node_id in top_k:
                     human_string = label_lines[node_id]
                     score = predictions[0][node_id]
-                    print('%s (score = %.5f)' % (human_string, score))
-                    log.write('%s (score = %.5f)\t' % (human_string, score))
-                    if score > threshold and human_string == 'uttak':
-                        line = open("coordinates.txt", "r").readlines()[counter-1]
-                        cordinates = line.replace('\n','').split(',')
-                        print('***************  Found something  *****************')
-                        print (cordinates)
-                        lat_data = cordinates[0]
-                        long_data = cordinates[1]
+                    #print('%s (score = %.5f)' % (human_string, score))
+                    #log.write('%s (score = %.5f)\t' % (human_string, score))
+                    if human_string == 'quarry':
+                        #line = open("coordinates.txt", "r").readlines()[counter-1]
+                        #cordinates = line.replace('\n','').split(',')
+                        #print('***************  Found something  *****************')
+                        #print (cordinates)
+                        #lat_data = cordinates[0]
+                        #long_data = cordinates[1]
                         scr = float(score)
                         scr = format(scr, ".5g")
-                        conn.execute("INSERT INTO NewLocations (ID,Latitude,Longitude, Score) VALUES (null, ?, ?, ?)",(lat_data, long_data, scr))
+                        fileName = filename.split("/")
+                        fileName = fileName[1] #remove /maps
+                        #fileName = fileName.replace("-","_") #Escaping special characters for FTS query search on DB
+                        #fileName = fileName.split(".")[0]
+                        print(fileName, scr)
+                        conn.execute("UPDATE PossibleLocations SET Score = ? WHERE FileName = ?",(scr,fileName))
                         conn.commit()
-                log.write('\n')
+                #log.write('\n')
+                shutil.move(filename, os.path.join(scanned_img_dir, img_name))
                 continue
             else:
                 continue
         conn.close()
-        log.close()
+        #log.close()
     except Exception as e:
         print(str(e))
         pass

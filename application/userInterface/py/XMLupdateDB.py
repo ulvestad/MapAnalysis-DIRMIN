@@ -9,6 +9,7 @@ utmNorth = sys.argv[4]
 utmSouth = sys.argv[5]
 utmWest = sys.argv[6]
 
+
 conn.execute('INSERT INTO PossibleLocations (ID,FileName,UTMZone,UTMEast,UTMNorth,UTMSouth,UTMWest,Score) VALUES (null,?,?,?,?,?,?,null)',(filename, utmZone, utmEast, utmNorth, utmSouth, utmWest))
 conn.commit()
 conn.close()

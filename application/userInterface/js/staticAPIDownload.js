@@ -1,3 +1,5 @@
+//THIS FILE IS NOT USED ANYMORE
+
 //DEFINED ONCE
 var imageLimit = 50000; //Limit on total amount of images
 var chunkLimit = 10; //Limit of images downlaoded per chunk

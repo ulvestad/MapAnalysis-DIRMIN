@@ -5,6 +5,7 @@ function wipeDbAndMaps(){
 		var spawn  = require("child_process").spawn; //spawns a childs proc.
 		var child = spawn('python',["userInterface/py/resetDB.py"]);
 		
+		//Cleans these maps
 		rmDir("maps")
 		rmDir("scannedMaps")
 	} else{
@@ -24,6 +25,7 @@ rmDir = function(dirPath) {
 				//console.log('Not a jpg. File will not be deleted');
 				continue;
 			}
+			//Code for the actual removal of files from the folder
 			var filePath = dirPath + '/' + files[i];
 			if (fs.statSync(filePath).isFile()){
 				fs.unlinkSync(filePath);

@@ -12,6 +12,28 @@ body{
 	font-variant: normal;
 }
 
+/* Some custom code, just remove it later */
+li a:hover { color: #2bd1ff; }
+li a:active { color: #4f91a3; }
+
+#listContainer{
+	height: 300px;
+	border-style: solid;
+	border-width: 1px;
+}
+
+#editArea{
+	width: 25px;
+	height: 25px;
+	text-align: left; 
+}
+#infoBar{
+	width: 100%;
+	border-bottom: solid 1px;
+}
+
+/* End of custom code */
+
 .flex-container {
     display: -webkit-flex;
     display: flex;
@@ -74,8 +96,8 @@ body{
 }
 #map{
 	margin-top: 20px;
-	width: 500px;
-	height: 330px;
+	width: 400px;
+	height: 400px;
 	position: relative;
 }
 
