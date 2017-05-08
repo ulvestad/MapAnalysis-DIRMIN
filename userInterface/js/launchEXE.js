@@ -1,13 +1,13 @@
 //Vars for launching EXE file
 var child = require('child_process').execFile;
-var executablePath = "dist/label_image/label_image.exe";
+var executablePath = __dirname +"\\py\\dist\\label_image\\label_image.exe";
 //Var for list of parameters for EXE file
 
 //Launches a .EXE file --------------------------------
 function launchProgram(){
 	//Parameter is the folder path
 	//parameters = [getFolderPath()];
-	parameters = ["maps/"];
+	parameters = [__dirname+"\\py\\dist\\label_image\\label_image.exe", __dirname.replace("userInterface", "")+"maps"];
 	//Checks if a folder is selected
 	/*if (parameters[0] == null){
 		console.log("Please select folder");
