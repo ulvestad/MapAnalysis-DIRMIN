@@ -51,6 +51,8 @@ function updateList(){
 	  contentId: 'contentArea',
 	  rows_in_block: 50
 	});
+	done = true;
+
 }
 
 //-----------------------------SET CLICKED ID ON LIST/MARKER SELECT------------------------------------
@@ -98,13 +100,13 @@ function confirmQuarry(){
 	quarryList.splice(quarryList.indexOf(clickedID), 1);
 	//Updates DB
 	addDBRow();
-	removeDBRow();	
-	updateList();
-	updateMarkers();
+	removeDBRow();
+	setTimeout(function(){ updateList(); }, 20 );
 	//Decreases number of locations in threshhold by 1 (only the display num)
 	updateLocationsInThreshold(-1);
 	//Sets the nextClickedID to the one assigned at the start of the function
-	setClickedID(nextClickedID);
+	setClickedID(nextClickedID)
+
 }
 
 //Just like confirmQuarry, but deletes instead of moving the DB row
@@ -114,10 +116,10 @@ function deleteQuarry(){
 	data.splice(quarryList.indexOf(clickedID), 1);
 	quarryList.splice(quarryList.indexOf(clickedID), 1);
 	removeDBRow();
-	updateList();
-	updateMarkers();
+	setTimeout(function(){ updateList(); }, 20 );
 	updateLocationsInThreshold(-1);
 	setClickedID(nextClickedID);
+
 }
 //------------------------------------------------------------------------------------------------------
 
@@ -205,14 +207,22 @@ function addDBRow(){
 	//add
 	var spawn = require("child_process").spawn; //spawns a childs proc.
 	var child = spawn('python',["userInterface/py/insertRowDB.py", filename, zone, east, north, south, west, score]); //calls a python script with parameters
+	
 }
 function removeDBRow(){
 	//delete
 	var spawn = require("child_process").spawn; //spawns a childs proc.
 	var child = spawn('python',["userInterface/py/deleteRowDB.py", "PossibleLocations", clickedID]); //calls a python script with parameters
+	child.on('exit', function(){
+		runUpdateMarkers();
+	});
 }
 //----------------------------------------------------------------------------------------------------
 
 function getID(){
 	return clickedID;
+}
+
+function runUpdateMarkers(){
+	updateMarkers();
 }

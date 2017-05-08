@@ -26,9 +26,30 @@ function openFolder(){
 				split_path = folderPath.split("\\");
 				partial_path = split_path[split_path.length -2 ] +"/" +split_path[split_path.length -1] + "/";
 				document.getElementById("folderPathSelected").value =  "  ✔ "+partial_path;
-				document.getElementById("textOutput").value += "Folder Selected\n";
-				//List of selected folders
-				folderQueue.push(getFolderPath());
+				
+				// Gets new selected folder path
+				var newPath = getFolderPath();
+				var exists = false;
+				// Checks if path is already selected
+				if (folderQueue.length > 0) {
+					for (var i = 0; i < folderQueue.length; i++) {
+						if (newPath === folderQueue[i]) {
+							exists = true;
+							break;
+						}
+					}
+				}
+				
+				// If path is not selected, add to que
+				if (!exists) {
+					//List of selected folders
+					folderQueue.push(getFolderPath());	
+					document.getElementById("textOutput").value += "Folder Selected.\n";
+				} else {
+					exists = false;
+					document.getElementById("textOutput").value += "Folder already selected.\n";
+				}
+
 				//All selected folders shown in textfield
 				document.getElementById("folderPathSelected").value = '';
 				for (x=0; x<folderQueue.length; x++){
@@ -62,11 +83,11 @@ function clearFolderList(){
 
 function preProcessing() {
 	var x= 0;
-	document.getElementById("pFolderProgress").innerHTML  = "Folders scanned: (" + 0 + "/" + folderQueue.length + ")";
+	document.getElementById("pFolderProgress").innerHTML  = "Folders pre-processed: (" + 0 + "/" + folderQueue.length + ")";
 	disableButtons(true);
 	function preProcessingLoop(){
 		if (folderQueue.length <= x){
-			document.getElementById("pFolderProgress").innerHTML  = "Folders scanned: " + "(" + x + "/" + x + ") Done";
+			document.getElementById("pFolderProgress").innerHTML  = "Folders pre-processed: " + "(" + x + "/" + x + ") Done";
 			x = 0;
 			clearFolderList();
 			console.log("Completed!");
@@ -94,7 +115,7 @@ function preProcessing() {
 			document.getElementById("textOutput").value += "Pre-processing completed!\n";
 			if (x < folderQueue.length){
 				x += 1;
-				document.getElementById("pFolderProgress").innerHTML  = "Folders scanned: (" + x + "/" + folderQueue.length + ")";
+				document.getElementById("pFolderProgress").innerHTML  = "Folders pre-processed: (" + x + "/" + folderQueue.length + ")";
 				preProcessingLoop();
 			}
 		});
