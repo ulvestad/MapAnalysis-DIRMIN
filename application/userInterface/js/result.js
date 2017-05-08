@@ -193,6 +193,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 	    //init listener for 'click on marker'
 		google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
 		    return function() {
+
 		    	//diplays infowindow to current marker
 		        infowindow.setContent(content);
 		        var pos;
