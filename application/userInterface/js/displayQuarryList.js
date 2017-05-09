@@ -10,6 +10,7 @@ var quarryList = [];
 var filenames = [];
 //boolean for clicked on list
 var clickedOnList = false;
+getCurrentImage("");
 
 //-------------------------------------INIT ON SLIDER CHANGE--------------------------------------------
 //Run when user refresh list (refresh from DB, show Quarries button)
