@@ -70,6 +70,7 @@ function setClickedID (id){
 	clickedOnList = true;
 	disableButtons(false);
 	if (quarryList.length == 0){
+		getCurrentImage("");
 		disableButtons(true);
 		return;
 	}
