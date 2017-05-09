@@ -36,6 +36,7 @@ li a:active { color: #4f91a3; }
 
 .flex-container {
     display: -webkit-flex;
+    padding-left: 2%;
     display: flex;
 		-webkit-flex-wrap: wrap;
 		flex-wrap: wrap;
@@ -43,22 +44,52 @@ li a:active { color: #4f91a3; }
 		align-content: center;
 		margin: 10px auto;
 }
-
 .flex-item {
 		margin-right: auto;
 		position: relative;
+		
 }
-
 
 .description {
 	-webkit-align-self: flex-start;
 	align-self: flex-start;
 	position: relative;
+	padding-right: 2%;
+}
+.column1of3 {
+	-webkit-align-self: top;
+	align-self: top;
+	position: relative;
+	width: 18%;
+}
+.column2of3 {
+	-webkit-align-self: top;
+	align-self: top;
+	position: relative;
+	width: 38%;
+}
+.column3of3 {
+	-webkit-align-self: top;
+	align-self: top;
+	position: relative;
+	width: 38%;
 }
 
-.column1 {
+.columnx{
 	-webkit-align-self: center;
 	align-self: center;
+	position: relative;
+	width: 40%;
+}
+
+#map{
+	width: 100%;
+	padding-top: 100%;
+	position: relative;
+}
+#quarryImage{
+	width: 100%;
+	border: 1px solid;
 	position: relative;
 }
 
@@ -74,15 +105,8 @@ li a:active { color: #4f91a3; }
 	position: relative;
 }
 
-.map {
-		position: relative;
-}
 
 .quarryLocations {
-		position: relative;
-}
-
-.potentialQuarries {
 		position: relative;
 }
 
@@ -94,12 +118,7 @@ li a:active { color: #4f91a3; }
 #startXY, #endXY, form{
 	padding: 0px;
 }
-#map{
-	margin-top: 20px;
-	width: 400px;
-	height: 400px;
-	position: relative;
-}
+
 
 textarea {
    resize: none;

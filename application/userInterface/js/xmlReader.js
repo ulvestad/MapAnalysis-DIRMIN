@@ -116,8 +116,9 @@ function getAllxml(folderPath){ //Runs a getXMLfile-function once for each XML-f
   });
   //For each file in the folder:
   for(x=0; x<files.length; x++){
-    extension = files[x].split(".")
-    if (extension[extension.length - 1] === "xml") {
+    extension = files[x].split(".");
+    eksport = files[x].split("-")[0];
+    if (extension[extension.length - 1] === "xml" && eksport != "Eksport") {
       xmlFileIndexes.push(x); //Push all positions of .xml files in the folder to xmlFileIndexes[] 
     }
   };

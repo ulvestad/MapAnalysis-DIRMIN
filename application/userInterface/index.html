@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,128 +12,101 @@
 
     <!-- Needed to select folders n' shit -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-
 </head>
 
-
 <body>
-  <!-- The top-navbar for the application, this is the same for all .html pages -->
-  <nav class="navbar navbar-inverse" id="navbar">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="index.html">Map Analysis</a>
-      </div>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav">
-          <li><a href="index.html" onclick="navbar_open" id="btnNavIndex">Main Page</a></li>
-          <li><a href="resultPage.html" onclick="navbar_open" id="btnNavResults">Result Page</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+	<!-- NAVBAR - NO TOUCHING!! -->
+	<!-- The top-navbar for the application, this is the same for all .html pages -->
+	<nav class="navbar navbar-inverse" id="navbar">
+		<div class="container-fluid">
+		  <div class="navbar-header">
+		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+		      <span class="icon-bar"></span>
+		      <span class="icon-bar"></span>
+		      <span class="icon-bar"></span>
+		    </button>
+		    <a class="navbar-brand" href="index.html">Map Analysis</a>
+		  </div>
+		  <div class="collapse navbar-collapse" id="myNavbar">
+		    <ul class="nav navbar-nav">
+		      <li><a href="index.html" onclick="navbar_open" id="btnNavIndex">Main Page</a></li>
+		      <li><a href="resultPage.html" onclick="navbar_open" id="btnNavResults">Result Page</a></li>
+		    </ul>
+		  </div>
+		</div>
+	</nav>
+  	<!-- NAVBAR - NO TOUCHING!! -->
+
 
     <!-- The content of the index.html page -->
-		<div class="flex-container">
+	<div class="flex-container">
 
-			<div class="flex-item description">
-				<p>The main page is where the process of preparing and scanning images is done. First the user has to select one or more folders containing .jpg-images and associated .xml-files, and prepare these files using the "<b>Pre-process folders</b>"-button. When this process is done, the user can scan all pre-processed data using the "<b>Scan pre-processed data</b>"-button, and see the results in the Result Page. The scanning will take some time, depending on the amount of images scanned at once. </p>
-				<p>The "<b>Update known locations</b>"-button lets the user select a .CSV file with coordinates to known quarries to update the database, in order to display them on the result page. After a scan i done, it is possible to get the results as a .CSV-file with the "<b>Export new results</b>"-button, and if the user wants to remove all pre-processed and scanned data from the system, the "<b>Reset data</b>"-button will do just that. This will also remove all information about quarries the user has confirmed using the Result Page. </p>
-			</div>
-			<div class="flex-item column1">
-				<!-- <form>
-					<div id="startXY">
-
-						<p>Start (X,Y)</p>
-						Latitude start: <input style="font-family:Open Sans Condensed;" type="number" id= "xPos1" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="63.431925518951694"><br>
-						Longitude start: <input style="font-family:Open Sans Condensed;" type="number" id= "yPos1" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="10.367145538330078"><br>
-					</div>
-					<div id="endXY">
-
-						<p>End (X,Y)</p>
-						Latitude end: <input  style="font-family:Open Sans Condensed;" type="number" id= "xPos2" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="63.41748773087018"><br>
-						Longitude end: <input style="font-family:Open Sans Condensed;" type="number" id= "yPos2" name="inputField" min = "0" max = "1000000" step = "0.00000000000001" value="10.413494110107422"><br>
-					</div>
-				</form> -->
-
-        		<!-- BUTTONS for the page -->
-				<div class="flex-item scanButtons" id="scanButtons">
-					<p>Selected folders: </p>
-					<textarea rows="10" cols="40" readonly id="folderPathSelected" style = "height:100px; overflow:hidden; font-size: 11px; overflow:hidden; overflow-y:scroll;">
-					</textarea><br>
-					<button onclick="openFolder()" 		id="btnOpenFolder" style="font-family:Open Sans Condensed;">Select a folder</button>
-					<button onclick="clearFolderList()" id="btnClearFolderList" style="font-family:Open Sans Condensed;">Unselect folders</button> <br>
-					<span id="pFolderProgress"></span><br>
-					<button onclick="preProcessing()" 	id="btnPreProcessing" style="font-family:Open Sans Condensed;">Pre-process folders</button>
-					<span>Prepares the selected folders containing .xml and .jpg data for scanning. </span> <br><br>
-					
-					<button onclick="launchProgram()" 	id="btnLaunchProgram" style="font-family:Open Sans Condensed;">Scan pre-processed data</button>
-					<span>Checks all pre-processed images for potential quarries. May take some time.</span> <br><br><br>
-					<button onclick="openCSVFile()" 	id="btnOpenCSVFile" style="font-family:Open Sans Condensed;">Update known locations</button>
-					<span>Select a .CSV file with coordinates to all known locations. </span> <br><br>
-					<button onclick="openFolderCSV()" 	id="btnOpenFolderCSV" style="font-family:Open Sans Condensed;">Export new results</button>
-					<span>Export all new confirmed locations as a .CSV file</span> <br><br>
-					<button onclick="wipeDbAndMaps()" 	id="btnWipeDBAndMaps" style="font-family:Open Sans Condensed;">Reset data</button> 
-					<span>Removes all pre-processed and scanned data.</span> <br><br>
-
-					<p id="showCoordinates"></p>
-					<p id="showMessage"></p>
-
-				</div>
-		        <!-- END BUTTONS -->
-
-		        <!-- Old code, remove? -->
-				<!-- <div class="flex-item mapbuttons" id="mapButtons" id="left"> Buttons for selecting area to scan, not needed anymore -->
-					<!--<button onclick="scanArea(2)" style="font-family:Open Sans Condensed;">Get images from selected area</button>-->
-					<!--<button onclick="removeMarkers()" style="font-family:Open Sans Condensed;">Remove markers </button>-->
-				<!-- </div> -->
-				<!-- Removed Google Maps map-box -->
-				<!-- <div class="flex-item map" id="map"></div> -->
-			</div>
-      
-      		<!-- Text field (output field) for the page -->
-			<div class="flex-item quarryLocation">
-				<span style="float:left">Output:</span>
-				<br>
-				<textarea rows="21" cols="50" readonly id="textOutput"></textarea>
-			</div>	
+		<div class="flex-item description">
+			<p>The main page is where the process of preparing and scanning images is done. First the user has to select one or more folders containing .jpg-images and associated .xml-files, and prepare these files using the "<b>Pre-process folders</b>"-button. When this process is done, the user can scan all pre-processed data using the "<b>Scan pre-processed data</b>"-button, and see the results in the Result Page. The scanning will take some time, depending on the amount of images scanned at once. </p>
+			<p>The "<b>Update known locations</b>"-button lets the user select a .CSV file with coordinates to known quarries to update the database, in order to display them on the result page. After a scan i done, it is possible to get the results as a .CSV-file with the "<b>Export new results</b>"-button, and if the user wants to remove all pre-processed and scanned data from the system, the "<b>Reset data</b>"-button will do just that. This will also remove all information about quarries the user has confirmed using the Result Page. </p>
 		</div>
 
-<!-- EVERYTHING SCRIPT-RELATED -->
-<!-- Needed to select folders or some shit -->
-<input style="display:none;" id="fileDialog" type="file" webkitdirectory />
-<input style="display:none;" id="csvFile" type="file"  />
+		<div class="flex-item columnx">
 
-<!-- Needed to solve jquery issue  -->
-<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    		<!-- BUTTONS for the page -->
+			<div class="flex-item scanButtons" id="scanButtons">
+				<p>Selected folders: </p>
+				<textarea rows="10" cols="40" readonly id="folderPathSelected" style = "height:100px; overflow:hidden; font-size: 11px; overflow:hidden; overflow-y:scroll;">
+				</textarea><br>
+				<button onclick="openFolder()" 		id="btnOpenFolder" style="font-family:Open Sans Condensed;">Select a folder</button>
+				<button onclick="clearFolderList()" id="btnClearFolderList" style="font-family:Open Sans Condensed;">Unselect folders</button> <br>
+				<span id="pFolderProgress"></span><br>
+				<button onclick="preProcessing()" 	id="btnPreProcessing" style="font-family:Open Sans Condensed;">Pre-process folders</button>
+				<span>Prepares the selected folders containing .xml and .jpg data for scanning. </span> <br><br>
+				
+				<button onclick="launchProgram()" 	id="btnLaunchProgram" style="font-family:Open Sans Condensed;">Scan pre-processed data</button>
+				<span>Checks all pre-processed images for potential quarries. May take some time.</span> <br><br><br>
+				<button onclick="openCSVFile()" 	id="btnOpenCSVFile" style="font-family:Open Sans Condensed;">Update known locations</button>
+				<span>Select a .CSV file with coordinates to all known locations. </span> <br><br>
+				<button onclick="openFolderCSV()" 	id="btnOpenFolderCSV" style="font-family:Open Sans Condensed;">Export new results</button>
+				<span>Export all new confirmed locations as a .CSV file</span> <br><br>
+				<button onclick="wipeDbAndMaps()" 	id="btnWipeDBAndMaps" style="font-family:Open Sans Condensed;">Reset data</button> 
+				<span>Removes all pre-processed and scanned data.</span> <br><br>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+				<p id="showCoordinates"></p>
+				<p id="showMessage"></p>
 
-<!-- Needed to solve jquery issue -->
-<script>if (window.module) module = window.module;</script>
+			</div>
+		</div>
+  
+  		<!-- Text field (output field) for the page -->
+		<div class="flex-item columnx">
+			<span style="float:left">Output:</span>
+			<br>
+			<textarea rows="21" cols="50" readonly id="textOutput"></textarea>
+		</div>	
+	</div>
+	<!-- ______________________________________END OF MAIN________________________________________ -->
 
-<!-- Removed Script for Google Maps Map -->
 
-<!-- <script src="js/staticAPIDownload.js"></script> -->
-<!-- <script src="js/setMarkerInit.js"></script> -->
-<!-- <script async defer
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
-</script> -->
 
-<!-- All javascript file inclusions -->
-<script src="js/launchEXE.js"></script>
-<script src="js/navbar.js"></script>
-<script src="js/updateDBSelectFile.js"></script>
-<script src="js/exportCSV.js"></script>
-<script src="js/runPreprocessing.js"></script>
-<script src="js/moveFiles.js"></script>
-<script src="js/xmlReader.js"></script>
-<script src="js/resetDB.js"></script>
+	<!-- EVERYTHING SCRIPT-RELATED -->
+	<!-- Needed to select folders or some shit -->
+	<input style="display:none;" id="fileDialog" type="file" webkitdirectory />
+	<input style="display:none;" id="csvFile" type="file"  />
 
+	<!-- Needed to solve jquery issue  -->
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<!-- Needed to solve jquery issue -->
+	<script>if (window.module) module = window.module;</script>
+
+	<!-- All javascript file inclusions -->
+	<script src="js/launchEXE.js"></script>
+	<script src="js/navbar.js"></script>
+	<script src="js/updateDBSelectFile.js"></script>
+	<script src="js/exportCSV.js"></script>
+	<script src="js/runPreprocessing.js"></script>
+	<script src="js/moveFiles.js"></script>
+	<script src="js/xmlReader.js"></script>
+	<script src="js/resetDB.js"></script>
 </body>
 </html>
