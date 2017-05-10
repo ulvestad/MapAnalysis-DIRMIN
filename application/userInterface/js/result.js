@@ -14,19 +14,21 @@ var new_lng;
 var numPlottedMarkers = 0;
 var numMarkerTreshhold = 10000; //number of markers allowed on map, due to performance number
 var treshholdSelectedByUser = 100 //getQuarryListLength();
-var firstTimeAUserClickedOnAMarkerOnTheGoogleMapsMap = true;
 
 //GOOGLE MAPS FUNCTIONS----------------------------------------------------------------------------------------------------
 //Init for map and listener
 function initMap() {
 	//Load 'map' utilizing google map api
 	var middle_norway = {lat: 65.14611484756372, lng: 13.18359375};
+
 	map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 4,
 		center: middle_norway,
+		mapTypeId: 'satellite',
 		streetViewControl: false,
 		clickableIcons: false
 	});
+
 	//Init map listener which handles "new positon clicks when editing quarry-marker location"
 	map.addListener('click', function(event) {
 		var new_LatLng = event.latLng;
@@ -34,7 +36,6 @@ function initMap() {
     		markerSelected.setPosition(new_LatLng);
     		new_lat = markerSelected.getPosition().lat();
 			new_lng = markerSelected.getPosition().lng();
-    		//setTextToArea("\nNew position for selected marker: " +new_LatLng, true);
 		}
 		else{
 			return;
@@ -192,7 +193,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 						'</div>';
 	    var infowindow = new google.maps.InfoWindow();
 	    //init listener for 'click on marker'
-		google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+		google.maps.event.addListener(marker,'click', (function(marker,content){
 		    return function() {
 		    	//If user clicks on NewLocations marker, a blank image will be shown
 		    	if(markers[1].indexOf(marker) >= 0 || markers[0].indexOf(marker) >= 0 ){
@@ -201,28 +202,20 @@ function plotMarker(type, checked, id, lat, lng, scr){
 				}else{
 					disableButtons(false);
 				}
-		    	//diplays infowindow to current marker
-		        infowindow.setContent(content);
+		        
 		        var pos;
 		       	for(var i = 0, len = markers[2].length; i < len; i++) {
 			        if (markers[2][i] === marker){
 			        	pos = i+1;
 			        }
 				}
-		       	//console.log("marker selectd :" +pos)
-		       	//console.log("converted :" + quarryList[pos-1])
-		       	//console.log("quarrlist :" + quarryList)
-		       	//console.log("markers :" + markers[2].toString())
+
 		       	if(!clickedOnList && type == "PossibleLocations"){
 		       		setClickedIDWhenPretendTriggered(quarryList[pos-1])
 		       	}
 		       	clickedOnList = false;
 
-		        if(editing){
-		        	infowindow.open(map,markerSelected);
-		        }else{
-		        	infowindow.open(map,marker);
-		        }
+		       
 		        //if newquarry-marker is clicked -> make edit buttons enabled (default is diabled), display info text to textoutput area
 		        if(type == "NewLocations"){
 		        	//if user is editing -> prompt for validation to exit edit or continue edit
@@ -231,9 +224,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		        			return;
 		        		}
 		        	}
-		        	//document.getElementById("Edit").disabled = false;
-		        	//document.getElementById("Delete").disabled = false;
-		        	//document.getElementById("Finish").disabled = false;
+
 		        	markerSelected = marker;
 		        	//setTextToArea("Now you can edit the marker selected. To do so, click the \"Edit button\" and select a new position on the map.", false);
 		        	changeMarkerIcon(false);
@@ -251,11 +242,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		        	changeMarkerIcon(false);
 		        	editing = false;
 		        }
-		        //handles infowindow swithcing
-		        if(prev_infowindow && prev_infowindow!=infowindow ) {
-           			prev_infowindow.close();
-        		}
-        		prev_infowindow = infowindow;
+		        
 		    };
 		})(marker,content,infowindow));
 		//push markers to array
@@ -442,10 +429,7 @@ function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 		google.maps.event.trigger(markers[2][id], 'click', {
 	  	//pretended click trigger event for selected marker 
 		});
-		if(firstTimeAUserClickedOnAMarkerOnTheGoogleMapsMap){
-			map.setZoom(11);
-			firstTimeAUserClickedOnAMarkerOnTheGoogleMapsMap = false;
-		}
+		map.setZoom(15);
 		map.setCenter(markers[2][id].getPosition());
 	}	
 }

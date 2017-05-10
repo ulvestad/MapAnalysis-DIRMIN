@@ -35,61 +35,72 @@
   <!-- NAVBAR - NO TOUCHING!! -->
 
   <!-- MAIN STUFF -->
-  <div class="flex-container">
-
-    <div class="flex-item description">
+  <div class="flex-item description">
       <p>This page displays the results from previous scans. Use the slider to display all potential locations within a certainty-threshold in the list below and the google maps window. Select an item in the list or on the map to get the option of adding it as a new confirmed location, or denying it and removing it from the potential locations. </p>
     </div>
-    
+  <div class="flex-container">
     <!-- BOX 1: Quarry data_____________________________________________________-->
-    <div class="flex-item column1of3">
-      <div id="slider"></div>
-      <span id="bothThreshold"></span> <span>. </span> <span id="quarriesInThreshold">In threshold: </span><br>
-      <span id="selectedListItemDisplay"></span>
+    <div class="flex-item column1of3"> 
+      <dic id="column1Holder">
       
-      
-      <!-- List view for quarries, plz no remove -->
-      <div id="listContainer" style="height: 675px;">
-        
-        <div id="scrollArea" class="clusterize-scroll" style="height: 645px; width: 100%; overflow:hidden; overflow-y:scroll;">
-          <ul id="contentArea" class="clusterize-content">
-            
-          </ul>
+        <div id="slider"></div>
+        <div id="sliderTextSpans">
+          <span>Locations in threshold </span><span id="bothThreshold"></span><span id="quarriesInThreshold"></span>
         </div>
-        <button onclick="prevQuarry()" id="prevQuarry" disabled>Previous</button>
-        <button onclick="nextQuarry()" id="nextQuarry" disabled>Next</button>
-      </div>
-      <!-- _____________________________________ -->
-
-
-      <!-- BUTTONS -->
-      <div id="mapButtons" id="left">
-        <!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
-        <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
-        <button onclick="deleteQuarry()" id="Delete" disabled>Remove</button>
-        <button onclick="confirmQuarry()" id="Confirm" disabled>Confirm</button><br>
-        <span id="deleteFeedback"></span>
-        <!-- <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button> -->
-        <!-- <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button> -->
-      </div>
+        
+        <!-- List view for quarries, plz no remove -->
+        
+        <div id="scrollAreaWrapper">
+          <div id="scrollArea" class="clusterize-scroll">
+            <ul id="contentArea" class="clusterize-content">
+              
+            </ul>
+          </div>
+        </div>
+        
+        <!-- BUTTONS -->
+        <div id="mapButtons" id="left">
+          <!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
+          <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
+          <div class="listNavButtons">
+            <button onclick="prevQuarry()" id="prevQuarry" class="resultNavButton" disabled> ◄ </button>
+            <button onclick="nextQuarry()" id="nextQuarry" class="resultNavButton" disabled> ► </button>
+          </div>
+          <span id="deleteFeedback"></span>
+          <!-- <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button> -->
+          <!-- <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button> -->
+        </div>
+      </dic>
     </div>
+
 
 
     <!-- BOX 2: image for selected quarry ______________________________________ -->
     <div class="flex-item column2of3">
       <img id="quarryImage" src="">
+      
+      <div class="confirmDeleteButtons">
+          <button onclick="deleteQuarry()" id="Delete" class="resultButton" disabled>✖ Remove</button>
+          <button onclick="confirmQuarry()" id="Confirm" class="resultButton" disabled>✔ Confirm</button><br>
+      </div>
     </div>
 
 
     <!--BOX 3: Google Maps Map (for displaying quary positions) _______________-->
     <div class="flex-item column3of3">
       <!-- GoogleMaps map -->
-      <div class="flex-item " id="map"></div>
+      <div id="map"></div>
       <!-- CHECKBOXES -->
       <form>
-        <input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations" checked> Possible Locations<br>
-        <input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> Confirmed location<br>
-        <input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations" > Known locations<br>
+        <input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations" checked> 
+        <span>Possible Locations</span>
+        <img src="icons/mapMarkerStandard.png" style="height: 20px"> <br>
+        <input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> 
+        <span>Confirmed location</span>
+        <img src="icons/mapMarkerPossbile.png" style="height: 20px"> <br>
+        <input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations"> 
+        <span>Known locations</span>
+        <img src="icons/mapMarker.png" style="height: 20px"> <br>
       </form> 
     </div>
     <!-- END GOOGLE MAPS -->
