@@ -187,9 +187,9 @@ function plotMarker(type, checked, id, lat, lng, scr){
 	        icon: micon,
 	        zIndex: zindex
 	    });
-		//create content of marker
+		//create content of marker infowindow
 	    var content = '<div>' +
-							'<b>'+type+'</b><br><br><b>ID: </b>'+id+'<br><b>Latitude: </b>'+lat+'<br><b>Longitude: </b>'+lng+'<br><b>Score: </b>'+scr+''
+							'<b>ID: </b>'+id+'<br><b>Score: </b>'+scr+''
 						'</div>';
 	    var infowindow = new google.maps.InfoWindow();
 	    //init listener for 'click on marker'
@@ -202,7 +202,9 @@ function plotMarker(type, checked, id, lat, lng, scr){
 				}else{
 					disableButtons(false);
 				}
-		        
+				//Displays marker infowindow 
+		        infowindow.setContent(content)
+		        infowindow.open(map, marker);
 		        var pos;
 		       	for(var i = 0, len = markers[2].length; i < len; i++) {
 			        if (markers[2][i] === marker){
@@ -242,7 +244,11 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		        	changeMarkerIcon(false);
 		        	editing = false;
 		        }
-		        
+		        if(prev_infowindow && prev_infowindow != infowindow) {
+		        	prev_infowindow.close();
+		        }
+		        prev_infowindow = infowindow;
+
 		    };
 		})(marker,content,infowindow));
 		//push markers to array
@@ -429,6 +435,7 @@ function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 		google.maps.event.trigger(markers[2][id], 'click', {
 	  	//pretended click trigger event for selected marker 
 		});
+		prev_infowindow.close();
 		map.setZoom(15);
 		map.setCenter(markers[2][id].getPosition());
 	}	
