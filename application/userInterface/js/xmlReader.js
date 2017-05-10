@@ -106,7 +106,7 @@ function xmlParserAndWriter(xml) {
 function getAllxml(folderPath){ //Runs a getXMLfile-function once for each XML-file in the specified folder
   xmlFileIndexes = [];
   files = fs.readdirSync(folderPath);
-  xmlReaderFolderPath = folderPath
+  xmlReaderFolderPath = folderPath;
   
   fs.readdir( folderPath, function( err, files ) { //Foldercheck
     if( err ) {

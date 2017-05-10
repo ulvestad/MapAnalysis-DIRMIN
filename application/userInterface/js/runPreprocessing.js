@@ -81,17 +81,18 @@ function clearFolderList(){
 
 function preProcessing() {
 	document.getElementById("textOutput").value += "Pre-processing started...\n";
+	displayLoader(true); //Fills the Entire page with a loading animation
 	var x= 0;
 	document.getElementById("pFolderProgress").innerHTML  = "Folders pre-processed: (" + 0 + "/" + folderQueue.length + ")";
 	disableButtons(true);
 	function preProcessingLoop(){
 		if (folderQueue.length <= x){
-			document.getElementById("pFolderProgress").innerHTML  = "Folders pre-processed: " + "(" + x + "/" + x + ") Done";
+			document.getElementById("pFolderProgress").innerHTML  = "";
 			document.getElementById("textOutput").value += "Pre-processing completed. You may now scan the pre-processed data.\n";
 			x = 0;
 			clearFolderList();
-			disableButtons(false);
-			
+			disableButtons(false); //Enables buttons
+			displayLoader(false); //Removes loader from screen
 			return;
 		}
 		// Gets the selected folder
@@ -108,6 +109,7 @@ function preProcessing() {
 		child(executablePath, parameters, function(err, data) {
 			if(err){
 				console.error(err);
+				displayLoader(false);
 				return;
 			}
 			
