@@ -102,6 +102,7 @@ li{
 
 .column1of3 {
 	width: 18%;
+	min-width: 250px;
 	-webkit-align-self: top;
 	align-self: top;
 	position: relative;
@@ -141,7 +142,7 @@ li{
 
 }
 #scrollArea{
-	height: 300px;
+	height: 320px;
 	width: 100%; 
 	overflow:hidden; 
 	overflow-y:scroll;
