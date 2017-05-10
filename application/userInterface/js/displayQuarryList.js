@@ -10,6 +10,7 @@ var quarryList = [];
 var filenames = [];
 //boolean for clicked on list
 var clickedOnList = false;
+var idOfClicked = null;
 getCurrentImage("");
 
 //-------------------------------------INIT ON SLIDER CHANGE--------------------------------------------
@@ -33,7 +34,7 @@ function getThresholdQuarries(low, high){
 		var score = row.score;
 		var filename = row.filename;
 		filenames.push(filename);
-		data.push('<li onclick="setClickedID('+id+')"> ID: '+id+', Score: '+score+'</li>');
+		data.push('<li onclick="setClickedID('+id+')"id="listItem'+id+'">ID: '+id+', Score: '+score+'</li>');
 		quarryList.push(id);
 	})
 	db.close();	
@@ -57,10 +58,9 @@ function updateList(){
 	  rows: data,
 	  scrollId: 'scrollArea',
 	  contentId: 'contentArea',
-	  rows_in_block: 50
+	  rows_in_block: 500
 	});
 	done = true;
-
 }
 
 //-----------------------------SET CLICKED ID ON LIST/MARKER SELECT------------------------------------
@@ -77,12 +77,28 @@ function setClickedID (id){
 	}
 	clickedID = id;
 	//temporarily changes a paragraph to make testing easier
-	document.getElementById("selectedListItemDisplay").innerHTML = "Selected list-item: " + clickedID
+	//document.getElementById("selectedListItemDisplay").innerHTML = "Selected ID: " + clickedID
 	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
 	//console.log("Selected quarry ID: " + clickedID)
 	whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID));
+	
+	setStyledListItem(); //Function for marking the current selected line in the list
+	
 }
 //-----------------------------------------------------------------------------------------------------
+
+function setStyledListItem(){
+	//CSS styling code: 
+	if (idOfClicked != null){
+		prevHTMLListItem.id = idOfClicked;
+	}
+	idOfClicked = "listItem" + clickedID; 
+	prevHTMLListItem = document.getElementById(idOfClicked);	
+	prevHTMLListItem.id = "styleThis";
+
+	//.id = "styleThis";
+	//End of CSS styling code
+}
 
 function setClickedIDWhenPretendTriggered (id){
 	//If the last item in the list is removed, no more actions. 
@@ -93,9 +109,11 @@ function setClickedIDWhenPretendTriggered (id){
 	}
 	clickedID = id;
 	//temporarily changes a paragraph to make testing easier
-	document.getElementById("selectedListItemDisplay").innerHTML = "Selected list-item: " + clickedID
+	//document.getElementById("selectedListItemDisplay").innerHTML = "Selected ID: " + clickedID
 	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
-	//console.log("Selected quarry ID: " + clickedID)
+
+	//Funker ikke ...
+	setStyledListItem(); //Function for marking the current selected line in the list
 }
 
 //---------------------------------------DELETE/CONFIRM QUARRY-------------------------------------------------
@@ -115,6 +133,7 @@ function confirmQuarry(){
 	//Decreases number of locations in threshhold by 1 (only the display num)
 	updateLocationsInThreshold(-1);
 	//Sets the nextClickedID to the one assigned at the start of the function
+	idOfClicked = null;
 	setClickedID(nextClickedID)
 
 }
@@ -129,6 +148,7 @@ function deleteQuarry(){
 	removeDBRow();
 	setTimeout(function(){ updateList(); }, 20 );
 	updateLocationsInThreshold(-1);
+	idOfClicked = null;
 	setClickedID(nextClickedID);
 
 }
