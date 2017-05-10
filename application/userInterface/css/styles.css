@@ -23,7 +23,15 @@ li{
 }ul{
 	padding: 5px;
 }
-
+#currentActiveLink{
+	font-weight: bold;
+	color: #4CAF50;
+}
+.navbar-header{
+	height: 100%;
+	margin: 0;
+	padding: 4px 0px 4px 0px;
+}
 
 
 #editArea{
@@ -37,6 +45,48 @@ li{
 }
 
 /* End of custom code */
+body .centerHeader {
+	text-align: center;
+	margin: 0px;
+	padding-bottom: 10px;
+}
+.togglePageDescription{
+	position: relative;
+	height: 40px;
+	width: 100%;
+	top: -22px;
+	background-color: #B9A879;
+	text-align: center;
+	line-height: 40px;
+	cursor: pointer;
+	margin: 0px;
+}
+
+#hideDescription{
+	height: 0px;
+	visibility: hidden;
+}
+#showDescription{
+	position: relative;
+	visibility: visible;
+	-webkit-align-self: flex-start;
+	align-self: flex-start;
+	margin: auto;
+	width: 100%;
+	top: -27px;
+	padding: 15px 15px 10px 15px;
+	margin: 5px 0px 20px 0px;
+	background-color: #EFF0F1;
+
+	
+}
+.descriptionPlaceholder{
+	padding: 0px;
+	margin-top: 0px;
+	width: 1200px;
+	max-width: 100%;
+	margin: auto;
+}
 
 .flex-container {
 	padding-left: 2%;
@@ -87,16 +137,8 @@ li{
 	margin: 10px 5px 10px 5px;
 
 }
+
 .description {
-	-webkit-align-self: flex-start;
-	align-self: flex-start;
-	position: relative;
-	margin-right: 2%;
-	margin-left: 2%;
-	border-bottom: solid 1px;
-	margin-top: 20px;
-	padding-bottom: 10px;
-	margin-bottom: 20px;
 }
 
 
@@ -131,10 +173,10 @@ li{
 }
 
 .columnx{
-	-webkit-align-self: center;
-	align-self: center;
+	-webkit-align-self: top;
+	align-self: top;
 	position: relative;
-	width: 40%;
+	width: 30%;
 }
 #scrollAreaWrapper{
 	min-width: 250px;
