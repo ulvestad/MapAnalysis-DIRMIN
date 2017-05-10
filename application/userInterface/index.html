@@ -29,7 +29,7 @@
 		  </div>
 		  <div class="collapse navbar-collapse" id="myNavbar">
 		    <ul class="nav navbar-nav">
-		      <li id="currentActiveLink"><a href="index.html" onclick="navbar_open" id="btnNavIndex currentActiveLink">Main Page</a></li>
+		      <li id="currentActiveLink"><a href="index.html" onclick="navbar_open" id="btnNavIndex">Main Page</a></li>
 		      <li><a href="resultPage.html" onclick="navbar_open" id="btnNavResults">Result Page</a></li>
 		    </ul>
 		  </div>
@@ -37,61 +37,55 @@
 	</nav>
   	<!-- NAVBAR - NO TOUCHING!! -->
 
+  	<div id="hideLoader"></div>
+  	<div id="hideTransparentLayer"> </div>
+
 
     <!-- The content of the index.html page -->
     <div onclick="toggleDescriptionField()" class="togglePageDescription">
-    	<span><b>Show Main Page Description</b></span>
+    	<span><b>Show/Hide Main Page Description</b></span>
     </div>
 
-    <div class="flex-item" id="showDescription">
+    <div class="flex-item" id="hideDescription">
     	<div class="descriptionPlaceholder">
     		<h2 class="centerHeader"> Main Page</h2>
-			<p>The main page is where the process of preparing and scanning images is done. First the user has to select one or more folders containing .jpg-images and associated .xml-files, and prepare these files using the "<b>Pre-process folders</b>"-button. When this process is done, the user can scan all pre-processed data using the "<b>Scan pre-processed data</b>"-button, and see the results in the Result Page. The scanning will take some time, depending on the amount of images scanned at once. </p>
-			<p>The "<b>Update known locations</b>"-button lets the user select a .CSV file with coordinates to known quarries to update the database, in order to display them on the result page. After a scan i done, it is possible to get the results as a .CSV-file with the "<b>Export new results</b>"-button, and if the user wants to remove all pre-processed and scanned data from the system, the "<b>Reset data</b>"-button will do just that. This will also remove all information about quarries the user has confirmed using the Result Page. </p>
+			<p>The main page is where the process of preparing and scanning images is done. Before the scanning of data can be done, it must be preprocessed with the "<b>Pre-process folders</b>"-button after one or more folders containing .jpg-images and associated .xml-files has been selected. When this process is done, all pre-processed data can be scanned using the "<b>Scan pre-processed data</b>"-button, and the results can be seen in the Result Page. The scanning will take some time, depending on the amount of images scanned at once. </p>
+			
+			<p>The "<b>Update known locations</b>"-button is used to update the Known Locations in the database. This is done by selecting a .CSV file with coordinates to already known locations. After a scan is done and the result has been processed by a user, the "<b>Export new results</b>"-button can be used to get the New Locations as a .CSV-file. The "<b>Reset data</b>"-button resets the pre-processed and scanned data in the system, and should be used when the results from the scan has been exported and processed by a user, or simply just to reset the system.  </p>
 		</div>
 	</div>
-	<div class="flex-container"> 
-
+	<div class="flex-container mainPageContent"> 
 
 		<div class="flex-item columnx"> <!-- Container 1 -->
 			<h3>Process Data</h3>
-
-    		
 			<div class="flex-item scanButtons" id="scanButtons"> <!-- BUTTONS for the page -->
 				<p>Selected folders: </p>
-				<textarea rows="10" cols="40" readonly id="folderPathSelected" style = "height:100px; overflow:hidden; font-size: 11px; overflow:hidden; overflow-y:scroll;">
+				<textarea rows="10" cols="50" readonly id="folderPathSelected" style = "height:100px; overflow:hidden; font-size: 11px; overflow:hidden; overflow-y:scroll;">
 				</textarea><br>
 				<button onclick="openFolder()" 		id="btnOpenFolder" style="font-family:Open Sans Condensed;">Select a folder</button>
-				<button onclick="clearFolderList()" id="btnClearFolderList" style="font-family:Open Sans Condensed;">Deselect folders</button> <br>
-				<br> <span id="pFolderProgress"></span><br>
+				<button onclick="clearFolderList()" id="btnClearFolderList" style="font-family:Open Sans Condensed;">✖</button> 
 				<button onclick="preProcessing()" 	id="btnPreProcessing" style="font-family:Open Sans Condensed;">Pre-process folders</button>
-				<br> <span>Prepares the selected folders containing .xml and .jpg data for scanning. </span> <br><br>
+				<br>
+				<span id="pFolderProgress"></span>
+				<br><br>
 				<button onclick="launchProgram()" 	id="btnLaunchProgram" style="font-family:Open Sans Condensed;">Scan pre-processed data</button>
-				<br> <span>Checks all pre-processed images for potential quarries. May take some time.</span> <br><br><br>
-				<p id="showCoordinates"></p>
-				<p id="showMessage"></p>
+				<br> <span>Scans all pre-processed images for potential quarries. This may take some time.</span> <br><br><br>
+				
 			</div>
 		</div>
-  		
 
-
-  		
-			
-
-
-
-		<div class="flex-item columnx"><!-- Container 3 -->
+		<div class="flex-item columnx"><!-- Container 2 -->
 			<h3>Manage Database</h3>
-
+			<br>
+			<button onclick="wipeDbAndMaps()" 	id="btnWipeDBAndMaps" style="font-family:Open Sans Condensed;">Reset data</button> 
+			<br><span>Removes all pre-processed and scanned data.</span> <br><br>
 			<button onclick="openCSVFile()" 	id="btnOpenCSVFile" style="font-family:Open Sans Condensed;">Update known locations</button>
 			<br><span>Select a .CSV file with coordinates to all known locations. </span> <br><br>
 			<button onclick="openFolderCSV()" 	id="btnOpenFolderCSV" style="font-family:Open Sans Condensed;">Export new results</button>
 			<br><span>Export all new confirmed locations as a .CSV file</span> <br><br>
-			<button onclick="wipeDbAndMaps()" 	id="btnWipeDBAndMaps" style="font-family:Open Sans Condensed;">Reset data</button> 
-			<br><span>Removes all pre-processed and scanned data.</span> <br><br>
+			
 		</div>
-		<div class="flex-item columnx"> <!-- Container 2 -->
-			<h3>Output</h3>
+		<div class="flex-item columnx"> <!-- Container 3 -->
 			<br>
 			<textarea rows="21" cols="50" readonly id="textOutput"></textarea>
 		</div>

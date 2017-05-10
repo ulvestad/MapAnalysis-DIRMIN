@@ -6,7 +6,7 @@ function navbar_close() {
     document.getElementById("myNavbar").style.display = "none";
 }
 
-var displayDescriptionField = true;
+var displayDescriptionField = false;
 function toggleDescriptionField(){
 	if (displayDescriptionField){
 		displayDescriptionField = false;
@@ -15,5 +15,16 @@ function toggleDescriptionField(){
 		displayDescriptionField = true;
 		document.getElementById("hideDescription").id = "showDescription";
 	}
-	//console.log(displayDescriptionField)
+}
+
+function displayLoader(enable){
+	if(enable){
+		document.getElementById("hideLoader").id = "showLoader";
+		document.getElementById("hideTransparentLayer").id = "showTransparentLayer";
+	}else{
+		document.getElementById("showLoader").id = "hideLoader";
+		document.getElementById("showTransparentLayer").id = "hideTransparentLayer";
+	}
+	
+
 }
