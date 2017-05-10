@@ -58,7 +58,7 @@ function updateList(){
 	  rows: data,
 	  scrollId: 'scrollArea',
 	  contentId: 'contentArea',
-	  rows_in_block: 500
+	  rows_in_block: 15000
 	});
 	done = true;
 }
