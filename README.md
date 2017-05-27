@@ -15,14 +15,15 @@ Google Maps API<br/>
 
 ## Installation
 TODO: Describe the installation process
+	sesdsd
 
 
 ## Credits
-Simen Ulvestad @ulvestad
-Mathias Jørnsen @MathiasJor
-Markus Rye Foss @markusrf
-Christian Røkke @cbroko
-Sander Arnesen @SArnesen
-Martin Storødegård @Blubtastic
+Simen Ulvestad [@ulvestad](https://github.com/ulvestad) <br/>
+Mathias Jørnsen [@MathiasJor](https://github.com/MathiasJor) <br/>
+Markus Rye Foss [@markusrf](https://github.com/markusrf) <br/>
+Christian Røkke [@cbroko](https://github.com/cbroko) <br/>
+Sander Arnesen [@SArnesen](https://github.com/SArnesen) <br/>
+Martin Storødegård [@Blubtastic](https://github.com/Blubtastic)<br/>
 
 ![alt text](http://i.imgur.com/J8Aaz4c.png)
