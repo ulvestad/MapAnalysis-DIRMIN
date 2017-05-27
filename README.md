@@ -9,12 +9,12 @@ Map analysis using neural networks for aerial photo recognition of quarries in N
 </br>
 
 ## Tools and frameworks
-*TensorFlow</br>
-*Electron</br>
-*Kartverket</br>
-*Node.js<br/>
-*PyInstaller<br/>
-*Google Maps API<br/>
+* TensorFlow
+* Electron
+* Kartverket
+* Node.js
+* PyInstaller
+* Google Maps API
 
 
 ## Installation
