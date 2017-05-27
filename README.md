@@ -1,3 +1,5 @@
+[![NTNU](http://i.imgur.com/9D8UBUI.png)](https://www.ntnu.no/studier/emner/IT2901#tab=omEmnet)
+
 # Analysis of Map and Satellite Images
 Bachelor Informatics 2017 Group 13 [DIRMIN + Bouvet] - NTNU
 </br>
@@ -16,8 +18,9 @@ Google Maps API<br/>
 ## Installation
 TODO: Describe the installation process
 	
-	sesdsd"
-	ok"
+	Go to htttp://www.NOE.no"
+	Download MapScanner.exe"
+	Run MapScanner.exe"
 
 
 ## Credits
