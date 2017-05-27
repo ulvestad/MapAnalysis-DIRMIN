@@ -5,7 +5,7 @@
 # Analysis of Map and Satellite Images
 Bachelor Informatics 2017 Group 13 [DIRMIN + Bouvet] - NTNU
 </br>
-Map analysis using neural networks for aerial photo recognition of quarries in Norway. To be used in cooperation with DIRMIN (Direktoratet for Mineralforvalting i Norge), to find undiscovered quarrys, gravel extraction etc.
+Map analysis using neural networks for aerial photo recognition of quarries in Norway. To be used in cooperation with DIRMIN (Direktoratet for Mineralforvalting i Norge), to find undiscovered quarries, gravel extraction etc.
 </br>
 
 ## Tools and frameworks
