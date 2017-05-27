@@ -9,12 +9,12 @@ Map analysis using neural networks for aerial photo recognition of quarries in N
 </br>
 
 ## Tools and frameworks
-TensorFlow</br>
-Electron</br>
-Kartverket</br>
-Node.js<br/>
-PyInstaller<br/>
-Google Maps API<br/>
+*TensorFlow</br>
+*Electron</br>
+*Kartverket</br>
+*Node.js<br/>
+*PyInstaller<br/>
+*Google Maps API<br/>
 
 
 ## Installation
@@ -33,5 +33,5 @@ Christian Røkke [@cbroko](https://github.com/cbroko) <br/>
 Sander Arnesen [@SArnesen](https://github.com/SArnesen) <br/>
 Martin Storødegård [@Blubtastic](https://github.com/Blubtastic)<br/>
 
-[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
+
 ![alt text](http://i.imgur.com/J8Aaz4c.png)
