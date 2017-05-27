@@ -1,4 +1,6 @@
-[![NTNU](http://i.imgur.com/9D8UBUI.png)](https://www.ntnu.no/studier/emner/IT2901#tab=omEmnet)
+[![Dependency Status](https://david-dm.org/boennemann/badges.svg)](https://david-dm.org/boennemann/badges)
+[![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
+[![Coverage Status](https://coveralls.io/repos/boennemann/badges/badge.svg)](https://coveralls.io/r/boennemann/badges)
 
 # Analysis of Map and Satellite Images
 Bachelor Informatics 2017 Group 13 [DIRMIN + Bouvet] - NTNU
@@ -31,4 +33,5 @@ Christian Røkke [@cbroko](https://github.com/cbroko) <br/>
 Sander Arnesen [@SArnesen](https://github.com/SArnesen) <br/>
 Martin Storødegård [@Blubtastic](https://github.com/Blubtastic)<br/>
 
+[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 ![alt text](http://i.imgur.com/J8Aaz4c.png)
