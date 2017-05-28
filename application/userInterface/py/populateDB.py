@@ -1,7 +1,7 @@
 import sqlite3
 import sys
 
-conn = sqlite3.connect('db/QuarryLocations.db')
+conn = sqlite3.connect('resources/app/db/QuarryLocations.db')
 skipFirstLine = True
 counter = 0
 csvFile = sys.argv[1]
@@ -31,4 +31,4 @@ with open(csvFile) as f:
         conn.commit()
 
 conn.close()
-sys.exit(0)    
+sys.exit(0)

@@ -1,6 +1,6 @@
 //Path to folder, is "none" if it hasn't been set yet
 var folderPath = null;
-//Used to make sure the chooseFile function is only run once, since it makes an event listener every 
+//Used to make sure the chooseFile function is only run once, since it makes an event listener every
 //time the user clicks the "select folder" button
 var selectFolder = true;
 var folderQueue = [];
@@ -15,7 +15,7 @@ function openFolder(){
 		chooser.addEventListener("change", function(evt) {
 			if (selectFolder){
 				selectFolder = false;
-				//Tries to get the selected folder. If none is selected, returns an error message. 
+				//Tries to get the selected folder. If none is selected, returns an error message.
 				try{
 					folderPath = document.getElementById("fileDialog").files[0].path;
 				}catch(err){
@@ -25,7 +25,7 @@ function openFolder(){
 				split_path = folderPath.split("\\");
 				partial_path = split_path[split_path.length -2 ] +"/" +split_path[split_path.length -1] + "/";
 				document.getElementById("folderPathSelected").value =  "  ✔ "+partial_path;
-				
+
 				// Gets new selected folder path
 				var newPath = getFolderPath();
 				var exists = false;
@@ -38,11 +38,11 @@ function openFolder(){
 						}
 					}
 				}
-				
+
 				// If path is not selected, add to que
 				if (!exists) {
 					//List of selected folders
-					folderQueue.push(getFolderPath());	
+					folderQueue.push(getFolderPath());
 				} else {
 					exists = false;
 					document.getElementById("textOutput").value += "Folder already selected.\n";
@@ -104,7 +104,7 @@ function preProcessing() {
 
 		// Begins the process of slicing images
 		var child = require('child_process').execFile;
-		var executablePath = "userInterface/py/dist/map_slicer/map_slicer.exe";
+		var executablePath = __dirname + "\\py\\dist\\map_slicer.exe";
 		parameters = [path];
 		child(executablePath, parameters, function(err, data) {
 			if(err){
@@ -112,7 +112,7 @@ function preProcessing() {
 				displayLoader(false);
 				return;
 			}
-			
+
 			if (x < folderQueue.length){
 				x += 1;
 				document.getElementById("pFolderProgress").innerHTML  = "Folders pre-processed: (" + x + "/" + folderQueue.length + ")";

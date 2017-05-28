@@ -2,7 +2,7 @@
 
 //Path to folder, is "none" if it hasn't been set yet
 var folderPathCSV = null;
-//Used to make sure the chooseFile function is only run once, since it makes an event listener every 
+//Used to make sure the chooseFile function is only run once, since it makes an event listener every
 //time the user clicks the "select folder" button
 var selectFOlderCSV = true;
 
@@ -15,7 +15,7 @@ function openFolderCSV(){
 		chooser.addEventListener("change", function(evt) {
 			if (selectFOlderCSV){
 				selectFOlderCSV = false;
-				//Tries to get the selected folder. If none is selected, returns an error message. 
+				//Tries to get the selected folder. If none is selected, returns an error message.
 				try{
 					folderPathCSV = document.getElementById("fileDialog").files[0].path;
 				}catch(err){
@@ -48,5 +48,5 @@ function exportNewLocaitonsToCSV(){
 	path = path.split("\\").join("/");
 	console.log(path);
 	var spawn  = require("child_process").spawn; //spawns a childs proc.
-	var child = spawn('python', ["userInterface/py/exportCSV.py", path]); //calls a python script
+	var child = spawn('python', ["resources/app/userInterface/py/exportCSV.py", path]); //calls a python script
 }

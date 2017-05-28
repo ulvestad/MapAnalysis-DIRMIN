@@ -53,11 +53,11 @@ function checkboxMarked(table){
 
 //DATABASE INITIALIZATON---------------------------------------------------------------------------------------------------
 //REQUIRES SQLITE3
-//fethes every row from specified table 'type' and forward it to be plotted on map 
+//fethes every row from specified table 'type' and forward it to be plotted on map
 function initDb(type, checked) {
 	var fs = require('fs')
 	var sql = require('sql.js')
-	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
+	var bfr = fs.readFileSync(__dirname.replace("\\userInterface", "") + '/db/QuarryLocations.db')
 	var db = new sql.Database(bfr);
 	//Checks which radio button that's checked, and iteratively displays the markers of the selected
 	if (type === "KnownLocations") {
@@ -78,7 +78,7 @@ function initDb(type, checked) {
 				}else{
 					return;
 				}
-			}else{	
+			}else{
 				if(!alertUser){
 					alert("Warning: Threshold contains too many markers to be plotted. \nPlease choose a % threshold with a lower amount.");
 					alertUser = true;
@@ -86,8 +86,8 @@ function initDb(type, checked) {
 					return;
 				}
 			}
-			
-		}) 
+
+		})
 	} else if (type === "NewLocations") {
 			var countPlottedMarkers = numPlottedMarkers
 			var alertUser = false;
@@ -107,7 +107,7 @@ function initDb(type, checked) {
 				}else{
 					return;
 				}
-			}else{	
+			}else{
 				if(!alertUser){
 					alert("Warning: Threshold contains too many markers to be plotted. \nPlease choose a % threshold with a lower amount.");
 					alertUser = true;
@@ -135,7 +135,7 @@ function initDb(type, checked) {
 				}else{
 					return;
 				}
-			}else{	
+			}else{
 				if(!alertUser){
 					alert("Warning: Threshold contains too many markers to be plotted. \nPlease choose a % threshold with a lower amount.");
 					alertUser = true;
@@ -145,23 +145,23 @@ function initDb(type, checked) {
 			}
 			})
 		}
-		
+
 		db.close();
 
 	};
 
 //WRITE/UPDATE DATA ON SPECIFIED ROW IN 'NEWLOCATIONS' TABLE--------------------------------------------------------------
-//used when editing marker position 
+//used when editing marker position
 function writeToDB() {
 	var pos = markerPos(); //return pos of marker in the markers array
 	var spawn  = require("child_process").spawn; //spawns a childs proc.
-	var child = spawn('python',["userInterface/py/updateDB.py", new_lat, new_lng, pos]); //calls a python script with parameters
+	var child = spawn('python',["resources/app/userInterface/py/updateDB.py", new_lat, new_lng, pos]); //calls a python script with parameters
 }
 
 //PLOT MARKERS ON MAP-------------------------------------------------------------------------------------------------------
 //plots the marker on the map
-//adds infowindow with info of marker 
-//adds eventlistener to marker for 'click on marker' and 'closeclick of infowindow' 
+//adds infowindow with info of marker
+//adds eventlistener to marker for 'click on marker' and 'closeclick of infowindow'
 function plotMarker(type, checked, id, lat, lng, scr){
 	var stack; //which stack in markers array (eg. knowquarries[0] or newquarries[1])
 	var micon; //array for diffrent marker icons depending on known/new
@@ -202,7 +202,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 				}else{
 					disableButtons(false);
 				}
-				//Displays marker infowindow 
+				//Displays marker infowindow
 		        infowindow.setContent(content)
 		        infowindow.open(map, marker);
 		        var pos;
@@ -217,7 +217,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 		       	}
 		       	clickedOnList = false;
 
-		       
+
 		        //if newquarry-marker is clicked -> make edit buttons enabled (default is diabled), display info text to textoutput area
 		        if(type == "NewLocations"){
 		        	//if user is editing -> prompt for validation to exit edit or continue edit
@@ -286,7 +286,7 @@ function plotMarker(type, checked, id, lat, lng, scr){
 //BUTTON 'edit marker pos' ONCLICK FUNCTION  CALL -----------------------------------------------------------------------
 //handles edit marker tasks
 function editMarker(){
-	changeMarkerIcon(true); //set all other markers opactity down to ~0.35	
+	changeMarkerIcon(true); //set all other markers opactity down to ~0.35
 	editing = true; //set boolean editing to true
 	//setTextToArea("Editing marker...",false); //writes to textare with edit info
 	old_latlng = markerSelected.getPosition(); //stores old pos of marker
@@ -294,11 +294,11 @@ function editMarker(){
 //BUTTON 'delete marker' ONCLICK FUNCTION  CALL ------------------------------------------------------------------------
 //handles delete marker tasks
 function deleteMarker(){
-	//promt validation for confirming delete 
+	//promt validation for confirming delete
 	if(confirm('Are you sure you want to delete the marker? \nNB: Changes will be done to the database.')){
 		var pos = markerPos(); //return pos of marker in the markers array
 		var spawn  = require("child_process").spawn; //spawns a childs proc.
-		var child = spawn('python', ["userInterface/py/deleteRowDB.py", pos]); //calls a python script 
+		var child = spawn('python', ["resources/app/userInterface/py/deleteRowDB.py", pos]); //calls a python script
 	} else{
 		return;
 	}
@@ -333,7 +333,7 @@ function setTextToArea(text,append){
 	}
 	obj.scrollTop = obj.scrollHeight; //always scroled at button
 	*/
-}	
+}
 
 //CHANGE MARKER OPACITY -------------------------------------------------------------------------------------------------
 //sets opactity down or up (depending of argument) on all markers except the on that is beein edited
@@ -367,7 +367,7 @@ function confirmExitEdit(){
     		console.log("exit edit");
     		markerSelected.setPosition(old_latlng);
     		return true;
-	} 
+	}
 	//no exit, continue edit
 	else {
 		console.log("not exit");
@@ -376,7 +376,7 @@ function confirmExitEdit(){
     }
 }
 function updateInfowindow(){
-		//TODO: Update infowindow with new lat and lng 
+		//TODO: Update infowindow with new lat and lng
 }
 
 //POSITION OF MARKER IN ARRAY---------------------------------------------------------------------------------------------------
@@ -395,7 +395,7 @@ function markerPos(){
 //update the possbile and new markers based on actions of the user, eg. delete quarry, confirm etc.
 function updateMarkers(){
 	var obj = document.getElementById("PossibleLocations");
-	var obj2 = document.getElementById("NewLocations");  
+	var obj2 = document.getElementById("NewLocations");
 	if(!obj.checked){
 		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
 	}else{
@@ -424,7 +424,7 @@ function updateMarkers(){
 //WHEN A ITEM IN QUARRY-LIST IS CLICKED GO TO THAT MARKER ---------------------------------------------------------------------------------------------------
 //when a user clicks on a item/possbilequarries is the list, go to that marker by pretending a 'click' event and show infowindow
 function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
-	var obj = document.getElementById("PossibleLocations"); 
+	var obj = document.getElementById("PossibleLocations");
 	if(!obj.checked){
 		console.log("Cannot display marker on map. Pleace check the \"Possbile Locations\" box.")
 	}else{
@@ -433,10 +433,10 @@ function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 		}
 
 		google.maps.event.trigger(markers[2][id], 'click', {
-	  	//pretended click trigger event for selected marker 
+	  	//pretended click trigger event for selected marker
 		});
 		prev_infowindow.close();
 		map.setZoom(15);
 		map.setCenter(markers[2][id].getPosition());
-	}	
+	}
 }

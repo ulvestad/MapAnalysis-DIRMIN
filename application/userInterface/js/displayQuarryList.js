@@ -24,7 +24,7 @@ function getThresholdQuarries(low, high){
 	//Initiates DB-stuff, has to be done every time to close it properly
 	var fs = require('fs')
 	var sql = require('sql.js')
-	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
+	var bfr = fs.readFileSync(__dirname.replace("\\userInterface", "") + '/db/QuarryLocations.db')
 	var db = new sql.Database(bfr);
 	//Query to select x number of rows from the DB based on low and high threshold
 	db.each('SELECT ID as idy, Score as score, FileName as filename FROM PossibleLocations WHERE Score BETWEEN '+low+' AND '+high+' ORDER BY Score DESC', function (row) {
@@ -37,9 +37,9 @@ function getThresholdQuarries(low, high){
 		data.push('<li onclick="setClickedID('+id+')"id="listItem'+id+'">ID: '+id+', Score: '+score+'</li>');
 		quarryList.push(id);
 	})
-	db.close();	
+	db.close();
 	//Creates the actual visible list
-	
+
 	//Enables add/delete buttons
 	disableButtons(true);
 	//setClickedID(quarryList[0]);
@@ -67,7 +67,7 @@ function updateList(){
 //On list item click, gets the id of that item and saves it.
 //Also displays the connected quarry image and enables buttons if disabled.
 function setClickedID (id){
-	//If the last item in the list is removed, no more actions. 
+	//If the last item in the list is removed, no more actions.
 	clickedOnList = true;
 	disableButtons(false);
 	if (quarryList.length == 0){
@@ -81,19 +81,19 @@ function setClickedID (id){
 	getCurrentImage(filenames[quarryList.indexOf(clickedID)]);
 	//console.log("Selected quarry ID: " + clickedID)
 	whenMarkerClickedInListShowInfoWindowOnThatMarker(quarryList.indexOf(clickedID));
-	
+
 	setStyledListItem(); //Function for marking the current selected line in the list
-	
+
 }
 //-----------------------------------------------------------------------------------------------------
 
 function setStyledListItem(){
-	//CSS styling code: 
+	//CSS styling code:
 	if (idOfClicked != null){
 		prevHTMLListItem.id = idOfClicked;
 	}
-	idOfClicked = "listItem" + clickedID; 
-	prevHTMLListItem = document.getElementById(idOfClicked);	
+	idOfClicked = "listItem" + clickedID;
+	prevHTMLListItem = document.getElementById(idOfClicked);
 	prevHTMLListItem.id = "styleThis";
 
 	//.id = "styleThis";
@@ -101,7 +101,7 @@ function setStyledListItem(){
 }
 
 function setClickedIDWhenPretendTriggered (id){
-	//If the last item in the list is removed, no more actions. 
+	//If the last item in the list is removed, no more actions.
 	disableButtons(false);
 	if (quarryList.length == 0){
 		disableButtons(true);
@@ -163,7 +163,7 @@ function assignNextClickedID(){
 		//If at end of list, assign next id as previous line in list instead of next
 		nextClickedID = quarryList[quarryList.indexOf(clickedID)-1];
 	}
-	
+
 }
 //Only used to navigate down on the list (with the button)
 function nextQuarry(){
@@ -188,7 +188,7 @@ function checkQuarryLength(low, high){
 	var i = 0;
 	var fs = require('fs')
 	var sql = require('sql.js')
-	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
+	var bfr = fs.readFileSync(__dirname.replace("\\userInterface", "") + '/db/QuarryLocations.db')
 	var db = new sql.Database(bfr);
 	//Query to select x number of rows from the DB based on low and high threshold
 	db.each('SELECT COUNT(Score) AS numQuarries FROM PossibleLocations WHERE Score BETWEEN '+low+' AND '+high+'', function (row) {
@@ -211,7 +211,7 @@ function addDBRow(){
 	//Have to get all data from DB row in order to add it to another table
 	var fs = require('fs')
 	var sql = require('sql.js')
-	var bfr = fs.readFileSync('../application/db/QuarryLocations.db')
+	var bfr = fs.readFileSync(__dirname.replace("\\userInterface", "") + '/db/QuarryLocations.db')
 	var db = new sql.Database(bfr);
 
 	var id;
@@ -237,13 +237,13 @@ function addDBRow(){
 	db.close();
 	//add
 	var spawn = require("child_process").spawn; //spawns a childs proc.
-	var child = spawn('python',["userInterface/py/insertRowDB.py", filename, zone, east, north, south, west, score]); //calls a python script with parameters
-	
+	var child = spawn('python',[__dirname + "/py/insertRowDB.py", filename, zone, east, north, south, west, score]); //calls a python script with parameters
+
 }
 function removeDBRow(){
 	//delete
 	var spawn = require("child_process").spawn; //spawns a childs proc.
-	var child = spawn('python',["userInterface/py/deleteRowDB.py", "PossibleLocations", clickedID]); //calls a python script with parameters
+	var child = spawn('python',[__dirname + "\\py\\deleteRowDB.py", "PossibleLocations", clickedID]); //calls a python script with parameters
 	child.on('exit', function(){
 		runUpdateMarkers();
 	});
