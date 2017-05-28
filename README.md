@@ -20,10 +20,11 @@ Map analysis using neural networks for aerial photo recognition of quarries in N
 ## Installation
 TODO: Describe the installation process
 	
-	Download MapScanner from [here](http://folk.ntnu.no/simenul/MapScanner.zip)
-	Go to htttp://www.NOE.no"
-	Download MapScanner.exe"
-	Run MapScanner.exe"
+1. Download MapScanner from [here](http://folk.ntnu.no/simenul/MapScanner.zip)
+2. Extract folder direct to location 'D:\\'' (D-drive root)
+3. Navigate to folder 'MapScanner'
+4. Right click on MapScanner.exe 'Run as a administrator'
+5. Use! 
 
 
 ## Credits
