@@ -4,7 +4,7 @@ import time
 import os
 import sys
 
-conn = sqlite3.connect('db/QuarryLocations.db')
+conn = sqlite3.connect('resources/app/db/QuarryLocations.db')
 cursor = conn.execute('SELECT * FROM NewLocations')
 result_set = cursor.fetchall()
 conn.commit()

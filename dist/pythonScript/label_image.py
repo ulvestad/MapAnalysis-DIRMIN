@@ -3,21 +3,21 @@ import sqlite3
 import sys
 import shutil
 
-image_dir = "maps/"
-scanned_img_dir = "scannedMaps/"
+image_dir = "resources/app/maps/"
+scanned_img_dir = "resources/app/scannedMaps/"
 #image_dir = sys.argv[1]
 #log_filename = "log.txt"
 #log = open(log_filename, 'w')
-conn = sqlite3.connect('db/QuarryLocations.db')
+conn = sqlite3.connect('resources/app/db/QuarryLocations.db')
 #counter = 0
 #threshold = 0.65
 
 # Loads label file, strips off carriage return
 label_lines = [line.rstrip() for line 
-                   in tf.gfile.GFile("graphs/retrained_labels.txt")]
+                   in tf.gfile.GFile("resources/app/graphs/retrained_labels.txt")]
 
 # Unpersists graph from file
-with tf.gfile.FastGFile("graphs/retrained_graph.pb", 'rb') as f:
+with tf.gfile.FastGFile("resources/app/graphs/retrained_graph.pb", 'rb') as f:
     graph_def = tf.GraphDef()
     graph_def.ParseFromString(f.read())
     del(graph_def.node[1].attr["dct_method"]) #needed for newGraphs
@@ -55,7 +55,7 @@ with tf.Session() as sess:
                         scr = float(score)
                         scr = format(scr, ".5g")
                         fileName = filename.split("/")
-                        fileName = fileName[1] #remove /maps
+                        fileName = fileName[3] #remove /maps
                         #fileName = fileName.replace("-","_") #Escaping special characters for FTS query search on DB
                         #fileName = fileName.split(".")[0]
                         print(fileName, scr)

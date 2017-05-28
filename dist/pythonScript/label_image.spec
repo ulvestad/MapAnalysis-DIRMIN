@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['label_image.py'],
-             pathex=['D:\\Skole\\DIRMIN\\MapAnalysis-DIRMIN\\application\\dist\\pythonScript'],
+             pathex=['D:\\Skole\\DIRMIN\\MapAnalysis-DIRMIN\\dist\\pythonScript'],
              binaries=[],
              datas=[],
              hiddenimports=[],

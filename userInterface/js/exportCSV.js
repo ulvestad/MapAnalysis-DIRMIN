@@ -48,5 +48,5 @@ function exportNewLocaitonsToCSV(){
 	path = path.split("\\").join("/");
 	console.log(path);
 	var spawn  = require("child_process").spawn; //spawns a childs proc.
-	var child = spawn('python', ["userInterface/py/exportCSV.py", path]); //calls a python script
+	var child = spawn('python', ["resources/app/userInterface/py/exportCSV.py", path]); //calls a python script
 }

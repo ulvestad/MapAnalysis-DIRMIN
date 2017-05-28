@@ -1,6 +1,7 @@
 'use strict'
 
 const debug = require('debug')('electron-download')
+const envPaths = require('env-paths')
 const fs = require('fs-extra')
 const rc = require('rc')
 const nugget = require('nugget')
@@ -43,7 +44,14 @@ class ElectronDownloader {
   }
 
   get cache () {
-    return this.opts.cache || path.join(os.homedir(), './.electron')
+    if (this.opts.cache) return this.opts.cache
+
+    const oldCacheDirectory = path.join(os.homedir(), './.electron')
+    if (pathExists.sync(path.join(oldCacheDirectory, this.filename))) {
+      return oldCacheDirectory
+    }
+    // use passed argument or XDG environment variable fallback to OS default
+    return envPaths('electron', {suffix: ''}).cache
   }
 
   get cachedChecksum () {
@@ -67,7 +75,12 @@ class ElectronDownloader {
     const suffix = `v${this.version}-${type}`
 
     if (this.chromedriver) {
-      return `chromedriver-v2.21-${type}.zip`
+      // Chromedriver started using Electron's version in asset name in 1.7.0
+      if (semver.gte(this.version, '1.7.0')) {
+        return `chromedriver-${suffix}.zip`
+      } else {
+        return `chromedriver-v2.21-${type}.zip`
+      }
     } else if (this.mksnapshot) {
       return `mksnapshot-${suffix}.zip`
     } else if (this.ffmpeg) {
@@ -143,17 +156,14 @@ class ElectronDownloader {
   }
 
   checkForCachedChecksum (cb) {
-    pathExists(this.cachedChecksum).then(exists => {
-      if (exists && !this.force) {
-        this.verifyChecksum(cb)
-      } else if (this.tmpdir) {
-        this.downloadChecksum(cb)
-      } else {
-        this.createTempDir(cb, (callback) => {
-          this.downloadChecksum(callback)
-        })
-      }
-    })
+    pathExists(this.cachedChecksum)
+      .then(exists => {
+        if (exists && !this.force) {
+          this.verifyChecksum(cb)
+        } else {
+          this.downloadChecksum(cb)
+        }
+      })
   }
 
   checkForCachedZip (cb) {
@@ -190,23 +200,16 @@ class ElectronDownloader {
     })
   }
 
-  createTempDir (cb, onSuccess) {
-    this.tmpdir = path.join(os.tmpdir(), `electron-tmp-download-${process.pid}-${Date.now()}`)
-    fs.mkdirs(this.tmpdir, (err) => {
-      if (err) return cb(err)
-      onSuccess(cb)
-    })
-  }
-
   downloadChecksum (cb) {
-    this.downloadFile(this.checksumUrl, this.checksumFilename, this.cachedChecksum, cb, this.verifyChecksum.bind(this))
+    this.downloadFile(this.checksumUrl, this.cachedChecksum, cb, this.verifyChecksum.bind(this))
   }
 
-  downloadFile (url, filename, cacheFilename, cb, onSuccess) {
-    debug('downloading', url, 'to', this.tmpdir)
+  downloadFile (url, cacheFilename, cb, onSuccess) {
+    const tempFileName = `tmp-${process.pid}-${(ElectronDownloader.tmpFileCounter++).toString(16)}-${path.basename(cacheFilename)}`
+    debug('downloading', url, 'to', this.cache)
     let nuggetOpts = {
-      target: filename,
-      dir: this.tmpdir,
+      target: tempFileName,
+      dir: this.cache,
       resume: true,
       quiet: this.quiet,
       strictSSL: this.strictSSL,
@@ -218,7 +221,7 @@ class ElectronDownloader {
         return this.handleDownloadError(cb, errors[0])
       }
 
-      this.moveFileToCache(filename, cacheFilename, cb, onSuccess)
+      this.moveFileToCache(tempFileName, cacheFilename, cb, onSuccess)
     })
   }
 
@@ -229,15 +232,15 @@ class ElectronDownloader {
   }
 
   downloadZip (cb) {
-    this.downloadFile(this.url, this.filename, this.cachedZip, cb, this.checkIfZipNeedsVerifying.bind(this))
+    this.downloadFile(this.url, this.cachedZip, cb, this.checkIfZipNeedsVerifying.bind(this))
   }
 
   ensureCacheDir (cb) {
-    debug('creating cache/tmp dirs')
+    debug('creating cache dir')
     this.createCacheDir((err, actualCache) => {
       if (err) return cb(err)
       this.opts.cache = actualCache // in case cache dir changed
-      this.createTempDir(cb, this.downloadZip.bind(this))
+      this.downloadZip(cb)
     })
   }
 
@@ -253,13 +256,22 @@ class ElectronDownloader {
   }
 
   moveFileToCache (filename, target, cb, onSuccess) {
-    debug('moving', filename, 'from', this.tmpdir, 'to', target)
-    fs.unlink(target, (err) => {
-      if (err != null && err.code !== 'ENOENT') return cb(err)
-      fs.move(path.join(this.tmpdir, filename), target, (err) => {
-        if (err) return cb(err)
+    const cache = this.cache
+    debug('moving', filename, 'from', cache, 'to', target)
+    fs.rename(path.join(cache, filename), target, (err) => {
+      if (err) {
+        fs.unlink(cache, cleanupError => {
+          try {
+            if (cleanupError) {
+              console.error(`Error deleting cache file: ${cleanupError.message}`)
+            }
+          } finally {
+            cb(err)
+          }
+        })
+      } else {
         onSuccess(cb)
-      })
+      }
     })
   }
 
@@ -279,6 +291,8 @@ class ElectronDownloader {
     })
   }
 }
+
+ElectronDownloader.tmpFileCounter = 0
 
 module.exports = function download (opts, cb) {
   let downloader = new ElectronDownloader(opts)

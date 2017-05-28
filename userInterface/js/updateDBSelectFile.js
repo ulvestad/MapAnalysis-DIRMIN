@@ -23,7 +23,7 @@ function openCSVFile(){
 				}
 				if(confirm('Are you sure you want to update database? \nNB: Changes will be done to the database.')){
 					var spawn  = require("child_process").spawn; //spawns a childs proc.
-					var child = spawn('python',["userInterface/py/populateDB.py", filePath]);
+					var child = spawn('python',["resources/app/userInterface/py/populateDB.py", filePath]);
 				} else{
 					return;
 				}

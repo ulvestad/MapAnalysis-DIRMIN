@@ -3,7 +3,7 @@ function wipeDbAndMaps(){
 	if(confirm('Are you sure you want to reset the database and remove all processed images? \n(NB: All rows in NewLocations and PossibleLocations will be deleted, and all images from maps & scannedMaps will be deleted.)')){
 		//Runs a python file -_- that cleans the DB
 		var spawn  = require("child_process").spawn; //spawns a childs proc.
-		var child = spawn('python',["userInterface/py/resetDB.py"]);
+		var child = spawn('python',["resources/app/userInterface/py/resetDB.py"]);
 		
 		//Cleans these maps
 		rmDir("maps")

@@ -70,7 +70,7 @@ function xmlParserAndWriter(xml) {
       //Creates Synchronous childProcess of pythonfile which saves this to potentialQuarries
       if (!breakFunc){
         var spawnSync  = require("child_process").spawnSync; //spawns a childs proc.
-        var child = spawnSync('python',["userInterface/py/XMLupdateDB.py", finalFilename, 33, west + ((j+1) * X1), north - (i * Y1), north - ((i+1) * Y1), west + (j * X1)]);
+        var child = spawnSync('python',["resources/app/userInterface/py/XMLupdateDB.py", finalFilename, 33, west + ((j+1) * X1), north - (i * Y1), north - ((i+1) * Y1), west + (j * X1)]);
       }else{
         breakFunc = false;
       }

@@ -1,6 +1,6 @@
 //Vars for launching EXE file
 var child = require('child_process').execFile;
-var executablePath = __dirname +"\\py\\dist\\label_image\\label_image.exe";
+var executablePath = __dirname.replace("userInterface", "")+"\\dist\\label_image\\label_image.exe";
 //Var for list of parameters for EXE file
 
 //Launches a .EXE file --------------------------------
