@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "electron .",
-    "package": "electron-packager ./ MapScanner --win32 --out LINKHER --version 1.6.6 --overwrite",
+    "package": "electron-packager ./ MapScanner --win32 --out C:\\Users\\Simen\\Desktop\\MapScanner --version 1.6.6 --overwrite",
     "packagemac": "electron-packager ./ MapScanner --mas --out /Users/mathiasjornsen/Desktop/export --version 1.6.6 --overwrite"
   },
   "repository": "https://github.com/electron/electron-quick-start",
