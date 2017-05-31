@@ -1,3 +1,11 @@
+<!--
+Filename: userInterface/index.html
+@Author Group 13
+
+Contains all HTML code for displaying the "Main Page" in the application
+
+ -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,17 +13,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Analysis of Map and Satellite Images</title>
+
+    <!-- Custom Stylesheets-->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/navbar.css">
 
+    <!--Bootstrap stylesheet used to style navbar -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    <!-- Needed to select folders n' shit -->
+    <!-- jQuery script needed to select folders-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 </head>
 
 <body>
-	<!-- NAVBAR - NO TOUCHING!! -->
+  <!-- ______________________________________START "MAIN PAGE" ______________________________________ -->
+	<!-- ____START "Navbar"____ -->
 	<!-- The top-navbar for the application, this is the same for all .html pages -->
 	<nav class="navbar navbar-inverse" id="navbar">
 		<div class="container-fluid">
@@ -35,80 +47,98 @@
 		  </div>
 		</div>
 	</nav>
-  	<!-- NAVBAR - NO TOUCHING!! -->
+  <!-- ____END "Navbar"____  -->
 
   	<div id="hideLoader"></div>
   	<div id="hideTransparentLayer"> </div>
 
-
-    <!-- The content of the index.html page -->
+    <!-- "Div Show description" Div that allows the user to show/hide the description of the "Main Page" -->
     <div onclick="toggleDescriptionField()" class="togglePageDescription">
     	<span><b>Show/Hide Main Page Description</b></span>
     </div>
 
+    <!-- ____START "Div Main page Description"____ -->
+    <!-- "Div Main Page Description" Contains the description of the "Main Page" -->
     <div class="flex-item" id="hideDescription">
     	<div class="descriptionPlaceholder">
     		<h2 class="centerHeader"> Main Page</h2>
-			<p>The main page is where the process of preparing and scanning images is done. Before the scanning of data can be done, it must be preprocessed with the "<b>Pre-process folders</b>"-button after one or more folders containing .jpg-images and associated .xml-files has been selected. When this process is done, all pre-processed data can be scanned using the "<b>Scan pre-processed data</b>"-button, and the results can be seen in the Result Page. The scanning will take some time, depending on the amount of images scanned at once. </p>
-			
-			<p>The "<b>Update known locations</b>"-button is used to update the Known Locations in the database. This is done by selecting a .CSV file with coordinates to already known locations. After a scan is done and the result has been processed by a user, the "<b>Export new results</b>"-button can be used to get the New Locations as a .CSV-file. The "<b>Reset data</b>"-button resets the pre-processed and scanned data in the system, and should be used when the results from the scan has been exported and processed by a user, or simply just to reset the system.  </p>
-		</div>
-	</div>
-	<div class="flex-container mainPageContent"> 
+  			<p>The main page is where the process of preparing and scanning images is done. Before the scanning of data can be done, it must be preprocessed with the "<b>Pre-process folders</b>"-button after one or more folders containing .jpg-images and associated .xml-files has been selected. When this process is done, all pre-processed data can be scanned using the "<b>Scan pre-processed data</b>"-button, and the results can be seen in the Result Page. The scanning will take some time, depending on the amount of images scanned at once. </p>
 
-		<div class="flex-item columnx"> <!-- Container 1 -->
+  			<p>The "<b>Update known locations</b>"-button is used to update the Known Locations in the database. This is done by selecting a .CSV file with coordinates to already known locations. After a scan is done and the result has been processed by a user, the "<b>Export new results</b>"-button can be used to get the New Locations as a .CSV-file. The "<b>Reset data</b>"-button resets the pre-processed and scanned data in the system, and should be used when the results from the scan has been exported and processed by a user, or simply just to reset the system.  </p>
+		  </div>
+	  </div>
+    <!-- ____END "Div Main Page Description"____ -->
+
+  <!-- Div container for the "Main Page" content "-->
+	<div class="flex-container mainPageContent">
+
+    <!-- ____START "Div container Process data"____ -->
+    <!-- "Div container Process data" Contains buttons for processing data, selecting folders, and scanning selected folders  -->
+		<div class="flex-item columnx">
 			<h3>Process Data</h3>
 			<div class="flex-item scanButtons" id="scanButtons"> <!-- BUTTONS for the page -->
 				<p>Selected folders: </p>
 				<textarea rows="10" cols="50" readonly id="folderPathSelected" style = "height:100px; overflow:hidden; font-size: 11px; overflow:hidden; overflow-y:scroll;">
 				</textarea><br>
 				<button onclick="openFolder()" 		id="btnOpenFolder" style="font-family:Open Sans Condensed;">Select a folder</button>
-				<button onclick="clearFolderList()" id="btnClearFolderList" style="font-family:Open Sans Condensed;">✖</button> 
+				<button onclick="clearFolderList()" id="btnClearFolderList" style="font-family:Open Sans Condensed;">✖</button>
 				<button onclick="preProcessing()" 	id="btnPreProcessing" style="font-family:Open Sans Condensed;">Pre-process folders</button>
 				<br>
 				<span id="pFolderProgress"></span>
 				<br><br>
 				<button onclick="launchProgram()" 	id="btnLaunchProgram" style="font-family:Open Sans Condensed;">Scan pre-processed data</button>
 				<br> <span>Scans all pre-processed images for potential quarries. This may take some time.</span> <br><br><br>
-				
+
 			</div>
 		</div>
+    <!-- ____END "Div container Process data"____ -->
 
-		<div class="flex-item columnx"><!-- Container 2 -->
+    <!-- ____START "Div container data management"____ -->
+    <!-- "Div container data management" Contains buttons for reseting, updating, and exporting data -->
+		<div class="flex-item columnx">
 			<h3>Manage Database</h3>
 			<br>
-			<button onclick="wipeDbAndMaps()" 	id="btnWipeDBAndMaps" style="font-family:Open Sans Condensed;">Reset data</button> 
+			<button onclick="wipeDbAndMaps()" 	id="btnWipeDBAndMaps" style="font-family:Open Sans Condensed;">Reset data</button>
 			<br><span>Removes all pre-processed and scanned data.</span> <br><br>
 			<button onclick="openCSVFile()" 	id="btnOpenCSVFile" style="font-family:Open Sans Condensed;">Update known locations</button>
 			<br><span>Select a .CSV file with coordinates to all known locations. </span> <br><br>
 			<button onclick="openFolderCSV()" 	id="btnOpenFolderCSV" style="font-family:Open Sans Condensed;">Export new results</button>
 			<br><span>Export all new confirmed locations as a .CSV file</span> <br><br>
-			
+
 		</div>
-		<div class="flex-item columnx"> <!-- Container 3 -->
+    <!-- ____END "Div container data management"____ -->
+
+    <!-- ____START "Div container Textarea"____ -->
+    <!-- "Div container Textarea" Contains the textarea for giving feedback to the user -->
+		<div class="flex-item columnx">
 			<br>
 			<textarea rows="21" cols="50" readonly id="textOutput"></textarea>
 		</div>
+    <!-- ____END "Div container Textarea"____ -->
 	</div>
-	<!-- ______________________________________END OF MAIN________________________________________ -->
+	<!-- ______________________________________END "MAIN PAGE"________________________________________ -->
 
 
 
-	<!-- EVERYTHING SCRIPT-RELATED -->
-	<!-- Needed to select folders or some shit -->
+	<!-- ______________________________________START "SCRIPT SECTION"________________________________________ -->
+  <!-- ____START "Input File Dialog"____ -->
+  <!-- "Input File Dialog and CSV" Needed for selection of files  -->
 	<input style="display:none;" id="fileDialog" type="file" webkitdirectory />
 	<input style="display:none;" id="csvFile" type="file"  />
+  <!-- ____END "Input File Dialog"____ -->
 
-	<!-- Needed to solve jquery issue  -->
+	<!-- Needed because Electron does not recognize jQuery libraries -->
 	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 
+  <!-- jQuery import used in navbar -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!-- Bootstrap import used in navbar -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-	<!-- Needed to solve jquery issue -->
+	<!-- Needed because Electron does not recognize jQuery libraries -->
 	<script>if (window.module) module = window.module;</script>
 
-	<!-- All javascript file inclusions -->
+	<!-- All custom javascript file imports -->
 	<script src="js/launchEXE.js"></script>
 	<script src="js/navbar.js"></script>
 	<script src="js/updateDBSelectFile.js"></script>
@@ -117,5 +147,6 @@
 	<script src="js/moveFiles.js"></script>
 	<script src="js/xmlReader.js"></script>
 	<script src="js/resetDB.js"></script>
+  <!-- ______________________________________END "SCRIPT SECTION"________________________________________ -->
 </body>
 </html>

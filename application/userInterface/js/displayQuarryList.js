@@ -1,5 +1,21 @@
+/*
+Filename: userInterface/js/displayQuarryList.js
+@Author Group 13
+
+Generates and displays the list of quarries  within the set threshold in the list view on the result page. 
+Also adds and deletes rows from DB tables when the user delets/adds rows from the list
+
+Globals:
+	Clusterize - imports Clusterize.js
+	clickedID - the id of the currently clicked list item (quarry list item)
+	nextCLickedID - the id of the next clicked list item
+	data - list of list items on a html format needed to display them on the result page
+	quarryList - list of the ID's for each list item
+	filenames - list of the filenames for each list item
+	clickedOnList - true if a list item is currently selected
+	idOfClicked - stores the id of the clicked list item, needed for CSS list item styling
+*/
 var Clusterize = require('Clusterize.js');
-//Vars
 var clickedID = 0;
 var nextClickedID = 0;
 //List of data from DB with html-info wrapped around it (for displaying in a list)
@@ -8,13 +24,25 @@ var data = [];
 var quarryList = [];
 //List of filenames for the data items
 var filenames = [];
-//boolean for clicked on list
 var clickedOnList = false;
 var idOfClicked = null;
 getCurrentImage("");
 
-//-------------------------------------INIT ON SLIDER CHANGE--------------------------------------------
-//Run when user refresh list (refresh from DB, show Quarries button)
+
+/*
+getThresholdQuarries
+
+Run when user refreshes the list when the page is loaded or the threshold slider is changed. 
+
+Inputs: 
+	- low: low thershold for quarry certainty
+	- high: high threshold quarry certainty
+
+Outputs: None
+
+Returns: None
+
+*/
 function getThresholdQuarries(low, high){
 	//reset lists
 	data = [];
@@ -52,7 +80,19 @@ function getThresholdQuarries(low, high){
 		}
 	}
 }
-//Creates the actual visible list
+
+/*
+updateList
+
+Creates the actual visible list
+
+Inputs: None
+
+Outputs: None
+
+Returns: None
+
+*/
 function updateList(){
 	var clusterize = new Clusterize({
 	  rows: data,
@@ -63,13 +103,24 @@ function updateList(){
 	done = true;
 }
 
-//-----------------------------SET CLICKED ID ON LIST/MARKER SELECT------------------------------------
-//On list item click, gets the id of that item and saves it.
-//Also displays the connected quarry image and enables buttons if disabled.
+/*
+setClickedID
+
+Stores the id of the currenty clicked list item. 
+
+Inputs: 
+	- id: id of currently clicked list item
+
+Outputs: None
+
+Returns: None
+
+*/
 function setClickedID (id){
 	//If the last item in the list is removed, no more actions. 
 	clickedOnList = true;
 	disableButtons(false);
+	//If the list is empty, don't display image
 	if (quarryList.length == 0){
 		getCurrentImage("");
 		disableButtons(true);
@@ -87,6 +138,18 @@ function setClickedID (id){
 }
 //-----------------------------------------------------------------------------------------------------
 
+/*
+setStyledListItem
+
+Styles the selected list item
+
+Inputs: None
+
+Outputs: None
+
+Returns: None
+
+*/
 function setStyledListItem(){
 	//CSS styling code: 
 	if (idOfClicked != null){
@@ -100,6 +163,20 @@ function setStyledListItem(){
 	//End of CSS styling code
 }
 
+
+/*
+setClickedIDWhenPretendTriggered
+
+Stores the id of the currenty clicked list item when a marker is clicked
+
+Inputs: 
+	- id: id of currently clicked list item
+
+Outputs: None
+
+Returns: None
+
+*/
 function setClickedIDWhenPretendTriggered (id){
 	//If the last item in the list is removed, no more actions. 
 	disableButtons(false);
@@ -116,8 +193,21 @@ function setClickedIDWhenPretendTriggered (id){
 	setStyledListItem(); //Function for marking the current selected line in the list
 }
 
-//---------------------------------------DELETE/CONFIRM QUARRY-------------------------------------------------
-//Removes list item from list, and moves row from one DB table to another
+/*
+confirmQuarry
+
+A list item is confirmed as a quarry.
+Removes list item from list, and moves row from one DB table to another
+
+Inputs: None
+
+Outputs: 
+	- Adds selected row to new quarries DB table
+	- Removes selected row from DB possible quarries DB table
+
+Returns: None
+
+*/
 function confirmQuarry(){
 	document.getElementById("deleteFeedback").innerHTML = "Added ID: " + clickedID;
 	//Saves the id for the next iteration
@@ -138,7 +228,21 @@ function confirmQuarry(){
 
 }
 
-//Just like confirmQuarry, but deletes instead of moving the DB row
+/*
+deleteQuarry
+
+A list item is definitely not a quarry.
+Removes list item from list, and removes it from the DB table. 
+Just like confirmQuarry, but deletes instead of moving the DB row
+
+Inputs: None
+
+Outputs: 
+	- Removes selected row from DB possible quarries DB table
+
+Returns: None
+
+*/
 function deleteQuarry(){
 	document.getElementById("deleteFeedback").innerHTML = "Removed ID: " + clickedID;
 	assignNextClickedID();
@@ -152,9 +256,21 @@ function deleteQuarry(){
 	setClickedID(nextClickedID);
 
 }
-//------------------------------------------------------------------------------------------------------
 
-//Run when a line is deleted. This automatically assigns a new line
+
+
+/*
+assignNextClickedID
+
+Run when a line is deleted. This automatically assigns a new line
+
+Inputs: None
+
+Outputs: None
+
+Returns: None
+
+*/
 function assignNextClickedID(){
 	//If not at end of list
 	if(quarryList.indexOf(clickedID) != quarryList.length-1){
@@ -165,13 +281,39 @@ function assignNextClickedID(){
 	}
 	
 }
-//Only used to navigate down on the list (with the button)
+
+
+/*
+nextQuarry
+
+Only used to navigate down on the list (with the button)
+
+Inputs: None
+
+Outputs: None
+
+Returns: None
+
+*/
 function nextQuarry(){
 	if(quarryList.indexOf(clickedID) != quarryList.length-1){
 		setClickedID(quarryList[quarryList.indexOf(clickedID)+1]);
 	}
 }
-//Only used to navigate up on the list (with the button)
+
+
+/*
+prevQuarry
+
+Only used to navigate up on the list (with the button)
+
+Inputs: None
+
+Outputs: None
+
+Returns: None
+
+*/
 function prevQuarry(){
 	if(quarryList.indexOf(clickedID) != 0){
 		setClickedID(quarryList[quarryList.indexOf(clickedID)-1]);
@@ -179,11 +321,40 @@ function prevQuarry(){
 }
 
 
-//Gets the length of an alreadt fetched quarry list
+
+
+/*
+getQuarryListLength
+
+Gets the length of an alreadt fetched quarry list
+
+Inputs: None
+
+Outputs: None
+
+Returns: None
+
+*/
 function getQuarryListLength(){
 	return quarryList.length;
 }
-//Checks the DB and returns the length between the threshold
+
+
+/*
+checkQuarryLength
+
+Checks the DB and returns the number of entries within the threshold
+
+Inputs: 
+	- low: low thershold for quarry certainty
+	- high: high threshold quarry certainty
+
+Outputs: None
+
+Returns: 
+	- i: the number of entries within the threshold
+
+*/
 function checkQuarryLength(low, high){
 	var i = 0;
 	var fs = require('fs')
@@ -198,6 +369,19 @@ function checkQuarryLength(low, high){
 	db.close();
 	return i;
 }
+/*
+disableButtons
+
+Enables of disables the buttons on the result page based on the input parameter
+
+Inputs: 
+	- disable: boolean which decides whether buttons should be enabled or disabled
+
+Outputs: None
+
+Returns: None
+
+*/
 function disableButtons(disable){
 	document.getElementById("Confirm").disabled = disable;
 	document.getElementById("Delete").disabled = disable;
@@ -205,7 +389,20 @@ function disableButtons(disable){
 	document.getElementById("prevQuarry").disabled = disable;
 }
 
-//--------------------------------------DELETE/ADD DB ROWS------------------------------------------
+
+/*
+addDBRow
+
+Adds the currently selected list item to the new quarries DB table. 
+
+Inputs: None
+
+Outputs:
+	- Python script to add row to DB is launched.
+
+Returns: None
+
+*/
 function addDBRow(){
 	//DB Row deletion + Row add (DB row move)
 	//Have to get all data from DB row in order to add it to another table
@@ -240,6 +437,20 @@ function addDBRow(){
 	var child = spawn('python',["userInterface/py/insertRowDB.py", filename, zone, east, north, south, west, score]); //calls a python script with parameters
 	
 }
+/*
+removeDBRow
+
+Removes the currently selected list item to the possible quarry DB table. 
+
+Inputs: 
+	- disable: boolean which decides whether buttons should be enabled or disabled
+
+Outputs: 
+- Python script to add row to DB is launched.
+
+Returns: None
+
+*/
 function removeDBRow(){
 	//delete
 	var spawn = require("child_process").spawn; //spawns a childs proc.
@@ -248,12 +459,36 @@ function removeDBRow(){
 		runUpdateMarkers();
 	});
 }
-//----------------------------------------------------------------------------------------------------
 
+/*
+getID
+
+Returns the clickedID
+
+Inputs: Nione
+
+Outputs: None
+
+Returns: 
+	- clickedID: id of currently clicked list item.
+
+*/
 function getID(){
 	return clickedID;
 }
 
+/*
+runUpdateMarkers
+
+Updates the markers on the google maps window
+
+Inputs: None
+
+Outputs: None
+
+Returns: None
+
+*/
 function runUpdateMarkers(){
 	updateMarkers();
 }
