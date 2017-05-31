@@ -18,14 +18,15 @@ Map analysis using neural networks for aerial photo recognition of quarries in N
 
 
 ## Installation
-	
-1. Download MapScanner from [here](https://github.com/ulvestad/MapAnalysis-DIRMIN/releases/download/v.1.0.0/MapScanner.zip).
-2. Download testmaps from [here](https://github.com/ulvestad/MapAnalysis-DIRMIN/releases/download/v.1.0.0/testmaps.zip) to have testdata. 
-3. Extract folders preferable near to root e.g. `D:\` (Due to filepath length issues with Windows OS).
-4. Navigate to folder `MapScanner`.
-5. Run `MapScanner.exe`
-6. Use the included `testmaps` folder for test data.
-7. Use! 
+
+1. Install Python 3.5 from [here](https://www.python.org/ftp/python/3.5.0/python-3.5.0-amd64.exe) NB: It is a requirement!	
+2. Download MapScanner from [here](https://github.com/ulvestad/MapAnalysis-DIRMIN/releases/download/v.1.0.0/MapScanner.zip).
+3. Download testmaps from [here](https://github.com/ulvestad/MapAnalysis-DIRMIN/releases/download/v.1.0.0/testmaps.zip) to have testdata. 
+4. Extract folders preferable near to root e.g. `D:\` (Due to filepath length issues with Windows OS).
+5. Navigate to folder `MapScanner`.
+6. Run `MapScanner.exe`
+7. Use the included `testmaps` folder for test data.
+8. Use! 
 
 
 ## Credits
