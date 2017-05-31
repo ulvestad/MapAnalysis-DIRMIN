@@ -1,3 +1,17 @@
+/*
+Filename: userInterface/js/slider.js
+@Author Group 13
+ 
+Contains all code necessary for the funtionality of the slider on the result page. 
+ 
+Globals:
+	slider - reference to the slider element on the result page
+	lowGlobalThreshold - the low thershold, set to 0.9 by default
+	highGlobalThreshold - the high threshold, set to 1 by default
+	locationsInThreshold - the number of list items / db rows within the low/high threshold
+*/
+
+
 var slider = document.getElementById('slider');
 //The threshold values that are used by several files in the application
 var lowGlobalThreshold = 0.9;
@@ -42,6 +56,19 @@ slider.noUiSlider.on('set', function(){
 	document.getElementById("bothThreshold").innerHTML = "( " + parseInt((slider.noUiSlider.get()[0])*100) + "-" + parseInt((slider.noUiSlider.get()[1])*100) + " )" + ": ";
 })
 
+/*
+updateLocationsInThreshold
+
+Changes the number of locations currently within the threshold, typically by 1 or -1
+
+Inputs: 
+	- change: how much the number of locations has changed (positive or negative)
+
+Outputs: None
+
+Returns: None
+
+*/
 function updateLocationsInThreshold(change){
 	locationsInThreshold += change;
 	document.getElementById("quarriesInThreshold").innerHTML = ("<b>" + locationsInThreshold + "</b>");
