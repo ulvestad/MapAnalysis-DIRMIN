@@ -30,6 +30,9 @@ Parameters
 image_name   : string, filename of image that will be sliced
 slice_width  : int, number of new smaller images per column
 slice_height : int, number of new smaller images per row
+
+Output
+For each image in the selected folder, 12 new are saved in "maps/"
 """
 def slice_img(image_name, slice_width, slice_height):
 	# Read image into 3D array (height, width, RGB color channels) and sets up variables
