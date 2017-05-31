@@ -1,3 +1,20 @@
+/*
+Filename: userInterface/js/displayImage.js
+@Author Group 13
+ 
+Displays the image-file that is specified in the "imageName" parameter on ther result page
+ 
+Globals:
+    mv - Node Module that simplifies moving files
+    fs - Node Module for File System support
+    path - Node Module that contains several helper functions to help make path manipulation easier. 
+
+*/
+
+// @Deprecated
+//This file is not in use
+
+
 var mv = require('mv');
 var fs = require( 'fs' );
 var path = require( 'path' );
