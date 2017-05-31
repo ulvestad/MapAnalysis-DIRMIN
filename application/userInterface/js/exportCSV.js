@@ -1,13 +1,49 @@
-//FILE FOR EXPORTING DB CONTENT OF "NEW QUARRIES" TABLE TO A .CSV FILE
+/*
+Filename: userInterface/js/exportCSV.js
+@Author Group 13
 
-//Path to folder, is "none" if it hasn't been set yet
+File for exporting DB content of "NEW QUARRIES" table to a .CSV file 
+ 
+ 
+Globals:
+    folderPathCSV - Path to destination folder
+    selectFOlder - Used to make sure the chooseFile function is only run once, since it makes 
+    	an event listener every time the user clicks the "select folder" button
+ 
+*/
+
 var folderPathCSV = null;
-//Used to make sure the chooseFile function is only run once, since it makes an event listener every 
-//time the user clicks the "select folder" button
 var selectFOlderCSV = true;
 
+
+/*
+openFolderCSV
+ 
+Called to select destination folder
+ 
+Inputs: None
+ 
+Outputs: Defines and calls subfunction ChooseFileCSV with file dialog output.
+ 
+Returns: None
+ 
+*/
+
 function openFolderCSV(){
-	//Let the user choose a folder from the filesystem
+
+	/*
+	openFolderCSV
+	 
+	Called to select destination folder
+	 
+	Inputs:
+		name - Used to select destination folder of .CSV file
+	 
+	Outputs: Selects destination folder
+	 
+	Returns: None
+	 
+	*/
 	function chooseFileCSV(name) {
 		selectFOlderCSV = true;
 		var chooser = document.querySelector(name);
@@ -22,7 +58,6 @@ function openFolderCSV(){
 					console.log("Pleas select a folder")
 					return;
 				}
-				//document.getElementById("textOutput").value += "Directory '" + folderPathCSV + "' selected.\n";
 				split_path = folderPathCSV.split("\\");
 				partial_path = split_path[split_path.length -2 ] +"/" +split_path[split_path.length -1] + "/"
 
@@ -34,7 +69,18 @@ function openFolderCSV(){
 	chooseFileCSV('#fileDialog');
 }
 
-// Returns the currently selected folder
+/*
+getCSVFolderPath
+ 
+Gets destination folder
+ 
+Inputs: None
+ 
+Outputs: None
+ 
+Returns: returns folderPathCSV global variable
+ 
+*/
 function getCSVFolderPath(){
 	if (folderPathCSV == null){
 		return null;
@@ -42,6 +88,19 @@ function getCSVFolderPath(){
 		return folderPathCSV;
 	}
 }
+
+/*
+exportNewLocaitonsToCSV
+ 
+Calls a Python script to generate CSV from database
+ 
+Inputs: None
+ 
+Outputs: Calls exportCSV.py to generate a .CSV file
+ 
+Returns: None
+ 
+*/
 
 function exportNewLocaitonsToCSV(){
 	path = getCSVFolderPath();

@@ -1,4 +1,36 @@
-//Removes all rows from the "possible quarry" and "new quarry" tables, and removes all images from the "maps" and "scannedMaps" folders
+/*
+Filename: userInterface/js/resetDB.js
+@Author Group 13
+ 
+Resets the database; tables "NewLocations" and "PossibleLocations" are cleaned
+ 
+Globals:
+	None
+*/
+
+
+
+
+
+
+/*
+wipeDbAndMaps
+ 
+Removes all rows from the "possible quarry" and "new quarry" tables
+	- prompts the user with confirmation of actions
+	- calls a python script for the DB operations
+
+Inputs: 
+	- None
+ 
+Outputs: 
+	- Tables and images is removed
+ 
+Returns:
+	- Null: if user declines operation
+ 
+*/
+
 function wipeDbAndMaps(){
 	if(confirm('Are you sure you want to reset the database and remove all processed images? \n(NB: All rows in NewLocations and PossibleLocations will be deleted, and all images from maps & scannedMaps will be deleted.)')){
 		//Runs a python file -_- that cleans the DB
@@ -14,7 +46,26 @@ function wipeDbAndMaps(){
 	}
 }
 
-//Removes all .jpgs from the specified folder. 
+
+
+
+
+/*
+rmDir
+ 
+Removes all .jpgs from the specified folder
+
+Inputs: 
+	- dirPath: filepath to the folder with images to be removed
+ 
+Outputs: 
+	- Removes all images
+ 
+Returns:
+	- None
+ 
+*/
+
 rmDir = function(dirPath) {
 	try { var files = fs.readdirSync(dirPath); }
 	catch(e) { return; }
