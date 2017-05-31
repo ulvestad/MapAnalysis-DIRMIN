@@ -4,13 +4,12 @@
 *
 *   Description: Main file for entire project. All other files in the application is
 *   either called from or included into this file. All application states are also
-*   handled here, such as startup and exit. 
+*   handled here, such as startup and exit.
 *
 *   Globals:
 *     electron - Electron framwork handle
 *     app - Application handle
 *     BrowserWindow - Electron browser window handle
-*
 */
 // Module for Electron framework
 const electron = require('electron')
