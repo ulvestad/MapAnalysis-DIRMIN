@@ -1,12 +1,63 @@
+/*
+Filename: userInterface/js/updateDBSelectFile.js
+@Author Group 13
+ 
+Updates the database table "KnowLoacations" from a .csv file
+ 
+Globals:
+	filePath - filepath of the selected file 
+	fileFormat - fileformat of the selected file
+*/
+
+
+
 //Path to folder, is "none" if it hasn't been set yet
 var filePath = null;
 var fileFormat = null;
 
+
+
+
+
+
+/*
+openCSVFile
+ 
+Let the user choose a folder from the filesystem
+ 
+Inputs: 
+	- Image filename
+ 
+Outputs: 
+	- Fetches the filepath of the selected folder
+ 
+Returns: 
+	- None
+ 
+*/
+
 function openCSVFile(){
-	//Let the user choose a folder from the filesystem
+	
+
+	/*
+	chooseFile
+	 
+	Uses the selected .csv file and updates the table "KnowLoacations"
+		- prompts the users with confirmation of the action
+		- calls a python script for database operations
+	 
+	Inputs: 
+		- name: filename of the .csv file
+	 
+	Outputs: 
+		- Updated the table
+	 
+	Returns: 
+		- None
+	 
+	*/
 	function chooseFile(name) {
 		var chooser = document.querySelector(name);
-		//Adds an event listener when user opens file selection. Code beneath is run when a file is selected.
 		chooser.addEventListener("change", function(evt) {
 			filePath = document.getElementById("csvFile").files[0].path
 			if (filePath == null){
