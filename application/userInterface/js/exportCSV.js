@@ -32,7 +32,7 @@ Returns: None
 function openFolderCSV(){
 
 	/*
-	openFolderCSV
+	chooseFileCSV
 	 
 	Called to select destination folder
 	 
@@ -47,10 +47,12 @@ function openFolderCSV(){
 	function chooseFileCSV(name) {
 		selectFOlderCSV = true;
 		var chooser = document.querySelector(name);
+
 		//Creates an event listener when file browsing is opened, is executed when user selects folder
 		chooser.addEventListener("change", function(evt) {
 			if (selectFOlderCSV){
 				selectFOlderCSV = false;
+
 				//Tries to get the selected folder. If none is selected, returns an error message. 
 				try{
 					folderPathCSV = document.getElementById("fileDialog").files[0].path;
@@ -58,9 +60,12 @@ function openFolderCSV(){
 					console.log("Pleas select a folder")
 					return;
 				}
+
+				// Replaces '\' with '/' in the path
 				split_path = folderPathCSV.split("\\");
 				partial_path = split_path[split_path.length -2 ] +"/" +split_path[split_path.length -1] + "/"
 
+				// Calls the function exportNewLocationsToCSV()
 				exportNewLocaitonsToCSV();
 			}
 		}, false);
@@ -82,6 +87,7 @@ Returns: returns folderPathCSV global variable
  
 */
 function getCSVFolderPath(){
+	// Returns the path if it is not null
 	if (folderPathCSV == null){
 		return null;
 	}else{
@@ -103,6 +109,7 @@ Returns: None
 */
 
 function exportNewLocaitonsToCSV(){
+	// Starts the python child process with the path
 	path = getCSVFolderPath();
 	path = path.split("\\").join("/");
 	console.log(path);
