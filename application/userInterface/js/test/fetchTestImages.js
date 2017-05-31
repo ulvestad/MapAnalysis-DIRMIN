@@ -1,3 +1,7 @@
+//@Deprecated
+//Deprecated file, used once for automating map retrieval from Kartverket WMS.
+
+
 var fs = require('fs');
 var https = require('http');
 var request = require('request');

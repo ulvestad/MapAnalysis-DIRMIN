@@ -1,3 +1,11 @@
+<!--
+Filename: userInterface/resultPage.html
+@Author Group 13
+
+Contains all HTML code for displaying the "Result Page" in the application
+
+ -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,14 +13,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Analysis of Map and Satellite Images</title>
+
+    <!-- Custom Stylesheets-->
     <link rel="stylesheet" href="css/styles.css">
-    <link href="css/nouislider.min.css" rel="stylesheet"> <!-- Stylesheet for the slider, don't remove -->
+
+    <!-- Stylesheet for the slider -->
+    <link href="css/nouislider.min.css" rel="stylesheet">
+
+    <!--Bootstrap stylesheet used to style navbar -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 </head>
 
 <body>
-
-  <!-- NAVBAR - NO TOUCHING!! -->
+  <!-- ______________________________________START "RESULT PAGE" ______________________________________ -->
+  <!-- ____START "Navbar"____ -->
+  <!-- The top-navbar for the application, this is the same for all .html pages -->
   <nav class="navbar navbar-inverse" id="navbar">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -20,7 +36,6 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
-
         </button>
         <a class="navbar-brand" href="index.html">Map Analysis</a>
       </div>
@@ -32,118 +47,134 @@
       </div>
     </div>
   </nav>
-  <!-- NAVBAR - NO TOUCHING!! -->
+  <!-- ____END "Navbar"____  -->
 
-  <!-- MAIN STUFF -->
+  <!-- "Div Show description" Div that allows the user to show/hide the description of the "Result Page" -->
   <div onclick="toggleDescriptionField()" class="togglePageDescription">
       <p><b>Show/Hide Result Page Description</b></p>
   </div>
 
+  <!-- ____START "Div Result Page Description"____ -->
+  <!-- "Div Result Page Description" Contains the description of the "Main Page" -->
   <div class="flex-item" id="hideDescription">
     <div class="descriptionPlaceholder">
       <h2 class="centerHeader"> Result Page </h2>
       <p>This page displays the results from previous scans. Use the slider to display all potential locations within a certainty-threshold in the list below. Select an item in the list or a marker on the map to Confirm or Remove it from the database/application. </p>
     </div>
   </div>
+  <!-- ____END "Div Main Page Description"____ -->
 
+<!-- Div container for the "Result Page" content "-->
   <div class="flex-container">
-    <!-- BOX 1: Quarry data_____________________________________________________-->
-    <div class="flex-item column1of3"> 
+
+    <!-- ____START "Div column Quarry Data"____ -->
+    <!-- "Div column Quarry data" Contains the slider for setting the threshold, and the area that displays quarry data for all found quarries -->
+    <div class="flex-item column1of3">
       <dic id="column1Holder">
-      
+        <!-- ____START "Div containers Slider"____ -->
+        <!-- "Div containers Slider" Div containers to display the slider -->
         <div id="slider"></div>
         <div id="sliderTextSpans">
           <span>Locations in threshold </span><span id="bothThreshold"></span><span id="quarriesInThreshold"></span>
         </div>
-        
-        <!-- List view for quarries, plz no remove -->
-        
+        <!-- ____END "Div containers Slider"____ -->
+
+        <!-- ____START "Div container Quarry data area"____ -->
+        <!-- "Div container Quarry data area" Div container to display the quarry data in a boxarea -->
         <div id="scrollAreaWrapper">
           <div id="scrollArea" class="clusterize-scroll">
             <ul id="contentArea" class="clusterize-content">
-              
             </ul>
           </div>
         </div>
-        
-        <!-- BUTTONS -->
+        <!-- ____END "Div container Quarry data area"____ -->
+
+        <!-- ____START "Div container Buttons"____ -->
+        <!-- "Div container Buttons" Contains the buttons used to choose previous or next quarry -->
         <div id="mapButtons" id="left">
-          <!-- <button onclick="editMarker()" id="Edit" disabled style="font-family:Open Sans Condensed;">Edit quarry position</button> -->
-          <!-- <button onclick="finishEdit()" id="Finish" disabled style="font-family:Open Sans Condensed;">Finish edit</button> -->
           <div class="listNavButtons">
             <button onclick="prevQuarry()" id="prevQuarry" class="resultNavButton" disabled> ◄ </button>
             <button onclick="nextQuarry()" id="nextQuarry" class="resultNavButton" disabled> ► </button>
           </div>
           <span id="deleteFeedback"></span>
-          <!-- <button onclick="getCurrentImage('0633.jpg')" id="test1" style="font-family:Open Sans Condensed;">Show quarry(test)</button> -->
-          <!-- <button onclick="moveFolder('maps', 'scannedMaps')" id="test2" style="font-family:Open Sans Condensed;">moveFile(test)</button> -->
         </div>
+        <!-- ____START "Div container Buttons"____ -->
       </dic>
     </div>
+    <!-- ____END "Div column Quarry data"____ -->
 
 
 
-    <!-- BOX 2: image for selected quarry ______________________________________ -->
+    <!-- ____START "Div column Selected Quarry Image"____ -->
+    <!-- "Div column Selected Quarry Image" Contains the image of the selected quarry -->
     <div class="flex-item column2of3">
       <img id="quarryImage" src="">
-      
+
+      <!-- ____START "Div container Buttons"____ -->
+      <!-- "Div container Buttons" Contains the buttons used to confirm or delete a quarry -->
       <div class="confirmDeleteButtons">
           <button onclick="deleteQuarry()" id="Delete" class="resultButton" disabled>✖ Remove</button>
           <button onclick="confirmQuarry()" id="Confirm" class="resultButton" disabled>✔ Confirm</button><br>
       </div>
+      <!-- ____END "Div container Buttons"____ -->
     </div>
+    <!-- ____END "Div column Selected Quarry Image"____ -->
 
 
-    <!--BOX 3: Google Maps Map (for displaying quary positions) _______________-->
+    <!-- ____START "Div column Google Maps Map"____ -->
+    <!-- "Div column Google Maps Map" Contains the interactive google maps map to display quarry locations -->
     <div class="flex-item column3of3">
       <!-- GoogleMaps map -->
       <div id="map"></div>
-      <!-- CHECKBOXES -->
+
+      <!-- ____START "Form Checkboxes"____ -->
+      <!-- "Form Checkboxes" Contains the checkboxes used to select which quarry locations to display -->
       <form>
-        <input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations" checked> 
+        <input onclick="checkboxMarked('PossibleLocations')" type="checkbox" id="PossibleLocations" checked>
         <span>Possible Locations</span>
         <img src="icons/mapMarkerStandard.png" style="height: 20px"> <br>
-        <input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations"> 
+        <input onclick="checkboxMarked('NewLocations')" type="checkbox" id="NewLocations">
         <span>Confirmed location</span>
         <img src="icons/mapMarkerPossbile.png" style="height: 20px"> <br>
-        <input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations"> 
+        <input onclick="checkboxMarked('KnownLocations')" type="checkbox" id="KnownLocations">
         <span>Known locations</span>
         <img src="icons/mapMarker.png" style="height: 20px"> <br>
-      </form> 
+      </form>
+      <!-- ____END "Form Checkboxes"____ -->
     </div>
-    <!-- END GOOGLE MAPS -->
+    <!-- ____END "Div column Google Maps Map"____ -->
   </div>
+  <!-- ______________________________________END "RESULT PAGE" ______________________________________ -->
 
 
 
-<!-- SCRIPTS ETC. -->
-<!-- Needed to solve jquery issue  -->
-<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <!-- ______________________________________START "SCRIPT SECTION"________________________________________ -->
+  <!-- Needed because Electron does not recognize jQuery libraries -->
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <!-- jQuery import used in navbar -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!-- Bootstrap import used in navbar -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- Needed because Electron does not recognize jQuery libraries -->
+  <script>if (window.module) module = window.module;</script>
 
-<!-- Needed to solve jquery issue -->
-<script>if (window.module) module = window.module;</script>
+  <!-- Google Maps script (API KEY) -->
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
+  </script>
+  <!-- All custom javascript file imports -->
+  <script src="js/latLng_UTM.js"></script>
+  <script src="js/setMarkerInit.js"></script>
+  <script src="js/launchEXE.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/result.js"></script>
+  <script src="js/displayImage.js"></script>
+  <script src="js/moveFiles.js"></script>
+  <script src="js/displayQuarryList.js"></script>
 
-<!-- Google Maps script (API KEY) -->
-
-
-<!-- Javascript files -->
-<script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJH2xXmtR9ta9VpuNM8n3QqnQGvKL1Gag&callback=initMap">
-</script>
-<script src="js/latLng_UTM.js"></script>
-<script src="js/setMarkerInit.js"></script>
-<script src="js/launchEXE.js"></script>
-<script src="js/navbar.js"></script>
-<script src="js/result.js"></script>
-<script src="js/displayImage.js"></script>
-<script src="js/moveFiles.js"></script>
-<script src="js/displayQuarryList.js"></script>
-
-<script src="js/nouislider.min.js"></script>
-<script src="js/slider.js"></script>
-
+  <script src="js/nouislider.min.js"></script>
+  <script src="js/slider.js"></script>
+  <!-- ______________________________________END "SCRIPT SECTION"________________________________________ -->
 </body>
 </html>
