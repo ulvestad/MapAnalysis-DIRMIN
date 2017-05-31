@@ -1,10 +1,30 @@
-//Launches dev tools when app is run, will remove after development
-//require('remote').getCurrentWindow().toggleDevTools();
+/*
+Filename: userInterface/js/results.js
+@Author Group 13
 
-//VARIOUS VARBIALES DECLARATIONS--------------------------------------------------------------------------------------------
+Handles Google Maps related task on the "Result page"
+
+
+Globals:
+	map - The google map on the page
+	marker_icon - Marker icons filepath list
+	markers - 2d list containing the different markers displayed on map
+	markerSelected - current marker selected by user
+	prev_infowindow - Bool if a infowindow above a marker excists prevouisly
+	editing - Bool if marker is beeing edited
+	old_latlng - Previous lat/lng coordinates of marker
+	new_lat - New lattitide coordinate for marker
+	new_lng - New longitide coordinate for marker
+	numPlottedMarkers - Counter for number of markers on map
+	numMarkerTreshhold - Threshold for number of markers on map
+	treshholdSelectedByUser - Threshold from slider, 0 - 100
+
+
+*/
+
 var map;
 var marker_icon = ["icons/mapMarker.png", "icons/mapMarkerStandard.png","icons/mapMarkerPossbile.png"]
-var markers = [[],[],[]]; //2d array consitiong of knowquarry-markers[0], newquarry-markers[1] and possible-locations[2]
+var markers = [[],[],[]]; //knowquarry-markers[0], newquarry-markers[1] and possible-locations[2]
 var markerSelected;
 var prev_infowindow = false;
 var editing = false;
@@ -15,8 +35,28 @@ var numPlottedMarkers = 0;
 var numMarkerTreshhold = 10000; //number of markers allowed on map, due to performance number
 var treshholdSelectedByUser = 100 //getQuarryListLength();
 
-//GOOGLE MAPS FUNCTIONS----------------------------------------------------------------------------------------------------
-//Init for map and listener
+
+
+
+
+
+/*
+initMap
+
+Initialization for Google Map
+	includes a listener for map changes
+	places google maps object in div with id "map"
+
+Input:
+	None
+
+Outputs: 
+	Google Map object
+
+Returns:
+	null - If listener is invoked when not needed
+
+*/
 function initMap() {
 	//Load 'map' utilizing google map api
 	var middle_norway = {lat: 65.14611484756372, lng: 13.18359375};
@@ -29,7 +69,7 @@ function initMap() {
 		clickableIcons: false
 	});
 
-	//Init map listener which handles "new positon clicks when editing quarry-marker location"
+	//Init map listener which handles
 	map.addListener('click', function(event) {
 		var new_LatLng = event.latLng;
 		if(editing == true && markerSelected.getPosition() != new_LatLng){
@@ -43,17 +83,57 @@ function initMap() {
 	});
 }
 
-//CHECKBOX MARKED----------------------------------------------------------------------------------------------------------
-//function for when checkboxes are checked on/off
+
+
+
+
+/*
+checkboxMarked
+
+Fetches boolean from checkbox
+	- true if checked, false if not checked
+
+Input: 
+	None
+
+Output:
+	Calls initDb with variables type, obj
+
+Returns:
+	None
+
+*/
 function checkboxMarked(table){
 	var obj = document.getElementById(table);
 	var type = table;
 	initDb(type, obj.checked); //if checkbox is TRUE/checked -> begin marker loading of those markes specified from checkbox
 }
 
-//DATABASE INITIALIZATON---------------------------------------------------------------------------------------------------
-//REQUIRES SQLITE3
-//fethes every row from specified table 'type' and forward it to be plotted on map 
+
+
+
+
+
+
+
+/*
+initDb
+
+Database initalization and connection 
+	-	fethes every row from specified table 'type' and forward it to be plotted on map 
+	- 	requires sqlite3
+
+Input:
+	type - Database table name
+	checked - boolean if checked or not
+
+Returns:
+	null - If database fetching is invoked when not needed
+
+Outputs:
+	Plots markers accoriding to table 
+
+*/
 function initDb(type, checked) {
 	var fs = require('fs')
 	var sql = require('sql.js')
@@ -150,18 +230,59 @@ function initDb(type, checked) {
 
 	};
 
-//WRITE/UPDATE DATA ON SPECIFIED ROW IN 'NEWLOCATIONS' TABLE--------------------------------------------------------------
-//used when editing marker position 
+
+
+
+
+/*
+writeToDB
+
+Database operations
+	-	spawns a python script which handles: write/update data on specific row in "NewLocations" table
+	-	parameters: new_lat, new_lng, pos
+Input:
+	None
+
+Returns:
+	None
+
+Outputs:
+	Updates database
+
+*/
+
 function writeToDB() {
 	var pos = markerPos(); //return pos of marker in the markers array
 	var spawn  = require("child_process").spawn; //spawns a childs proc.
 	var child = spawn('python',["userInterface/py/updateDB.py", new_lat, new_lng, pos]); //calls a python script with parameters
 }
 
-//PLOT MARKERS ON MAP-------------------------------------------------------------------------------------------------------
-//plots the marker on the map
-//adds infowindow with info of marker 
-//adds eventlistener to marker for 'click on marker' and 'closeclick of infowindow' 
+
+
+
+
+
+/*
+plotMarker
+
+Plots markers on Google Map (map)
+	-	adds infowindow with info of marker 
+	-	adds eventlistener to marker for 'click on marker' and 'closeclick of infowindow' 
+Input:
+	type - table name in database
+	checked - Bool if checkbox is checked or not
+	id - ID to row beeing plotted
+	lat- Lattitude coordinate to corresponing ID
+	lng - Longitude coordinate to corresponing ID
+	scr - Score (%) of image containing quarry
+
+Returns:
+	null - If plotting is invoked when not needed
+
+Outputs:
+	A marker with corresponding infowidow and event listener
+
+*/
 function plotMarker(type, checked, id, lat, lng, scr){
 	var stack; //which stack in markers array (eg. knowquarries[0] or newquarries[1])
 	var micon; //array for diffrent marker icons depending on known/new
@@ -283,16 +404,34 @@ function plotMarker(type, checked, id, lat, lng, scr){
 	}
 }
 
-//BUTTON 'edit marker pos' ONCLICK FUNCTION  CALL -----------------------------------------------------------------------
-//handles edit marker tasks
+
+
+
+/*
+editMarker
+ 
+@Depricated
+
+Not beeing used in current version of program
+ 
+*/
+
 function editMarker(){
-	changeMarkerIcon(true); //set all other markers opactity down to ~0.35	
-	editing = true; //set boolean editing to true
-	//setTextToArea("Editing marker...",false); //writes to textare with edit info
-	old_latlng = markerSelected.getPosition(); //stores old pos of marker
+	changeMarkerIcon(true);
+	editing = true; 
+	old_latlng = markerSelected.getPosition(); 
 }
-//BUTTON 'delete marker' ONCLICK FUNCTION  CALL ------------------------------------------------------------------------
-//handles delete marker tasks
+
+
+/*
+deleteMarker
+ 
+@Depricated
+
+Not beeing used in current version of program
+ 
+*/
+
 function deleteMarker(){
 	//promt validation for confirming delete 
 	if(confirm('Are you sure you want to delete the marker? \nNB: Changes will be done to the database.')){
@@ -304,8 +443,14 @@ function deleteMarker(){
 	}
 }
 
-//BUTTON 'finish edit' ONCLICK FUNCTION  CALL --------------------------------------------------------------------------
-//handles finish edit tasks
+/*
+finishEdit
+ 
+@Depricated
+
+Not beeing used in current version of program
+ 
+*/
 function finishEdit(){
 	//promt validation for confirming edit finish
 	if (confirm('Are you sure you want to edit the markers position? \nNB: Changes will be done to database.')) {
@@ -320,23 +465,39 @@ function finishEdit(){
     }
 }
 
-//SET TEXT ON TEXTAREA TO ARGUMENT 1 -----------------------------------------------------------------------------------
-//appending or overwites
+/*
+setTextToArea
+ 
+@Depricated
+
+Not beeing used in current version of program
+ 
+*/
 function setTextToArea(text,append){
-	/*var obj = document.getElementById("editArea");
-	if(append){ //red text used for mainly edit info
-		obj.style.color= "#ff0000";
-		obj.value += "\n"+text;
-	}else{ //standard text
-		obj.style.color= "#000000";
-		obj.value = text;
-	}
-	obj.scrollTop = obj.scrollHeight; //always scroled at button
-	*/
+
 }	
 
-//CHANGE MARKER OPACITY -------------------------------------------------------------------------------------------------
-//sets opactity down or up (depending of argument) on all markers except the on that is beein edited
+
+
+
+
+
+/*
+changeMarkerIcon
+ 
+Changes the marker icon 
+ 
+Inputs: 
+	- disable: Bool for disable or not
+ 
+Outputs: 
+	- Marker with corresponding marker 
+ 
+Returns: 
+	- None
+ 
+*/
+
 function changeMarkerIcon(disable){
 	if(disable){
 		markers.forEach(function each(mark) {
@@ -357,10 +518,18 @@ function changeMarkerIcon(disable){
 	}
 }
 
-//PROMPT VALIDATION FOR EXIT EDIT ------------------------------------------------------------------------------------------
-//promts user is he/she wants to continue edit or exit edit
-//actions based on result of user
-//return choice of user
+
+
+
+/*
+confirmExitEdit
+ 
+ 
+@Depricated
+
+Not beeing used in current version of program
+*/
+
 function confirmExitEdit(){
 	//exit edit -> rest pos of marker
 	if (confirm('You are editing a markers position, are you \nsure you want to stop editing?\n NB: Position will be reset.')) {
@@ -375,8 +544,20 @@ function confirmExitEdit(){
 		return false;
     }
 }
+
+
+
+
+/*
+updateInfowindow
+ 
+ 
+@Depricated
+
+Not beeing used in current version of program
+*/
 function updateInfowindow(){
-		//TODO: Update infowindow with new lat and lng 
+		
 }
 
 //POSITION OF MARKER IN ARRAY---------------------------------------------------------------------------------------------------
@@ -391,8 +572,18 @@ function markerPos(){
 	return pos;
 }
 
-//UPDATE POSSIBLE AND NEW MARKERS---------------------------------------------------------------------------------------------------
-//update the possbile and new markers based on actions of the user, eg. delete quarry, confirm etc.
+
+
+
+
+/*
+updateMarkers
+ 
+@Depricated
+
+Not beeing used in current version of program
+ 
+*/
 function updateMarkers(){
 	var obj = document.getElementById("PossibleLocations");
 	var obj2 = document.getElementById("NewLocations");  
@@ -421,8 +612,27 @@ function updateMarkers(){
 	}
 }
 
-//WHEN A ITEM IN QUARRY-LIST IS CLICKED GO TO THAT MARKER ---------------------------------------------------------------------------------------------------
-//when a user clicks on a item/possbilequarries is the list, go to that marker by pretending a 'click' event and show infowindow
+
+
+
+
+/*
+whenMarkerClickedInListShowInfoWindowOnThatMarker
+
+When a user clicks on a item/possbilequarries is the list, go to that marker by pretending a 'click' event and show infowindow
+
+
+Inputs: 
+	- id: ID to the corresponding marker clicked in list
+ 
+Outputs: 
+	- Navigation to the corresponding marker in "map"
+ 
+Returns: 
+	- null:  If funtion is invoked when not needed
+ 
+*/
+
 function whenMarkerClickedInListShowInfoWindowOnThatMarker(id){
 	var obj = document.getElementById("PossibleLocations"); 
 	if(!obj.checked){

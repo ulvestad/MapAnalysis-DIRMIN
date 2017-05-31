@@ -1,3 +1,9 @@
+"""
+@Deprecated
+This file is no longer in use. Originally it was used to 
+stitch together several images into one large.
+"""
+
 import os, sys
 import shutil
 from scipy import misc
